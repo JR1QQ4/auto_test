@@ -27,5 +27,9 @@
 #     print(e)
 # except BaseException as msg:  # 新的所有异常类的基类
 #     print(msg)
+# finally:
+#     print("不管是否出现异常，都会被执行。")
+
+
 
 
