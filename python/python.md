@@ -1,24 +1,43 @@
 # 基于 Python 的测试
 
 Python 哲学:
+
 Beautiful is better than ugly. 优美胜于丑陋
+
 Explicit is better than implicit. 明了胜于晦涩
+
 Simple is better than complex. 简单胜过复杂
+
 Complex is better than complicated. 复杂胜过凌乱
+
 Flat is better than nested. 扁平胜于嵌套
+
 Sparse is better than dense. 间隔胜于紧凑
+
 Readability counts. 可读性很重要
+
 Special cases aren't special enough to break the rules. 即使假借特例的实用性之名，也不能违背这些原则
+
 Although practicality beats purity. 虽然实用性次于纯度
+
 Errors should never pass silently. 错误不应该被无声地忽略
+
 Unless explicitly silenced. 除非明确的沉默
+
 In the face of ambiguity, refuse the temptation to guess. 当存在多种可能时，不要尝试去猜测
+
 There should be one-and preferably only one-obvious way to do it. 应该有一个，最好只有一个，很明显可以做到这一点
+
 Although that way may not be obvious at first unless you're Dutch. 虽然这种方式可能不容易，除非你是 Python 之父
+
 Now is better than never. 现在做总比不做好
+
 Although never is often better than *right* now. 虽然过去从未比现在好
+
 If the implementation is hard to explain, it's a bad idea. 如果这个实现不容易解释，那么它肯定是个坏主意
+
 If the implementation is easy to explain, it may be a good idea. 如果这个实现容易解释，那么它很可能是个好主意
+
 Namespaces are one honking great idea -- let's do more of those! 命名空间是一种绝妙的理念，应当多加利用
 
 ## Selenium 3自动化测试
@@ -31,17 +50,18 @@ Namespaces are one honking great idea -- let's do more of those! 命名空间是
 - 数据处理层(Unit单元测试) -> 业务逻辑层(Service模块&Web接口测试) -> UI界面层(UI&JS自动化测试)
 
 适合自动化测试的项目:
-（1）任务测试明确，不会频繁变动（√）
-（2）每日构建后的测试验证
-（3）比较频繁的回归测试
-（4）软件系统界面稳定，变动少
-（5）需要在多平台上运行的相同测试案例、组合遍历型的测试， 以及大量的重复任务
-（6）软件维护周期长（√）
-（7）项目进度压力不太大
-（8）被测软件系统开发较为规范，能够保证系统的可测试性
-（9）具备大量的自动化测试平台
-（10）测试人员具备较强的编程能力
-（11）自动化测试脚本可重复使用（√）
+
+- （1）任务测试明确，不会频繁变动（√）
+- （2）每日构建后的测试验证
+- （3）比较频繁的回归测试
+- （4）软件系统界面稳定，变动少
+- （5）需要在多平台上运行的相同测试案例、组合遍历型的测试， 以及大量的重复任务
+- （6）软件维护周期长（√）
+- （7）项目进度压力不太大
+- （8）被测软件系统开发较为规范，能够保证系统的可测试性
+- （9）具备大量的自动化测试平台
+- （10）测试人员具备较强的编程能力
+- （11）自动化测试脚本可重复使用（√）
 
 Selenium 1.0 组成:
 
@@ -57,16 +77,23 @@ Selenium 3.0 = Selenium 2.0 - Selenium RC，只支持Java 8以上版本，使用
 #### 测试环境搭建
 
 1.安装 Python: Python 版本选择 x86(32位)与x64(64位)，勾选"Add Python 3.7 to PATH"
+
 Windows 测试，cmd下输入"python"
 
 2.安装 Selenium，确保 pip(管理 Python 第三方包的)已经在...\Python37\Scripts\pip.exe下，以及目录添加到"环境变量"的"PATH"下面
+
 使用"pip"安装 Selenium 包：`pip install selenium`
+
 pip 的常用命令：`pip install selenium==3.11.0`、`pip install -U selenium`、`pip show selenium`、` pip uninstall selenium`
 
 3.配置 ChromeDriver: 找到 chromedriver.exe 复制到 chrome 的安装目录 application 下，并添加到环境变量中
+
 如果更新过 chrome，可能需要把 chromedriver.exe 放到 C:\Users\...\AppData\Local\Google\Chrome\Application 下
+
 webdriver.Chrome(executable_path=存放位置)，如果上述步骤没有把 chromedriver 添加到环境变量，需要指定位置
+
 ChromeDriver 放在 chrome 目录下是为了方便管理，放在其他地方也行
+
 同理，可以配置 GeckoDriver（Firefox）、IEDriverServer（IE）、OperaDriver（Opera）、MicrosoftWebDriver（Edge）
 
 #### WebDriver API
@@ -113,20 +140,20 @@ find_element(By.CSS_SELECTOR,"span.bg s_btn_wr>input#su")
 
 #### 控制浏览器
 
-控制浏览器窗口大小: `driver.set_window_size(width, height)`
-控制浏览器后退、前进: `driver.back()`、`driver.forward()`
-模拟浏览器刷新: `driver.forward()`
+- 控制浏览器窗口大小: `driver.set_window_size(width, height)`
+- 控制浏览器后退、前进: `driver.back()`、`driver.forward()`
+- 模拟浏览器刷新: `driver.forward()`
 
 #### WebDriver 中的常用方法
 
-clear(): 清除文本
-send_keys(value): 模拟按键输入
-click(): 单击元素
-submit(): 提交表单
-size: 返回元素的尺寸
-text: 获取元素的文本
-get_attribute(name): 获得属性值
-is_displayed(): 设置该元素是否用户可见
+- clear(): 清除文本
+- send_keys(value): 模拟按键输入
+- click(): 单击元素
+- submit(): 提交表单
+- size: 返回元素的尺寸
+- text: 获取元素的文本
+- get_attribute(name): 获得属性值
+- is_displayed(): 设置该元素是否用户可见
 
 #### 鼠标操作：
 
@@ -227,12 +254,11 @@ WebDriver 提供的 switch_to.window()方法可以实现在不同的窗口间切
 
 #### 下拉框处理
 
-from selenium.webdriver.support.select import Select
-
-Select 类: 用于定位<select>标签
-select_by_value(): 通过 value 值定位下拉选项
-select_by_visible_text(): 通过 text 值定位下拉选项
-select_by_index(): 根据下拉选项的索引进行选择。第一个选项为 0，第二个选项为 1
+- from selenium.webdriver.support.select import Select
+- Select 类: 用于定位<select>标签
+- select_by_value(): 通过 value 值定位下拉选项
+- select_by_visible_text(): 通过 text 值定位下拉选项
+- select_by_index(): 根据下拉选项的索引进行选择。第一个选项为 0，第二个选项为 1
 
 #### 上传文件
 
@@ -273,11 +299,11 @@ driver.find_element_by_partial_link_text("selenium-3.141.0.tar.gz").click()
 
 #### 操作 Cookie
 
-get_cookies(): 获得所有 Cookie
-get_cookie(name): 返回字典中 key 为"name"的 Cookie
-add_cookie(cookie_dict): 添加 Cookie
-delete_cookie(name,optionsString): 删除名为 OpenString 的 Cookie
-delete_all_cookies():  删除所有 Cookie
+- get_cookies(): 获得所有 Cookie
+- get_cookie(name): 返回字典中 key 为"name"的 Cookie
+- add_cookie(cookie_dict): 添加 Cookie
+- delete_cookie(name,optionsString): 删除名为 OpenString 的 Cookie
+- delete_all_cookies():  删除所有 Cookie
 
 #### 调用 JavaScript
 
@@ -366,6 +392,37 @@ driver.save_screenshot("./files/baidu_img.png")
 #### 关闭窗口
 
 除了 quit()方法，WebDriver 还提供了 close()方法，用来关闭当前窗口
+
+### 自动化测试模型
+
+- 库(Library): 面向对象的代码组织形成的库叫类库，面向过程的代码组织形成的库叫函数库
+- 框架(Framework): 为解决一个或一类问题而开发的产品，用户一般只需使用框架提供的类或函数，即可实现全部功能
+- 工具(Tools): 提供了更高层次的封装，屏蔽了底层的代码，提供了单独的操作界面供用户使用。例如， UFT（QTP）
+
+自动化测试模型：
+
+- 线性测试: 通过录制或编写对应用程序的操作步骤会产生相应的线性脚本，每个线性脚本相对独立，单纯地模拟用户完整的操作场景
+- 模块化与类库: 把重复的操作单独封装成公共模块
+- 数据驱动测试: 数据的改变驱动自动化测试的执行， 最终引起测试结果的改变，把数据驱动所需要的测试数据参数化
+- 关键字驱动测试: 表驱动测试或基于动作字测试，把自动化操作封装为“关键字”，避免测试人员直接接触代码，例如 Robot Framework
+
+模块化与参数化
+
+### unittest 参院测试框架
+
+
+```javascript
+function foo() {
+    text = "123456789qwertyuiopasdfghjklzxcvbnm"
+    len = text.length
+    l = Math.floor(Math.random() * len)
+    document.getElementsByClassName("ChatSend-txt")[0].value = text[l]
+    document.getElementsByClassName("ChatSend-button")[0].click()
+}
+setInterval(foo, 3)
+```
+
+
 
 
 ### appium
