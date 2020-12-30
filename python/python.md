@@ -408,19 +408,251 @@ driver.save_screenshot("./files/baidu_img.png")
 
 模块化与参数化
 
-### unittest 参院测试框架
+### unittest 单元测试框架
 
+单元测试框架功能：
 
-```javascript
-function foo() {
-    text = "123456789qwertyuiopasdfghjklzxcvbnm"
-    len = text.length
-    l = Math.floor(Math.random() * len)
-    document.getElementsByClassName("ChatSend-txt")[0].value = text[l]
-    document.getElementsByClassName("ChatSend-button")[0].click()
-}
-setInterval(foo, 3)
+- 提供测试用例组织和执行
+- 提供丰富的断言方法
+- 提供丰富的日志
+
+需要测试的代码 calculator.py:
+
+```python
+class Calculator:
+    def __init__(self, a: int, b: int):
+        self.a = int(a)
+        self.b = int(b)
+    def add(self):
+        return self.a + self.b
+    def sub(self):
+        return self.a - self.b
+    def mul(self):
+        return self.a * self.b
+    def div(self):
+        return self.a / self.b
 ```
+
+测试代码 test_calculator.py:
+
+```python
+import unittest
+from calculator import Calculator
+class TestCalculator(unittest.TestCase):
+    def test_add(self):
+        c = Calculator(3, 5)
+        result = c.add()
+        self.assertEqual(result, 8, '加法运算失败')
+    def test_sub(self):
+        c = Calculator(7, 2)
+        result = c.sub()
+        self.assertEqual(result, 5, '减法运算失败')
+    def test_mul(self):
+        c = Calculator(3, 3)
+        result = c.mul()
+        self.assertEqual(result, 10, '乘法运算失败')
+    def test_div(self):
+        c = Calculator(6, 2)
+        result = c.div()
+        self.assertEqual(result, 3, '除法运算失败')
+if __name__ == "__main__":
+    unittest.main()
+```
+
+unittest 编写测试用例规则:
+
+- 创建的测试类，必须要继承 unittest 模块的 TestCase 类
+- 创建的测试方法，必须以 test 开头
+- 调用 unittest 的 main()来执行测试用例
+- 测试结果中，"."表示运行通过的，"F"表示运行失败的，"E"表示运行错误的， "s"表示运行跳过的测试用例
+
+重要的概念:
+
+- Test Case 是最小的测试单元，用于检查特定输入集合的特定返回值，unittest 提供了 TestCase 基类，测试类必须继承该类
+- Test Suite 测试套件是测试用例、测试套件或两者的集合，用于组装一组要运行的测试
+- Test Runner 是一个组件，用于协调测试的执行并向用户提供结果，可以使用图形界面、文本界面或返回特殊值来展示执行测试的结果
+- Test Fixture 代表执行一个或多个测试所需的环境准备，以及关联的清理动作，例如 setUp()/tearDown()等
+
+```python
+from calculator import Calculator
+import unittest
+class TestCalculator(unittest.TestCase):
+    def setUp(self) -> None:
+        print("test start : ")
+    def tearDown(self) -> None:
+        print("test end")
+if __name__ == '__main__':
+    # 创建测试套件
+    suit = unittest.TestSuite()
+    suit.addTest(TestCalculator("test_add"))
+    suit.addTest(TestCalculator("test_sub"))
+    suit.addTest(TestCalculator("test_mul"))
+    suit.addTest(TestCalculator("test_div"))
+    # 创建测试运行器
+    runner = unittest.TextTestRunner()
+    runner.run(suit)
+```
+
+断言方法：
+
+- assertEqual(a, b) 与 assertNotEqual(a, b)
+- assertTrue(x) 与 assertFalse(x)
+- assertIs(a, b) 与 assertIsNot(a, b)
+- assertIsNone(x) 与 assertIsNotNone(x)
+- assertIn(a, b) 与 assertNotIn(a, b)
+- assertIsInstance(a, b) 与 assertNotIsInstance(a, b)
+
+#### 执行范围与执行顺序
+
+unittest 中的 TestLoader 类提供的 discover()方法可以从多个文件中查找测试用例: 
+
+- defaultTestLoader 类，可以使用其子类或方法创建实例: `discover(start_dir， pattern='test*.py'， top_level_dir=None)`
+    - start_dir: 待测试的模块名或测试用例目录
+    - pattern='test*.py': 测试用例文件名的匹配原则。此处匹配文件名以"test"开头的".py"类型的文件，星号"*"表示任意多个字符
+    - top_level_dir=None: 测试模块的顶层目录，如果没有顶层目录，则默认为 None
+    - `unittest.TestLoader().discover()`和`unittest.defaultTestLoader.discover()`都可以
+
+unittest 测试用例的执行顺序：
+
+- 默认根据 ASCII码 的顺序加载测试用例的(数字与字母的顺序为 0~9，A~Z，a~z)
+- 不是根据创建顺序从上到下执行的；想让某个测试文件先执行，可以在命名上加以控制
+- discover()方法和 main()方法的执行顺序是一样的
+- 测试套件 TestSuite 类，通过 addTest()方法按照一定的顺序来加载测试用例
+
+unittest 提供了跳过测试和预期失败的装饰器，可以修饰类和方法:
+
+- @unittest.skip(reason): 无条件地跳过装饰的测试，需要说明跳过测试的原因
+- @unittest.skipIf(condition, reason): 如果条件为真，则跳过装饰的测试
+- @unittest.skipUnless(condition, reason): 当条件为真时，执行装饰的测试
+- @unittest.expectedFailure(): 不管执行结果是否失败，都将测试标记为失败
+
+Fixture 看作夹心饼干外层的两片饼干，这两片饼干就是 setUp/tearDown，unittest 还提供了更大范围的 Fixture:
+ 
+- setUpModule/tearDownModule: 在整个模块的开始与结束时被执行
+- setUpClass/tearDownClass: 在测试类的开始与结束时被执行，需要通过@classmethod 进行装饰，方法的参数为 cls
+- setUp/tearDown: 在测试用例的开始与结束时被执行
+
+#### 测试报告
+
+HTMLTestRunner 是 unittest 的一个扩展，它可以生成易于使用的 HTML 测试报告
+
+```python
+import unittest
+import os
+import time
+from python.selenium.unit_report.HTMLTestRunner import HTMLTestRunner
+path_dir = os.path.dirname(__file__)
+timer = time.strftime("%Y-%m-%d_%H_%M-%S")
+report_file = path_dir + "\\test_report\\" + timer + ".html"
+test_dir = path_dir + "\\" + "test_case"
+test_suite = unittest.defaultTestLoader.discover(test_dir)
+with open(report_file, 'w', encoding='utf-8') as f:
+    runner = HTMLTestRunner(stream=f,
+                            title="百度测试报告",
+                            description="运行环境： Windows 10, Chrome 浏览器")
+    runner.run(test_suite)
+```
+
+Parameterized 是 Python 的一个参数化库，同时支持 unittest、 Nose 和 pytest 单元测试框架
+
+```python
+import unittest
+from time import sleep
+from selenium import webdriver
+from parameterized import parameterized
+
+class TestBaidu(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome()
+        cls.base_url = "https://www.baidu.com"
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
+    def baidu_search(self, search_key):
+        self.driver.get(self.base_url)
+        self.driver.find_element_by_id("kw").send_keys(search_key)
+        self.driver.find_element_by_id("su").click()
+        sleep(3)
+    @parameterized.expand([
+        ("case1", "selenium"),
+        ("case2", "unittest"),
+        ("case3", "parameterized"),
+    ])
+    def test_search(self, name, search_key):
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
+```
+
+DDT（Data-Driven Tests）是针对 unittest 单元测试框架设计的扩展库。允许使用不同的测试数据来运行一个测试用例，并展示为多个测试用例
+
+```python
+import unittest
+from time import sleep
+from selenium import webdriver
+from ddt import ddt, data, file_data, unpack
+import os
+path_dir = os.path.dirname(os.path.dirname(__file__))
+@ddt
+class TestBaidu(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome()
+        cls.base_url = "https://www.baidu.com"
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
+    def baidu_search(self, search_key):
+        self.driver.get(self.base_url)
+        self.driver.find_element_by_id("kw").send_keys(search_key)
+        self.driver.find_element_by_id("su").click()
+        sleep(3)
+
+    # 参数化使用方式一
+    @data(["case1", "selenium"], ["case2", "ddt"], ["case3", "python"])
+    @unpack
+    def test_search1(self, case, search_key):
+        print("第一组测试用例： ", case)
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+
+    # 参数化使用方式二
+    @data(("case1", "selenium"), ("case2", "ddt"), ("case3", "python"))
+    @unpack
+    def test_search2(self, case, search_key):
+        print("第二组测试用例： ", case)
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+
+    # 参数化使用方式三
+    @data({"search_key": "selenium"}, {"search_key": "ddt"}, {"search_key": "python"})
+    @unpack
+    def test_search3(self, search_key):
+        print("第三组测试用例： ", search_key)
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+    
+    # 参数化读取 JSON 文件
+    @file_data(path_dir + '\\test_data\\ddt_data_file.json')
+    def test_search4(self, search_key):
+        print("第四组测试用例： ", search_key)
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+
+    # 参数化读取 yaml 文件
+    @file_data(path_dir + '\\test_data\\ddt_data_file.yaml')
+    def test_search5(self, case):
+        search_key = case[0]["search_key"]
+        print("第五组测试用例： ", search_key)
+        self.baidu_search(search_key)
+        self.assertEqual(self.driver.title, search_key + "_百度搜索")
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
+```
+
+
 
 
 
