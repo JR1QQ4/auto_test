@@ -641,7 +641,7 @@ class TestBaidu(unittest.TestCase):
         self.baidu_search(search_key)
         self.assertEqual(self.driver.title, search_key + "_百度搜索")
 
-    # 参数化读取 yaml 文件
+    # 参数化读取 yaml 文件，需要先下载 yaml 文件解释器，pip install PyYAML 
     @file_data(path_dir + '\\test_data\\ddt_data_file.yaml')
     def test_search5(self, case):
         search_key = case[0]["search_key"]
@@ -652,9 +652,99 @@ if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
 
+自动发送邮件，SMTP（Simple Mail Transfer Protocol）是简单邮件传输协议，smtplib 模块提供了简单的 API 用来实现发送邮件功能：
 
+```python
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+# 邮箱服务器地址
+smtp_addr = ""
+# 发件人邮箱地址和令牌
+send_user = ""
+send_pwd = ""
+# 收件人邮箱地址
+receive_user = ""
+# 发送邮件主题
+subject = '我是 Subject'
+# 编写 HTML 类型的邮件正文
+msg = MIMEMultipart()
+body = MIMEText('Subject: Solong.\nDear Alice, so long and thanks for all the fish. Sincerely, Bob', 'plain', 'utf-8')
+msg['Subject'] = subject
+msg['From'] = send_user
+msg['To'] = receive_user
+msg.attach(body)
+# 带附件
+with open('python.md', 'rb') as f:
+    send_att = f.read()
+att = MIMEText(send_att, 'text/x-markdown', 'utf-8')
+# att['Content-Type'] = 'application/x-genesis-rom'  # 指定附件内容类型
+att['Content-Type'] = 'application/octet-stream'  # 表示二进制流
+att["Content-Disposition"] = 'attachment; filename="python.md"'  # 指定附件的文件名
+msg.attach(att)
+# 发送邮件
+smtp = smtplib.SMTP(host=smtp_addr, port=25)
+smtp.login(send_user, send_pwd)
+smtp.sendmail(send_user, [send_user, receive_user], msg.as_string())
+smtp.quit()
+```
 
+使用 yagmail 发送邮件，`pip install yagmail`:
 
+```python
+import yagmail
+# user 发送人，password 令牌，host SMTP地址
+# to 收件人，subject 主题，contents 内容，attachments 附件
+yagmail.SMTP(user='', password='', host='').send(to='', subject='subject', contents='body',attachments=[''])
+```
+
+### Page Object
+
+Page Object 是 UI 自动化测试项目开发实践的最佳设计模式之一，它的主要特点体现在对界面交互细节的封装上，使测试用例更专注于业务的操作
+，从而提高测试用例的可维护性。
+
+尽管该术语是 page 对象， 但并不意味着需要针对每个页面建立一个这样的对象。例如，页面上有重要意义的元素可以独立为一个 page 对象。 
+经验法则的目的是通过给页面建模，使其对应用程序的使用者变得有意义。
+
+Page Object 应该遵循以下原则进行开发：
+
+- Page Object 应该易于使用
+- 有清晰的结构，如 PageObjects 对应页面对象， PageModules 对应页面内容
+- 只写测试内容， 不写基础内容
+- 在可能的情况下防止样板代码
+- 不需要自己管理浏览器
+- 在运行时选择浏览器，而不是类级别
+- 不需要直接接触 Selenium
+
+poium 是一个基于 Selenium/appium 的 Page Object 测试库，最大的特点是简化了 Page 层元素的定义:
+
+```python
+# pip install poium
+import unittest
+from selenium import webdriver
+from poium import Page, NewPageElement
+from time import sleep
+class BaiduPage(Page):
+    """百度 Page 层，百度页面封装操作到的元素"""
+    search_input = NewPageElement(id_='kw', describe="搜索输入框")
+    search_button = NewPageElement(id_='su', describe="搜索按钮")
+class TestBaidu(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome()
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
+    def test_baidu_search_case(self):
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "selenium"
+        page.search_button.click()
+        sleep(3)
+        self.assertEqual(page.get_title, "selenium_百度搜索")
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
+```
 
 
 ### appium

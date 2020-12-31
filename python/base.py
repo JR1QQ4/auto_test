@@ -74,5 +74,41 @@
 # user_list = json.loads(data)  # 将 str 类型转换为 list 类型
 # print(user_list)
 
+# import smtplib
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText
+# # 邮箱服务器地址
+# smtp_addr = ""
+# # 发件人邮箱地址和令牌
+# send_user = ""
+# send_pwd = ""
+# # 收件人邮箱地址
+# receive_user = ""
+# # 发送邮件主题
+# subject = '我是 Subject'
+# # 编写 HTML 类型的邮件正文
+# msg = MIMEMultipart()
+# body = MIMEText('Subject: Solong.\nDear Alice, so long and thanks for all the fish. Sincerely, Bob', 'plain', 'utf-8')
+# msg['Subject'] = subject
+# msg['From'] = send_user
+# msg['To'] = receive_user
+# msg.attach(body)
+# # 带附件
+# with open('python.md', 'rb') as f:
+#     send_att = f.read()
+# att = MIMEText(send_att, 'text/x-markdown', 'utf-8')
+# # att['Content-Type'] = 'application/x-genesis-rom'
+# att['Content-Type'] = 'application/octet-stream'
+# att["Content-Disposition"] = 'attachment; filename="python.md"'
+# msg.attach(att)
+# # 发送邮件
+# smtp = smtplib.SMTP(host=smtp_addr, port=25)
+# smtp.login(send_user, send_pwd)
+# smtp.sendmail(send_user, [send_user, receive_user], msg.as_string())
+# smtp.quit()
 
+# import yagmail
+# yagmail.SMTP(user='', password='', host='')\
+#     .send(to='', subject='subject', contents='This is the body',
+#           attachments=[''])
 
