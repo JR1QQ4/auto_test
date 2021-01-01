@@ -6,7 +6,7 @@ import os
 
 path_dir = os.path.dirname(__file__)
 timer = time.strftime("%Y-%m-%d_%H_%M-%S")
-report_file = path_dir + "\\test_report\\" + timer + ".html"
+report_file = path_dir + "\\report\\" + timer + ".html"
 test_dir = path_dir + "\\" + "test_case"
 report_template_path = path_dir + "\\report_template.html"
 
@@ -14,7 +14,7 @@ test_suite = unittest.defaultTestLoader.discover(test_dir)
 
 if __name__ == '__main__':
     # from python.selenium.unit_report.HwTestReport import HTMLTestReport
-    # with open('./test_report/HwTestReportIMG.html', 'wb') as report:
+    # with open('./report/HwTestReportIMG.html', 'wb') as report:
     #     runner = HTMLTestReport(stream=report,
     #                             verbosity=2,
     #                             title='HwTestReport 测试',
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     #     "user": getpass.getuser()
     # }
     # with open(report_file, 'w', encoding='utf-8') as f:
-    #     runner = HTMLTestRunner(output='./test_report',
+    #     runner = HTMLTestRunner(output='./report',
     #                             stream=f,
     #                             report_title="百度测试报告",
     #                             template=report_template_path,

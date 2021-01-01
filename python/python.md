@@ -543,7 +543,7 @@ import time
 from python.selenium.unit_report.HTMLTestRunner import HTMLTestRunner
 path_dir = os.path.dirname(__file__)
 timer = time.strftime("%Y-%m-%d_%H_%M-%S")
-report_file = path_dir + "\\test_report\\" + timer + ".html"
+report_file = path_dir + "\\report\\" + timer + ".html"
 test_dir = path_dir + "\\" + "test_case"
 test_suite = unittest.defaultTestLoader.discover(test_dir)
 with open(report_file, 'w', encoding='utf-8') as f:
@@ -745,6 +745,207 @@ class TestBaidu(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
+
+### pytest 单元测试框架
+
+pytest 是一个第三方单元测试框架， 更加简单、灵活，而且提供了更加丰富的扩展，弥补了 unittest 在做 Web 自动化测试时的一些不足
+
+```python
+# $ pip install -U pytest， 在当前文件夹打开 cmd 并运行$ pytest 
+# def inc(x):
+#     return x + 1
+# def test_answer():
+#     assert inc(3) == 5
+
+# $ pytest -q 当前文件名.py
+# import pytest
+# def f():
+#     raise SystemExit(1)
+# def test_mytest():
+#     with pytest.raises(SystemExit):
+#         f()
+
+# $ pytest -q 当前文件名.py
+class TestClass:
+    def test_one(self):
+        x = "this"
+        assert 'h' in x
+    def test_two(self):
+        x = "hello"
+        assert hasattr(x, "check")
+```
+
+pytest 安装时默认在...\Python37\Scripts\目录下生成 pytest.exe，因此能在 cmd 中运行 pytest 命令：
+
+- pytest 不必像 unittest 必须创建测试类; 使用 assert 断言比 unittest 提供的断言方法更加简单
+- 测试文件和测试函数必须以"test"开头
+- 除了命令行运行外，也可使用 main()方法: `import pytest; pytest.main()`
+
+断言：
+
+- 测试相等: `assert add(3, 4) == 7`，unittest 用 assertEqual()
+- 测试不相等: `assert add(17, 22) != 50`
+- 测试大于或等于: `assert add(17, 22) <= 50`
+- 测试小于或等于: `assert add(17, 22) >= 38`
+- 测试包含与不包含: `assert b in a`、`assert b not in a`
+- 判断是否为 True: `assert is_prime(13)`、`assert not is_prime(4)`、`assert is_prime(6) is not True`
+
+Fixture 通常用来对测试方法、测试函数、测试类和整个测试文件进行初始化或还原测试环境:
+
+- 模块级别和函数级别的 Fixture:
+    - setup_module/teardown_module: 在当前文件中，在所有测试用例执行之前与之后执行
+    - setup_function/teardown_function: 在每个测试函数之前与之后执行
+    - setup/teardown: 在每个测试函数之前与之后执行。这两个方法同样可以作用于类方法
+- 类级别和方法级别的 Fixture
+    - setup_class/teardown_class: 在当前测试类的开始与结束时执行
+    - setup_method/teardown_method: 在每个测试方法开始与结束时执行
+    - setup/teardown: 在每个测试方法开始与结束时执行，同样可以作用于测试函数
+
+```python
+# 模块级别和函数级别
+# 功能函数
+def multiply(a, b):
+    return a * b
+# =====Fixture========
+def setup_module(module):
+    print("setup_module================>")
+def teardown_module(module):
+    print("teardown_module=============>")
+def setup_function(function):
+    print("setup_function------>")
+def teardown_function(function):
+    print("teardown_function--->")
+def setup():
+    print("setup----->")
+def teardown():
+    print("teardown-->")
+# =====测试用例========
+def test_multiply_3_4():
+    print('test_numbers_3_4')
+    assert multiply(3, 4) == 12
+def test_multiply_a_3():
+    print('test_strings_a_3')
+    assert multiply('a', 3) == 'aaa'
+if __name__ == '__main__':
+    import pytest
+    pytest.main(['-s'])  # 等价于在 cmd 中运行$ pytest -s，用于关闭捕捉，从而输出打印信息
+```
+
+```python
+# 类级别和方法级别
+# 功能函数
+def multiply(a, b):
+    return a * b
+class TestMultiply:
+    # =====Fixture========
+    @classmethod
+    def setup_class(cls):
+        print("setup_class=========>")
+    @classmethod
+    def teardown_class(cls):
+        print("teardown_class=========>")
+    def setup_method(self, method):
+        print("setup_method----->>")
+    def teardown_method(self, method):
+        print("teardown_method-->>")
+    def setup(self):
+        print("setup----->")
+    def teardown(self):
+        print("teardown-->")
+    # =====测试用例========
+    def test_numbers_5_6(self):
+        print('test_numbers_5_6')
+        assert multiply(5, 6) == 30
+    def test_strings_b_2(self):
+        print('test_strings_b_2')
+        assert multiply('b', 2) == 'bb'
+if __name__ == '__main__':
+    import pytest
+    pytest.main(['-s'])
+```
+
+pytest 本身是支持参数化的，不需要额外安装插件:
+
+```python
+import pytest
+import math
+@pytest.mark.parametrize(
+    "base, exponent, expected",  # 参数的名称，对应测试函数中的参数
+    [(2, 2, 4),  # 参数列表
+     (2, 3, 8),
+     (1, 9, 1),
+     (0, 9, 0)],
+    ids=["case1", "case2", "case3", "case4"]  # 默认为None，测试用例的名称
+)
+def test_pow(base, exponent, expected):
+    assert math.pow(base, exponent) == expected
+if __name__ == '__main__':
+    pytest.main(['-v'])  # 增加测试用例冗长
+```
+
+pytest 运行时参数，`$ pytest --help`查看帮助:
+
+- "-s" 参数用于关闭捕捉，从而输出打印信息
+- "-v" 参数用于增加测试用例冗长
+- `pytest -k add test_assert.py`，运行名称中包含某字符串的测试用例
+- `pytest -q test_assert.py`，减少测试的运行冗长
+- `pytest -x test_fail.py`，如果出现一条测试用例失败，则退出测试
+- `pytest ./test_dir`，运行测试目录
+- `pytest test_fixtures_02.py::TestMultiply::test_numbers_5_6`，指定特定类或方法执行
+
+
+生成测试报告: 
+
+1. 生成 JUnit XML 文件: `$ pytest ./test_dir --junit-xml=./report/log.xml`
+2. 生成在线测试报告: `> pytest ./test_dir --pastebin=all`
+
+conftest.py 是 pytest 特有的本地测试配置文件:
+
+```python
+# 创建 test_project/conftest.py 测试配置文件
+import pytest
+# 设置测试钩子
+@pytest.fixture()
+def test_url():
+    return "http://www.baidu.com"
+
+# 创建 test_project/test_sub.py 测试用例文件
+def test_baidu(test_url):
+    print(test_url)
+```
+
+#### pytest 扩展
+
+pytest-html 可以生成 HTML 格式的测试报告:
+
+- 安装: `$ pip install pytest-html`
+- 运行: `$ pytest ./ --html=./report/result.html`
+
+pytest-rerunfailures 可以在测试用例失败时进行重试:
+
+- 安装: `$ pip install pytest-rerunfailures`
+- 运行: `$ pytest -v test_rerunfailures.py --reruns 3`
+
+pytest-parallel 扩展可以实现测试用例的并行运行:
+
+- 安装: `$ pip ins tall pytest-parallel`，新版本可能存在问题，可回退版本 `pip install pytest-parallel==0.0.10`
+- 运行: `pytest -q test_parallel.py --tests-per-worker auto`，Windows 下自动分配线程数
+
+#### 构建 Web 自动化测试项目
+
+相比 unittest 单元测试框架， pytest 更适合用来做 UI 自动化测试，它提供了以下功能:
+
+1. 在 unittest 中，浏览器的启动或关闭只能基于测试方法或测试类；pytest 可以通过 conftest.py 文件配置全局浏览器的启动或关闭， 
+整个自动化测试项目的运行只需启动或关闭一次浏览器即可，这将大大节省测试用例执行时间
+2. 测试用例运行失败截图。 unittest 本身是不支持该功能的，pytest-html 可以实现测试用例运行失败自动截图，只需在 conftest.py 中
+做相应的配置即可
+3. 测试用例运行失败重跑。 UI 自动化测试的稳定性一直是难题，虽然可以通过元素等待来增加稳定性，但有很多不可控的因素（如网络不稳定） 
+会导致测试用例运行失败，pytest-rerunfailures 可以轻松实现测试用例运行失败重跑
+
+
+
+
+
 
 
 ### appium

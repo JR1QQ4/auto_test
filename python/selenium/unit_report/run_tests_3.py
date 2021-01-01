@@ -23,7 +23,7 @@ if __name__ == '__main__':
     suit = unittest.defaultTestLoader.discover(test_dir, pattern='test_*.py')
     # 获取当前日期和时间
     now_time = time.strftime("%Y-%m-%d %H_%M_%S")
-    html_report = './test_report/' + now_time + 'result.html'
+    html_report = './report/' + now_time + 'result.html'
     fp = open(html_report, 'wb')
     # 调用 HTMLTestRunner，运行测试用例
     runner = HTMLTestRunner(stream=fp,
