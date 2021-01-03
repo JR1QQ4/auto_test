@@ -1102,10 +1102,6 @@ Selenium 自动化项目配置:
 Check console output at $BUILD_URL to view the results.
 ```
 
-
-RTMYNXJVQWJNWOBL
-
-
 ### appium
 
 appium(移动端的 Selenium 自动化测试工具) = application + Selenium
@@ -1120,7 +1116,7 @@ appium 客户端实现了移动端和 WebDriver 的协议；appium 服务器定�
 
 
 
-
+git
 
 
 
