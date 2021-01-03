@@ -1043,6 +1043,7 @@ Selenium 自动化项目配置:
 - 配置 Git/GitHub:
     - 进入 Jenkins 首页，单击"系统管理" -> "全局工具配置"选项，找到 Git 选项
         - 在"Path to Git executable"选项中填写 Git 可执行文件的本地路径 C:\Program Files\Git\bin\git.exe
+    - 鉴权: Manage Jenkins - Configure System 添加一个 GitHub，https://github.com/settings/tokens/new 生成 AccessToken
     - 回到 task 中的配置，勾选"Github 项目"并填写"项目 URL"
     - 在"Source Code Management"中勾选"Git"选项
         - Repository URL: 填写 GitHub 项目地址
@@ -1055,11 +1056,54 @@ Selenium 自动化项目配置:
 - 配置项目运行:
     - 通过前面的配置并执行构建，项目代码已经拉取到 Jenkins 目录（…\Jenkins\workspace\Simple task\）
     - 打开 task 首页，单击"Configure"选项，重新配置任务，修改构建命令: `python run_tests.py`
+    - *如果不能运行 webdriver 打开浏览器，需要禁用 jenkins 服务，使用命令行运行 jenkins，重新构建*
 - 配置 HTML 报告: 在项目中，通过 pytest-html 插件可以生成 HTML 报告
-    - 找到"Build"选项，单击"Add build setup"按钮，勾选"Execute system Groovy script"选项，在"Groovy script"中添加
+    - 下载插件 HTML Publisher
+    - 找到"Build"选项，单击"Add build setup"按钮，勾选"Execute system Groovy script"选项，在"Groovy script"中添加:
+        - This project is parameterized(参数化): `System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")`
+    - 在"构建后操作"中添加"Publish HTML reports":
+        - HTML directory to archive：用于指定测试报告目录，这里设置为 test_report
+        - Index page[s]：指定测试报告的索引页面，这里配置为**/report.html，表示匹配某目录下的 report.html 文件
+        - Keep past HTML reports：是否保存旧的 HTML 报告
+        - Include files：配置文件，根据提示填写**/*.html
+- 配置构建统计
+    - 在"构建后操作"中添加"Publish JUnit test result report"
+        - 测试报告（XML）: 指定测试报告目录下面的 XML 文件，如/test_report/**/*.xml
+- 配置自动发送邮件
+    - "系统管理" →"系统设置" ->"Jenkins Location"，设置"系统管理员邮件地址"和"Extended E-mail Notification"
+        - SMTP server: 邮箱 SMTP 服务地址，如 126 邮箱服务地址为 smtp.126.com
+        - Default user E-mail suffix: 邮箱后缀， 126 邮箱后缀为@126.com
+        - Use SMTP Authentication: 勾选使用 SMTP 认证
+        - User Name: 发送邮件的用户名
+        - Password： 客户端授权码，并非邮箱登录使用的密码，请自行查找资料设置客户端授权码
+        - Use SSL: 是否使用 SSL 连接 SMTP 服务器， 默认勾选
+        - SMTP port: SMTP 端口，默认为 25，465
+    - 在"构建后操作"中添加"Editable Email Notification"
+        - Project Recipient List：接收构建结果的邮件列表
+        - Default Subject：邮件标题，根据 Jenkins 任务填写
+        - Default Content：邮件正文
+        - Attachments：邮件附件，这里可以指定测试报告的目录
+        - Attach Build Log：附加构建日志
+        - Triggers： 选择触发邮件发送规则， 可以选择每次发送， 也可以选择当任务失败时发送
+        - Send To： 指定发送邮件的对象 
+
+```xml
+# 邮箱正文
+（本邮件自动下发，请勿回复！） <br/>
+构建项目： $PROJECT_NAME <br/>
+构建版本： # $BUILD_NUMBER <br/>
+构建状态： $BUILD_STATUS <br/>
+执行用例数： ${TEST_COUNTS} <br/>
+成功用例数： ${TEST_COUNTS, var="pass"} <br/>
+失败用例数： ${TEST_COUNTS, var="fail"} <br/>
+跳过用例数： ${TEST_COUNTS, var="skip"} <br/>
+合计： ${TEST_COUNTS, var="total"} <br/>
+
+Check console output at $BUILD_URL to view the results.
+```
 
 
-
+RTMYNXJVQWJNWOBL
 
 
 ### appium
