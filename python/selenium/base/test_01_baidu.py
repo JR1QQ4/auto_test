@@ -17,15 +17,20 @@ driver.get("https://www.baidu.com")
 driver.find_element_by_id('kw').send_keys('Selenium')
 driver.find_element_by_id('su').click()
 
+print(driver.title)
+print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+sleep(3)
+print(driver.title)
+
 # 使用 By 定位元素
 # driver.find_element(By.ID, 'su').click()
 
-sleep(3)
+# sleep(3)
 
 # 定位一组元素
-texts = driver.find_elements_by_xpath("//div[contains(@class, 'c-container')]/h3/a")
-print(len(texts))
-for t in texts:
-    print(t.text)
+# texts = driver.find_elements_by_xpath("//div[contains(@class, 'c-container')]/h3/a")
+# print(len(texts))
+# for t in texts:
+#     print(t.text)
 
 # driver.quit()

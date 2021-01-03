@@ -393,6 +393,57 @@ driver.save_screenshot("./files/baidu_img.png")
 
 除了 quit()方法，WebDriver 还提供了 close()方法，用来关闭当前窗口
 
+#### Selenium Grid
+
+Selenium Grid 分为两个版本： Grid1 和 Grid2，Grid2 不再提供单独的 jar 包，其功能已经集成到 Selenium Server 中
+
+Selenium Server 环境配置:
+
+1. 下载 Selenium Server，地址`https://www.selenium.dev/downloads/`，得到 selenium-server-standalone-xxx.jar 文件
+2. 配置 Java 环境
+3. 运行 Selenium Server，`java -jar selenium-server-standalone-xxx.jar`
+
+Selenium Grid 工作原理:
+
+- Grid 分布式测试的建立是由一个 Hub（主节点）和若干个 node（代理节点）组成的
+    - Hub 用来管理各个 node 的注册和状态信息，接收远程客户端代码的请求调用，把请求的命令转发给 node 来执行
+- 使用 Grid 远程执行测试代码与直接运行 Selenium 是一样的，只是环境启动的方式不一样，需要同时启动一个 Hub 和至少一个 node
+    - `$ java -jar selenium-server-standalone-x.xx.x.jar -role hub`，Hub 默认端口号为 4444
+    - `$ java -jar selenium-server-standalone-x.xx.x.jar -role node -port 5556`，node 默认端口号为 5555，node 可多次运行
+- 通过浏览器访问 Grid 的控制台，地址为 http://127.0.0.1:4444/grid/console
+
+如果想在其他主机上启动 node，则必须满足以下要求:
+
+- 本地 Hub 所在主机与远程 node 所在主机之间可以用 ping 命令通信
+- 远程主机必须安装 Java 环境，因为需要运行 Selenium Server
+- 远程主机必须安装测试用例需要的浏览器及驱动文件，驱动文件需要设置环境变量
+- 步骤:
+    - (1)启动本地 Hub 所在主机（IP 地址为 172.16.10.66）: `java -jar selenium-server-standalone-x.xx.x.jar -role hub`
+    - (2)启动远程 node 所在主机（IP 地址为 172.16.10.34）: 
+        - `java -jar selenium-x.xx.x.jar -role node -port 5555 -hub http://172.16.10.66:4444/grid/register`
+
+```python
+# 使用 selenium server 测试，需要先运行: $ java -jar .\selenium-server-standalone-3.141.59.jar
+from selenium.webdriver import Remote, DesiredCapabilities
+# 必须传入 desired_capabilities 参数，否则会报 SessionNotCreatedException 错误
+driver = Remote(desired_capabilities=DesiredCapabilities.CHROME.copy())
+driver.get("http://www.baidu.com")
+driver.quit()
+```
+
+Grid 执行过程:
+
+1. 启动 Hub 日志: `$ java -jar selenium-server.jar -role hub`
+2. 启动 node 日志: `$ java -jar selenium-server.jar -role node -port 5555`
+3. 执行测试脚本，会看到 Hub 和 node 的日志
+    - Hub 获得创建 session 请求，判断浏览器是什么
+    - node 给 Driver 发送请求，由 Driver 驱动对应浏览器启动，并生成 session ID，在 driver.quit()时，删除该 session ID
+
+创建远程节点:
+
+- 通过 Windows 命令提示符（或在 Linux 终端）启动一个 Hub: `$ java -jar selenium-server-standalone-3.13.0.jar -role hub`
+- 启动远程节点以一台 Ubuntu 主机为例: `java -jar selenium.jar -role node -hub http://192.168.183.1:4444/grid/register`
+
 ### 自动化测试模型
 
 - 库(Library): 面向对象的代码组织形成的库叫类库，面向过程的代码组织形成的库叫函数库
@@ -942,7 +993,70 @@ pytest-parallel 扩展可以实现测试用例的并行运行:
 3. 测试用例运行失败重跑。 UI 自动化测试的稳定性一直是难题，虽然可以通过元素等待来增加稳定性，但有很多不可控的因素（如网络不稳定） 
 会导致测试用例运行失败，pytest-rerunfailures 可以轻松实现测试用例运行失败重跑
 
+命名与设计规范:
 
+- 对于 page 层的封装存放于 page/目录，命名规范为"xxx_page.py"
+- 对于测试用例的编写存放于 test_dir/目录，命名规范为"test_xxx.py"
+- 每一个功能点对应一个测试类，并且以"Test"开头，如"TestLogin"、"TestSearch"等
+- 在一个测试类下编写功能点的所有的测试用例，如"test_login_user_null"、"test_login_pawd_null"、"test_login_success"等
+
+依赖库说明：
+
+- selenium: Web UI 自动化测试
+- pytest: Python 第三方单元测试框架
+- pytest-html: pytest 扩展，生成 HTML 格式的测试报告
+- pytest-rerunfailures: pytest 扩展，实现测试用例运行失败重跑
+- click: 命令行工具开发库，使用过后不能直接运行 pytest，而是`python run_tests.py -m run`或`python run_tests.py -m debug`
+- poium: 基于 Selenium/appium 的 Page Object 测试库
+
+### Jenkins 持续集成
+
+持续集成（Continuous Integration， CI）: 
+
+- 软件集成就是把多种软件的功能集成到一个软件里，或者把软件的各部分组合在一起
+- 持续集成是一种软件开发实践，即团队开发成员经常集成他们的工作，每次集成都通过自动化构建（包括编译、发布、自动化测试）来验证
+
+Jenkins 是基于 Java 开发的一种持续集成工具，在使用 Jenkins 之前需要配置 Java 环境
+
+环境搭建:
+
+- 下载 Tomcat: 是针对 Java 的一个开源中间件服务器（容器），基于 Java 的 Web 项目可以通过 Tomcat 运行
+    - 通常需要将 Web 项目放到 webapps/目录下。进入 bin/目录，双击 startup.bat 文件， 启动 Tomcat 服务器，运行 Web 项目
+- 下载 Jenkins
+    - 解压缩之后得到 jenkins.msi 文件，双击进行安装，将其安装到 Tomcat 的 webapps 目录下
+    - 安装完成后会自动启动 Tomcat，并通过默认浏览器打开网址 http://localhost:8080/；也可到 Tomcat bin/目录启动 startup.bat
+    - 管理员初始密码在 ...webapps\Jenkins\secrets\initialAdminPassword 中
+    - 安装默认插件后，创建管理员账号 
+
+Jenkins 的基本使用:
+
+- 创建一个构建任务:
+    - 点击左上角新建任务，选择 "构建一个自由风格的软件项目"，在 "构建" 中添加需要执行的操作
+    - 创建之后，点击 "立即构建"
+    - 在 "构建历史" 中查看 "控制台输出" 可以看到构建的过程；Jenkins 默认的执行目录在安装 Jenkins 的目录
+    - 构建完成之后，可以单击 "Configure" 选项，重新配置任务
+- 安装插件:
+    - 在 Jenkins 首页，单击右侧的"系统管理" → "插件管理"选项
+
+Selenium 自动化项目配置:
+
+- 配置 Git/GitHub:
+    - 进入 Jenkins 首页，单击"系统管理" -> "全局工具配置"选项，找到 Git 选项
+        - 在"Path to Git executable"选项中填写 Git 可执行文件的本地路径 C:\Program Files\Git\bin\git.exe
+    - 回到 task 中的配置，勾选"Github 项目"并填写"项目 URL"
+    - 在"Source Code Management"中勾选"Git"选项
+        - Repository URL: 填写 GitHub 项目地址
+        - Branch Specifier (blank for 'any'): 设置项目分支，默认为 master 分支
+        - Repository browser: 源码库浏览，默认为 Auto
+    - 在"Build Triggers"中勾选"轮询 SCM"选项，通过轮询的方式检测 Git 仓库的更新，并执行构建任务
+        - Schedule：设置轮询时间。“H/2 * * * * ”表示每两分钟检查一次项目是否有新提交的代码，如果有，就将新提交的代码拉取到本地
+        - 保存之后，即可向项目仓库提交代码，通过 SCM 轮询检查项目更新并拉取代码
+        - task 首页会多出一个"Git 轮询日志"选项，单击查看 Git 轮询日志
+- 配置项目运行:
+    - 通过前面的配置并执行构建，项目代码已经拉取到 Jenkins 目录（…\Jenkins\workspace\Simple task\）
+    - 打开 task 首页，单击"Configure"选项，重新配置任务，修改构建命令: `python run_tests.py`
+- 配置 HTML 报告: 在项目中，通过 pytest-html 插件可以生成 HTML 报告
+    - 找到"Build"选项，单击"Add build setup"按钮，勾选"Execute system Groovy script"选项，在"Groovy script"中添加
 
 
 
