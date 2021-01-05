@@ -1104,40 +1104,73 @@ Check console output at $BUILD_URL to view the results.
 
 ### appium
 
-appium(移动端的 Selenium 自动化测试工具) = application + Selenium
-appium 支持 iOS 和 Android 平台上的原生应用(App)、Web 应用(浏览器访问的应用)以及混合应用(原生代码封装网页视图)
-appium 类库封装了标准 Selenium 客户端类库，为用户提供常见的 JSON 格式的 Selenium 命令，以及额外的移动设备控制相关命令
-appium 客户端实现了移动端和 WebDriver 的协议；appium 服务器定义了官方协议的扩展，例如，安装/卸载 App等
+appium(移动端的 Selenium 自动化测试工具) = application + Selenium:
 
+- appium 支持 iOS 和 Android 平台上的原生应用(App)、Web 应用(浏览器访问的应用)以及混合应用(原生代码封装网页视图)
+- appium 类库封装了标准 Selenium 客户端类库，为用户提供常见的 JSON 格式的 Selenium 命令，以及额外的移动设备控制相关命令
+- appium 客户端实现了移动端和 WebDriver 的协议；appium 服务器定义了官方协议的扩展，例如，安装/卸载 App等
+- 移动应用类型主要分为以下几类: Native App(原生应用)、Mobile Web App(移动 Web 应用)、Hybrid App(混合应用)
 
+appium 基于客户端/服务器架构，服务器执行给定顺序的动作:
 
+1. 从客户端接收连接并启动会话
+2. 侦听发出的命令
+3. 执行这些命令
+4. 返回命令执行状态
 
+XCUITest：
 
+- XCUITest 是苹果于 iOS 9.3 版本推出的自动化框架，9.3 以下版本 appium 使用 Apple 的 UIAutomation 库
+    - 典型用法: `automationName： XCUITest`
+- UIAutomation 库与移动设备或模拟器内运行的 bootstrap.js 进行通信，执行由 appium 客户端收到的命令
 
+UIAutomator2:
 
+- UIAutomator2 是基于 Android 的自动化框架，允许用户构建和运行 UI 测试
+    - 典型用法: `automationName： uiautomator2`
+- 在 appium 1.6 版本中，appium 为 UIAutomator2 提供支持，appium 使用 appium-android-bootstrap 模块与 UIAutomator2 进行交互
+- 当 appium 客户端请求创建新的 AndroidDriver 会话时，appium 客户端会将所需的功能传递给 appium 节点服务器
+    - 首先， UIAutomator2 驱动程序模块创建会话
+    - 然后，在连接的 Android 设备上安装 UIAutomator2 服务器 apk
+    - 接着启动 Netty 服务器，在 Netty 服务启动后， UIAutomator2 服务器在设备上侦听请求并做出响应
 
-git
+appium 的工作过程:
 
+- appium Client: 针对主流的编程语言分别开发了相应的 appium 测试库
+- appium Server: appium 需要在 PC 上启动一个 Server，监听客户端自动化测试的运行，并将请求发送到对应的移动设备或模拟器中运行
+    - appium Server 项目已经停止更新，由 appium Desktop 替代
+- 移动设备: 移动设备用于运行 appium 自动化测试的环境
 
+appium 环境搭建: Windows 10 + Android 模拟器 + appium Desktop + python-client
 
+- Android Studio 是 Android 应用的集成开发工具，可以通过 Android SDK 创建 Android 模拟器来运行 appium 自动化测试
+    - Android SDK 提供了工具，如 adb 可以用于连接 PC 与 Android 手机/模拟器，UIAutomatorViewer 可以帮助定位 Android 元素
+    - Android SDK（Software Development Kit，软件开发工具包）提供了 Android API 库和开发工具构建，可用来测试和调试应用程序
+    - 在安装 Android 开发环境之前，需要先安装 Java 开发环境
+        - 勾选"Android SDK"和"Android SDK Platform"选项，并通过"Android SDK Location"选项设置 Android SDK 的安装路径
+    - 可以使用 Android ADT Bundle 替代
+- Android Studio 的安装与使用
+    - 安装: "Do not import settings"->"Don't send"->Cancel->custom->开始安装(可能出现 Intel HAXM 错误)
+    - 使用: 第一次加载比较慢，会自动下载 Gradle -> 右上角创建一个虚拟机 -> 创建完成运行即可
+- 配置环境变量:
+    - 假设 Android SDK 安装路径为 D:\android\SDK，则环境变量名设为 ANDROID_HOME，变量值 D:\android\SDK
+    - 接着在 Path 变量中添加，;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\tools;
+    - 在命令提示符下输入"adb"命令查看是否配置成功
 
+appium:
 
+- appium Desktop，默认显示监控的 Host 和 Port，默认为 0.0.0.0:4723
+    - 另外一种通过命令方式安装 appium: 
+        - `$ npm install -g cnpm --registry=https://registry.npm.taobao.org`
+        - `$ npm config set registry https://registry.npm.taobao.org`
+        - `$ npm config get registry`  `cnpm install -g appium`
+- appium Client 支持多种编程语言
+    - 通过 pip 命令安装 appium 测试库: `$ pip install Appium-Python-Client`
 
+第一个 appium 测试:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 首先，启动 Android 模拟器
+- 其次，使用"adb devices"命令检查是否能监听到 Android 模拟器
+- 接下来，启动 appium Desktop
+- 最后，通过 Python 编写 appium 自动化测试脚本
 
