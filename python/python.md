@@ -1152,10 +1152,21 @@ appium 环境搭建: Windows 10 + Android 模拟器 + appium Desktop + python-cl
 - Android Studio 的安装与使用
     - 安装: "Do not import settings"->"Don't send"->Cancel->custom->开始安装(可能出现 Intel HAXM 错误)
     - 使用: 第一次加载比较慢，会自动下载 Gradle -> 右上角创建一个虚拟机 -> 创建完成运行即可
+    - 创建虚拟机出现 Troubleshoot，需要安装 Intel HAXM，之前只是下载到了 SDK 安装目录中，需要在 SDK\extras\intel 下点击安装
+    - 创建虚拟机之后不能打开，可能是虚拟机保存路径(AVD)含有中文，需要创建 ANDROID_SDK_HOME 环境变量并指明 AVD 虚拟机目录，再重启
 - 配置环境变量:
     - 假设 Android SDK 安装路径为 D:\android\SDK，则环境变量名设为 ANDROID_HOME，变量值 D:\android\SDK
     - 接着在 Path 变量中添加，;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\tools;
     - 在命令提示符下输入"adb"命令查看是否配置成功
+
+*不打开 Android Studio 使用命令行启动模拟器，需要使用 SDK 中的工具:* 
+
+- 首先查看模拟器列表: `emulator.exe -list-avds`，或者使用 `android.bat list avd`
+- 其次启动模拟器: 
+    - `emulator.exe -netdelay none -netspeed full -avd 虚拟机名称`，netdelay 延迟，netspeed 限速
+        - 不要使用 tools 中的 emulator，可能出现 PANIC: Missing emulator engine program for 'x86' CPU.
+            - 具体原因可能是 AS 会默认推荐下载带Google APIs的x86 Images，需要重新下载不带 Google APIs的x86 Images
+        - 使用 emulator 目录下的 emulator 就能启动
 
 appium:
 
@@ -1174,3 +1185,39 @@ appium:
 - 接下来，启动 appium Desktop
 - 最后，通过 Python 编写 appium 自动化测试脚本
 
+```shell script
+adb devices #查看连接设备
+adb -s cf27456f shell # 指定连接设备使用命令
+adb install test.apk # 安装应用，--install-location location：使用以下某个值来设置安装位置
+adb install -r demo.apk #重新安装现有应用，保留其数据
+adb uninstall cn.com.test.mobile #卸载应用，需要指定包
+adb uninstall -k cn.com.test.mobile #卸载app 但保留数据和缓存文件
+adb shell pm list packages #列出手机装的所有app 的包名
+adb shell pm list packages -s 列出系统应用的所有包名
+adb shell pm list packages -3 #列出除了系统应用的第三方应用包名
+adb shell pm clear cn.com.test.mobile #清除应用数据与缓存
+adb shell am start -n cn.com.test.mobile/.ui.SplashActivity #启动应用
+adb shell am force-stop cn.com.test.mobile #强制停止应用
+adb shell dumpsys package #包信息Package Information
+adb shell dumpsys meminfo #内存使用情况Memory Usage
+adb logcat #查看日志
+adb logcat -c #清除log 缓存
+adb shell dmesg #查看内核日志
+adb get-serialno #获取序列号
+adb shell getprop ro.build.version.release #查看Android 系统版本
+adb shell top -m 10 #查看占用内存前10 的app
+adb push <local> <remote> #从本地复制文件到设备
+adb pull <remote> <local> #从设备复制文件到本地
+adb shell input keyevent <keycode> #使用ADB命令模拟按键/输入
+adb bugreport #查看bug 报告
+adb help #查看ADB 帮助
+adb shell wm size 480x1024 #将分辨率修改为 480px * 1024px
+adb shell wm density 160 #屏幕密度修改为 160dpi
+adb exec-out screencap -p > img.png #老版本无exec-out命令，只适合于新版的截图
+adb shell screencap -p /sdcard/img.png #老版本截图先保存在设备端
+adb pull /sdcard/img.png #通过pull拷贝到本地
+adb reboot recovery #刷机，重启到 Recovery 模式，在设备的 Recovery 界面上操作进入 Apply update-Apply from ADB
+adb sideload <path-to-update.zip> #通过 adb 上传和更新系统
+adb reboot #重启，从 Recovery 重启到 Android
+adb reboot bootloader #重启到 Fastboot 模式
+```
