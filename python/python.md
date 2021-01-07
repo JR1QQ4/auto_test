@@ -1221,3 +1221,89 @@ adb sideload <path-to-update.zip> #通过 adb 上传和更新系统
 adb reboot #重启，从 Recovery 重启到 Android
 adb reboot bootloader #重启到 Fastboot 模式
 ```
+
+appium 在启动时， 需要提供 Desired Capabilities，由客户端生成并发送给服务器(appium Desktop)，告诉服务器 App 运行的环境:
+
+```python
+from appium import webdriver
+desired_caps = {
+    'deviceName': 'Android Emulator', #启动的设备、 真机或模拟器，如 iPhone Simulator、 Android Emulator、Galaxy S4 等
+    'automationName': 'Uiautomator2', #使用的自动化引擎，如 appium（默认）或 Selendroid（兼容 Android API 17 以下）
+    'platformName': 'Android', #使用的移动平台，如 iOS 或 Android
+    'platformVersion': '7.0', #指定平台的系统版本，如 Android 平台，版本为 7.0
+    'appPackage': 'com.android.calculator2', #被测试 App 的 Package 名， 如 com.example.android.myApp 等
+    'appActivity': '.Calculator', #被测试 App 的 Activity 名， 如 Calculator、 MainActivity、 .Settings 等
+    'noReset': True, #在会话前重置应用状态。当设置为 True 时，会跳过安装指引；默认为 false
+}
+driver = webdriver.Remote(command_executor='http://localhost:4723/wd/hub', desired_capabilities=desired_caps)
+```
+
+获取 appPackage 和 appActivity:
+
+- 方式一: 通过 adb 工具抓取日志进行分析
+    - 首先，运行`adb logcat>D:/log.txt`命令，将 adb 抓取的日志写入 D:/log.txt 文件
+    - 其次，在 Android 模拟器或设备中打开要测试的 App，并做一些操作
+    - 然后，按快捷键 Ctrl+c 结束日志的捕捉
+    - 最后，打开 D:/log.txt 文件，搜索"Displayed"关键字， 查找 App 的 Package 和 Activity
+- 方式二: 通过 aapt 查看信息，在 SDK 的 build-tools 目录下、
+    - 该工具既可以查看、 创建、 更新 zip 格式的文档附件（zip、 jar、 apk）， 也可以将资源文件编译成二进制文件
+    - 命令: `aapt dump badging D:\appium\apk\mzbbs\com.meizu.flyme.flymebbs_40000003.apk`
+
+控件定位，appium 继承了 Selenium 的定位方法:
+
+- 扩展的定位:
+    - ios_uiautomation: find_element_by_ios_uiautomation()
+    - ios_predicate: ind_element_by_ios_predicate()
+    - ios_class_chain: find_element_by_ios_class_chain()
+    - android_uiautomator: find_element_by_android_uiautomator()
+        - `d.find_element_by_android_uiautomator('new UiSelector().resourceId("com.android.calculator2:id/digit")')`
+        - `driver.find_element_by_android_uiautomator('new UiSelector().className("android.widget.Button")')`
+    - android_viewtag: find_element_by_android_viewtag()
+    - android_datamatcher: find_element_by_android_data_matcher()
+    - accessibility_id: find_element_by_accessibility_id()，取控件的 content-desc 属性
+    - image: find_element_by_image()
+    - custom: find_element_by_custom()
+- 可以借助 Android SDK 自带的 UI Automator Viewer 工具对 Android 设备式模拟器中的控件进行定位
+- resource-id: `driver.find_element_by_id("com.android.calculator2:id/formula")`
+- class: `driver.find_elements_by_class_name("android.widget.Button")`
+- xpath: `driver.find_element_by_xpath("//android.widget.Button[contains(@text,'7')]")`
+- 其他定位:
+    - 在 Web App 下，或者 Hybrid App 的 WebView 组件下使用的方法:
+        - driver.find_element_by_name()
+        - driver.find_element_by_tag_name()
+        - driver.find_element_by_link_text()
+        - driver.find_element_by_partial_link_text()
+        - driver.find_element_by_css_selector()
+
+appium 的常用 API:
+
+- 应用操作:
+    - 安装应用: install_app()，`driver.install_app("D:\\android\\apk\\ContactManager.apk")`
+    - 卸载应用: remove_app()，`driver.remove_app('com.example.android.apis')`
+    - 关闭应用: driver.close_app()
+    - 启动应用: driver.launch_app()
+    - 检查应用是否已经安装: `driver.is_app_installed('com.example.android.apis')`
+    - 将应用置于后台: `driver.background_app(10)`
+    - 应用重置，类似清除应用缓存: `driver.reset()`
+- 上下文操作:
+    - 可用上下文: driver.contexts
+    - 当前上下文: driver.current_context
+    - 切换上下文: driver.switch_to.context('NATIVE_APP'),driver.switch_to.context('WEBVIEW_1')
+- 键盘操作:
+    - 入字符串: driver.find_element_by_name("Name").send_keys("jack")
+    - 模拟按键: driver.keyevent(36)
+- 触摸操作:
+    - 单击控件: tap(self, element=None, x=None, y=None, count=1)
+        - 获取元素: el=driver.find_element_by_android_uiautomator('text("Name")')
+        - 点击: TouchAction(driver).tap(el).release().perform()
+    - 长按控件: long_press(self, el=None, x=None, y=None, duration=1000)
+    - 移动: move_to(self, el=None, x=None, y=None)
+    - 暂停: wait(self, ms=0)
+- 特有操作:
+    - 熄屏: driver.lock(seconds=3) # 熄屏 3s
+    - 获取当前 package，仅支持 Android: `driver.current_package`
+    - 获取当前 activity: driver.current_activity
+    - 收起虚拟键盘: driver.hide_keyboard()
+    - 获取屏幕宽高: driver.get_window_size()
+    - 拉取文件，从真机或模拟器中拉取文件: driver.pull_file(self, path)
+    - 推送文件: push_file(self, path, base64data)
