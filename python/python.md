@@ -921,7 +921,7 @@ pytest 本身是支持参数化的，不需要额外安装插件:
 import pytest
 import math
 @pytest.mark.parametrize(
-    "base, exponent, expected",  # 参数的名称，对应测试函数中的参数
+    "books, exponent, expected",  # 参数的名称，对应测试函数中的参数
     [(2, 2, 4),  # 参数列表
      (2, 3, 8),
      (1, 9, 1),
