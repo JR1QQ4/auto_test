@@ -1276,7 +1276,7 @@ driver = webdriver.Remote(command_executor='http://localhost:4723/wd/hub', desir
         - driver.find_element_by_css_selector()
 
 appium 的常用 API:
-
+se
 - 应用操作:
     - 安装应用: install_app()，`driver.install_app("D:\\android\\apk\\ContactManager.apk")`
     - 卸载应用: remove_app()，`driver.remove_app('com.example.android.apis')`
