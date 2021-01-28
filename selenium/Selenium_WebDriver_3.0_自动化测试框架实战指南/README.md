@@ -81,91 +81,76 @@ Selenium 3 的新特性:
 
 Firefox 浏览器 + Firebug 插件（2016年底就已经停止更新和维护，其功能已经整合到 Firefox 开发者工具中） + FirePath
 
-
 ### Selenium IDE
 
+Firefox 浏览器 + Selenium IDE 插件（https://addons.mozilla.org/en-US/firefox/addon/selenium-ide/）
+
+waitForText、assertText、verifyText
+
+- waitForText 语句在测试执行时用来判断某些文本是否显示在界面中，若界面上显示了制定文本，程序会继续执行；若等待一段时间后，界面上未
+显示制定文本，测试用例会被设定为执行失败状态，但是测试脚本依旧会继续执行
+- assertText 语句在测试执行时用来判断界面上测某些文本是否和期望显示的文本一致，若一致则测试程序会继续执行；若不一致，测试用例会被
+设定为执行失败状态，并且不再继续执行后续测试脚本
+- verifyText 语句在测试执行时用来判断界面上显示的文本是否和期望显示的文本相一致，若一致则测试程序会继续执行；若不一致，测试用例会
+设置为执行失败状态，但测试脚本会继续执行
+
+### 第 5 章 搭建 Python 环境和 PyCharm 集成开发环境
+
+python + pip + PyCharm
+
+### 第 6 章 Selenium3（WebDriver）的安装
+
+pip install selenium + WebDriver（对应浏览器的驱动程序driver）
+
+### 第 7 章 单元测试框架的使用介绍
+
+unittest
+
+- test fixture（测试固件）
+- test case（测试用例）
+- test suite（测试套件）
+- test runner（测试运行器）
+
+### 第 8 章 页面元素定位方法
+
+8 种定位方法
+
+## 第二篇 实战应用篇
+
+### 第 9 章 WebDriver 的多浏览器测试
+
+webdriver.Ie(executable_path="c:\\IEDriverServer")
+webdriver.Firefox(executable_path="c:\\geckodriver")
+webdriver.Chrome(executable_path="c:\\chromedriver")
+
+### 第 10 章 WebDriver API 详解
+
+常用 API:
+
+- 访问某个网址 driver.get
+- 网页的前进和后退 back | forward
+- 刷新当前网页 refresh
+- 浏览器窗口最大化 maximize_window
+- 
 
 
 
 
+### 第 11 章 WebDriver 高级应用
 
+## 第三篇 自动化测试框架搭建篇
 
+### 第 12 章 数据驱动测试
 
+### 第 13 章 行为驱动测试
 
+### 第 14 章 Selenium Grid 的使用
 
+### 第 15 章 自动化测试框架的搭建及测试实战
 
+## 第四篇 常见问题和解决方法
 
-
-
-
-
-
-
-
-
-
-
-
-
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### 第 16 章 自动化测试常见问题和解决方法
 
 
 
