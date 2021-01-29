@@ -131,12 +131,72 @@ webdriver.Chrome(executable_path="c:\\chromedriver")
 - 网页的前进和后退 back | forward
 - 刷新当前网页 refresh
 - 浏览器窗口最大化 maximize_window
-- 
-
-
-
+- 获取并设置当前窗口的位置 get_window_position | set_window_position
+- 获取并设置当前窗口的大小 set_window_size | get_window_size
+- 获取页面的 Title 属性值 title
+- 获取页面 HTML 源代码 page_source
+- 获取当前页面的 URL 地址 current_url
+- 获取与切换浏览器窗口句柄 current_window_handle | switch_to_window
+- 获取页面元素的基本信息 element.tag_name | element.size
+- 获取页面元素的文本内容 element.text
+- 判断页面元素是否可见 element.is_displayed()
+- 判断页面元素是否可操作 element.enabled()
+- 获取页面元素的属性 element.get_attribute(属性名)
+- 获取页面元素的 CSS 属性值 element.value_of_css_property(属性名)
+- 清空输入框中的内容 input.clear()
+- 在输入框中输入指定内容 input.send_keys(值)
+- 单击按钮 button.click()
+- 双击某个元素 action_chains.double_click(inputBox).perform()
+- 操作单选下拉列表 select.find_elements_by_tag_name('option') | option.is_selected() | option.is_enabled()
+- 断言单选列表选项值 assertListEqual(expect_optionList, actual_optionsList)
+- 操作多选的选择列表 select_element.select_by_index(0) | .select_by_visible_text(值) | .select_by_value(值)
+- 操作可以输入的下拉列表（输入的同时模拟按键） select_element.send_keys(Keys.ENTER)
+- 操作单选框 is_selected()
+- 操作复选框 is_selected()
+- 断言页面源码中的关键字 assert u"值" in self.driver.page_source, u"页面源码中不存在该关键字！"
+- 对当前浏览器窗口截屏 self.driver.get_screenshot_as_file(r"c:\screenPicture.png")
+- 拖拽页面元素 ActionChains(driver).drag_and_drop(initial, target).perform() | .drag_and_drop_by_offset
+- 模拟键盘单个按键操作 Keys.RETURN
+- 模拟组合按键操作 ActionChains(driver).key_down(Keys.CONTROL),send_keys('x').key_up(Keys.CONTROL).perform() | 第三方模块
+- 模拟鼠标右键 ActionChains(driver).context_click(element).perform()
+- 模拟鼠标左键按下与释放  ActionChains(driver).click_and_hold(ele).perform() | .release(ele).perform()
+- 保持鼠标悬停在某个元素上 ActionChains(driver).move_to_element(ele).perform()
+- 判断页面元素是否存在 NoSuchElementException
+- 隐式等待 driver.implicitly_wait(10)，隐式等待只需设置一次，然后它将在 driver 的整个生命周期都起作用
+- 显式等待 WebDriverWait(driver, 10, 0.2).until(expected_conditions.期望的场景)
+- 显示等待中期望的场景 wait.until(expected_conditions.element_to_be_clickable((By.XPATH, '//input/a')))
+- 使用 Title 属性识别和操作新弹出的浏览器窗口
+- 通过页面的关键内容识别和操作新浏览器窗口
+- 操作 Frame 中的页面元素 driver.switch_to.default_content()
+- 使用 Frame 中的 HTML 源码内容操作 Frame
+- 操作 IFrame 中的页面元素 driver.switch_to.frame(frame)
+- 操作 JavaScript 的 Alert 弹窗 driver.switch_to_alert() | alert.accept()
+- 操作 JavaScript 的 confirm 弹窗 driver.switch_to_alert()
+- 操作 JavaScript 的 prompt 弹窗 driver.switch_to_alert()
+- 操作浏览器的 Cookie driver.get_cookies()
+- 指定页面加载时间 driver.set_page_load_timeout(4)
 
 ### 第 11 章 WebDriver 高级应用
+
+WebDriver API:
+
+- 使用 JavaScript 操作页面元素 execute_script(JS 脚本)
+- 操作 Web 页面的滚动条 execute_script(window.scrollTo() | element.scrollIntoView() | window.scrollBy())
+- 在 Ajax 方式产生的浮动框中，单击选择包含某个关键字的选项 模拟键盘下箭头 | 模糊匹配
+- 结束 Windows 中浏览器的进程 os.system("taskkill /F /iM firefox.exe"")
+- 更改一个页面对象的属性值 execute_script("arguments[0].setAttribute(arguments[1], arguments[2])", ele, attr, value)
+- 无人工干预地自动下载某个文件 profile.set_preference('browser.helperApps.neverToDisk', 'application/zip, 
+application/octet-stream')
+- 无人工干预地自动上传附件 模拟键盘上传 | 第三方工具 AutoIt 上传文件
+- 右键另存为下载文件 win32api + win32con + Keys + ActionChains
+- 操作日期控件 
+- 启动带有用户配置信息的 Firefox 浏览器窗口 先生成用户自定义的 Firefox 浏览器配置文件 + set_preference + firefox_profile
+- UI 对象库 
+- 操作富文本框 send_keys()等 
+- 精确比较截图图片 pip install pillow
+- 高亮显示正在操作的页面元素 driver.execute_script("argument[0].setAttribute('style', arguments[1];", ele, 
+"background: green; border: 2px solid red;")
+- 浏览器中新开标签页(tab)
 
 ## 第三篇 自动化测试框架搭建篇
 
