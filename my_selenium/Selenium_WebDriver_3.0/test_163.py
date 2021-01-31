@@ -8,8 +8,8 @@ import time
 URL = "https://mail.163.com/"
 DRIVER_PATH = r"C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe"
 
-USERNAME = "chenjunrenyx@163.com"
-PASSWORD = "mail18428308932"
+USERNAME = ""
+PASSWORD = ""
 
 # 创建 Chrome 浏览器的实例
 driver = webdriver.Chrome(executable_path=DRIVER_PATH)
