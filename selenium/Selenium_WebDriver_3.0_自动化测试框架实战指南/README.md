@@ -194,27 +194,101 @@ application/octet-stream')
 - UI 对象库 
 - 操作富文本框 send_keys()等 
 - 精确比较截图图片 pip install pillow
-- 高亮显示正在操作的页面元素 driver.execute_script("argument[0].setAttribute('style', arguments[1];", ele, 
+- 高亮显示正在操作的页面元素 driver.ex
+ecute_script("argument[0].setAttribute('style', arguments[1];", ele, 
 "background: green; border: 2px solid red;")
-- 浏览器中新开标签页(tab)
+- 浏览器中新开标签页(Tab) win32api.keybd_event(VK_CODE['ctrl'],0,0,0) + win32api.keybd_event(VK_CODE['t'],0,win32con,
+KEYEVENTF_KEYUP,0)
+- 测试过程中发生异常或断言失败时进行屏幕截图 get_screenshot_as_file(path)
+- 使用日志模块记录测试过程中的信息 logging
+- 封装操作表格的共用类
+- 测试 HTML5 语言实现的视频播放器 execute_script("return arguments[0].play();", videoPlayer)
+- 在 HTML5 的画布元素上进行绘画操作
+- 操作 HTML5 存储对象 
+- 使用 Chrome 浏览器自动将文件下载到指定路径 chromeOptions.add_experimental_option("prefs", prefs)
+- 修改 Chrome 设置伪装成手机 M 站 options.add_argument('--user-agent="xxxx"')
+- 屏蔽 Chrome 的 --ignore-certificate-errors 日式及禁用扩展插件并实现窗口最大化
+- 禁用 Chrome 浏览器的 PDF 和 Flash 插件 options.add_experimental_option("prefs", profile)
+- 禁用 IE 的保护模式 caps['ignoreProtectedModeSettings']=True
+- 启动 Firefox 的同时打开 Firebug profile.set_preference('extensions.firebug.allPagesActivation','on')
+- 禁用 Chrome 浏览器中的 Image 加载 chrome_options.add_experimental_option('prefs', prefs)
+- 禁用 Firefox 浏览器中的 CSS、Flash 及 Image 加载
 
 ## 第三篇 自动化测试框架搭建篇
 
 ### 第 12 章 数据驱动测试
 
+数据驱动测试:
+
+- pip install ddt + json 
+- 使用 Excel 进行数据驱动测试 openpyxl + ddt
+- 使用 XML 进行数据驱动测试 xml + ddt
+- 使用 MySQL 数据库进行数据驱动测试 MySQLdb + ddt
+
 ### 第 13 章 行为驱动测试
+
+行为驱动开发（Behavior Driven Development，BDD）:
+
+- 是一种敏捷软件开发技术，包括验收测试和客户测试驱动等基线编程实践
+- lettuce 是实现 BDD 开发模式的一种测试框架 pip install lettuce
+- BDD 开发模式的好处在于，可以将用户故事（敏捷开发中的 User Story）或者需求和测试用例建立起一一对应的映射关系
+    - 保证开发和测试的目标与范围严格地和需求保持一致，可以更好地让需求方、开发者以及测试人员用唯一地需求进行相关开发工作
+    - 防止对需求理解地不一致，并且 BDD 框架地测试结果很容易被参与者所理解
 
 ### 第 14 章 Selenium Grid 的使用
 
+Selenium Grid:
+
+- Selenium Grid 的产生就是为了解决分布式运行自动化测试用例的需求
+- Selenium Grid 使用一台计算机作为 Hub（管理中心）管理其他多个 Node（节点）计算机
+    - Hub 负责将测试用例分发给多台 Node 计算机执行，并收集多台 Node 计算机执行结果的报告，汇总后提交一份总的测试报告
+- 环境准备: JDK 1.8
+- 使用方法
+    - 1.下载 selenium-server-standalone-x.xx.x.jar
+    - 2.在机器 A 上运行: `java -jar selenium-server-standalone-x.xx.x.jar -role hub`
+        - -role hub，启动一个 Hub 服务，作为分布式管理中心，等待 WebDriver 客户端进行注册和请求
+        - 默认接收注册的地址为 http://localhost:4444/grid/register，默认启动端口为 4444
+    - 3.在机器 A（假如 IP 地址为 192.168.1.107）中的浏览器上访问 http://localhost:4444/grid/console
+        - 如果显示出”view config“的链接，表示 Hub 已经启动成功
+        - 在机器 B 上可以访问此网址 http://192.168.107:4444/grid/console
+    - 4.在机器 B（假如 IP 地址为 192.168.1.113）运行: `java -jar selenium-server-standalone-x.xx.x.jar -role webdriver 
+    -hub http://192.168.1.107:4444/grid/register -Dwebdriver.firefox.driver="C:\geckodriver.exe" -port 6655 
+    -maxSession 5 -browser browserName="forefox",maxInstance=5`
+        - role 参数值 webdriver 表示 Node（节点）的名字
+        - hub 参数表示管理中心的 URL 地址，Node 会连接这个地址进行节点注册
+        - port 参数表示 Node 节点服务的端口号为 6655，建议使用大于 5000 的端口号
+        - 多浏览器运行
+            - `-Dwebdriver.chrome.driver="c:\chromedriver.exe" -browser browserName="internet explorer",maxInstance=5`
+            - `-Dwebdriver.ie.driver="c:\IEDriverServer.exe" -browser browserName="chrome",maxInstance=5`
+            - `-Dwebdriver.firefox.driver="c:\geckodriver.exe" -browser browserName="forefox",maxInstance=5`
+    - 5.再次访问网址 http://192.168.107:4444/grid/console 验证节点是否已经在 Hub 上注册成功
+    - 6.然后就可以编写脚本了
+    
 ### 第 15 章 自动化测试框架的搭建及测试实战
+
+自动化测试框架常见的 4 种模式:
+
+1. 数据驱动测试框架
+2. 关键字驱动测试框架
+3. 混合型测试框架
+4. 行为驱动测试框架
 
 ## 第四篇 常见问题和解决方法
 
 ### 第 16 章 自动化测试常见问题和解决方法
 
+常见问题:
 
-
-
+- 如何让 WebDriver 支持 IE 11: 取消勾选”启动增强保护模式“
+- 常见异常
+    - 1.NoSuchElementException
+    - 2.NoSuchWindowException
+    - 3.NoAlertPresentException
+    - 4.NoSuchFrameException
+    - 5.UnhandledAlertException
+    - 6.UnexpectedTagNameException
+    - 7.StaleElementReferenceException
+    - 8.TimeoutException
 
 
 
