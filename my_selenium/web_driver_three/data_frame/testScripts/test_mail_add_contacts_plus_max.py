@@ -8,6 +8,8 @@ from my_selenium.web_driver_three.data_frame.appModules.AddContactPersonAction i
 from my_selenium.web_driver_three.data_frame.util.parse_excel import ParseExcel
 from my_selenium.web_driver_three.data_frame.config.VarConfig import *
 
+from my_selenium.web_driver_three.data_frame.util.my_log import *
+
 import time
 import traceback
 
@@ -43,8 +45,9 @@ def test163MailAddContacts():
         isExecuteUser = excelObj.getColumn(userSheet, account_isExecute)
         # 获取 163 账号 sheet 中的数据表列
         dataBookColumn = excelObj.getColumn(userSheet, account_dataBook)
-        print("测试为 163 邮箱添加联系人执行开始...")
-        print("isExecuteUser:", isExecuteUser)
+
+        # print("测试为 163 邮箱添加联系人执行开始...")
+        # print("isExecuteUser:", isExecuteUser)
 
         for idx, i in enumerate(isExecuteUser[1:]):
             if i.value == "y":  # 表示要执行
@@ -54,25 +57,36 @@ def test163MailAddContacts():
                 username = userRow[account_username - 1].value
                 # 获取第 i 行中的密码
                 password = str(userRow[account_password - 1].value)
-                print("------------Login Info------------")
-                print(username, password)
+
+                # print("------------Login Info------------")
+                # print(username, password)
 
                 # 创建浏览器实例对象
                 driver = LaunchBrowser()
+                info("启动浏览器，访问 163 邮箱主页")
 
                 # 登录 163 邮箱
                 LoginAction.login(driver, username, password)
                 time.sleep(3)
+
+                try:
+                    assert "收 信" in driver.page_source
+                    info("用户 %s 登录后，断言页面关键字”收 信“成功" % username)
+                except AssertionError as e:
+                    debug("用户 %s 登录后，断言页面关键字”收 信“失败，异常信息: %s" % (username,
+                                                                 str(traceback.print_exc())))
+
                 # 获取为第 i 行中用户添加的联系人数据表 sheet 名
                 dataBookName = dataBookColumn[idx + 1].value
                 # 获取对应的数据表对象
                 dataSheet = excelObj.getSheetByName(dataBookName)
                 # 获取联系人数据表中是否执行列对象
                 isExecuteData = excelObj.getColumn(dataSheet, contacts_isExecute)
-                print("------------Sheet Info------------")
-                print("dataBookName:", dataBookName)
-                print("dataSheet:", dataSheet)
-                print("isExecuteData:", isExecuteData)
+
+                # print("------------Sheet Info------------")
+                # print("dataBookName:", dataBookName)
+                # print("dataSheet:", dataSheet)
+                # print("isExecuteData:", isExecuteData)
 
                 contactNum = 0  # 记录添加成功联系人个数
                 isExecuteNum = 0  # 记录需要执行联系人个数
@@ -94,9 +108,11 @@ def test163MailAddContacts():
                         contactPersonComment = rowContent[contacts_contactPersonComment - 1].value
                         # 添加联系人成功后，断言的关键字
                         assertKeyWord = rowContent[contacts_assertKeyWords - 1].value
-                        print("------------contactPerson Info------------")
-                        print(contactPersonName, contactPersonEmail, assertKeyWord)
-                        print(contactPersonMobile, contactPersonComment)
+
+                        # print("------------contactPerson Info------------")
+                        # print(contactPersonName, contactPersonEmail, assertKeyWord)
+                        # print(contactPersonMobile, contactPersonComment)
+
                         # 执行新建联系人操作
                         AddContactPerson.add(driver, contactPersonName, contactPersonEmail, contactPersonMobile)
                         time.sleep(2)
@@ -106,27 +122,42 @@ def test163MailAddContacts():
                             assert assertKeyWord in driver.page_source
                         except AssertionError as e:
                             excelObj.writeCell(dataSheet, "failed", rowNo=id+2, colNo=contacts_testResult, style="red")
+                            info("断言关键字” %s “失败" % assertKeyWord)
                         else:
                             excelObj.writeCell(dataSheet, "pass", rowNo=id+2, colNo=contacts_testResult, style="green")
                             contactNum += 1
-                print("contactNum = %s, isExecuteNum = %s" %(contactNum, isExecuteNum))
+                            info("断言关键字” %s “成功" % assertKeyWord)
+                    else:
+                        info("联系人 %s 被忽略执行" %contactPersonEmail)
+
+                # print("--------num info--------------")
+                # print("contactNum = %s, isExecuteNum = %s" %(contactNum, isExecuteNum))
+
                 if contactNum == isExecuteNum:
                     # 如果成功添加的联系人数与需要添加的联系人数相等
                     # 说明给第 i 个用户添加联系人测试用例执行成功
                     # 在 163 账号工作表中写入成功信息，否则写入失败信息
                     excelObj.writeCell(userSheet, "pass", rowNo=idx+2, colNo=account_testResult, style="green")
-                    print("为用户 %s 添加 %d 个联系人，测试通过！" %(username, contactNum))
+                    # print("为用户 %s 添加 %d 个联系人，测试通过！" %(username, contactNum))
                 else:
                     excelObj.writeCell(userSheet, "failed", rowNo=idx+2, colNo=account_testResult, style="red")
+
+                info("为用户 %s 添加 %d 个联系人，%d 个成功\n" %(username, isExecuteNum, contactNum))
             else:
-                print("用户 %s 被设置为忽略执行!" % excelObj.getCellOfValue(userSheet, rowNo=idx+2,
-                                                                  colNo=account_username))
+
+                # print("--------------skip info-------------")
+                # print("用户 %s 被设置为忽略执行!" % excelObj.getCellOfValue(userSheet, rowNo=idx+2,
+                #                                                   colNo=account_username))
+
+                info("联系人 %s 被忽略执行" % contactPersonEmail)
     except Exception as e:
-        print("数据驱动框架主程序发生异常，异常信息为：")
+        # print("------------error info---------------")
+        # print("数据驱动框架主程序发生异常，异常信息为：")
         # 打印异常堆栈信息
-        print(traceback.print_exc())
+        # print(traceback.print_exc())
 
+        debug("数据驱动框架主程序执行过程发生异常，异常信息： %s" % str(traceback.print_exc()))
 
-if __name__ == '__main__':
-    test163MailAddContacts()
-    print("登录 163 邮箱成功！")
+# if __name__ == '__main__':
+#     test163MailAddContacts()
+#     print("登录 163 邮箱成功！")
