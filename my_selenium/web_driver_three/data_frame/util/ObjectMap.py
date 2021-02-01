@@ -24,11 +24,13 @@ def get_elements(driver, locate_type, locator):
         raise e
 
 
-if __name__ == '__main__':
-    from selenium import webdriver
-    driver = webdriver.Chrome(executable_path=r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe')
-    driver.get('http://www.baidu.com')
-    searchBox = get_element(driver, 'id', 'su')
-    print(searchBox.tag_name)
-    aList = get_elements(driver, 'tag name', 'a')
-    print(len(aList))
+# if __name__ == '__main__':
+#     from selenium import webdriver
+#     driver = webdriver.Chrome(executable_path=r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe')
+#     driver.get('http://www.baidu.com')
+#     # searchBox = get_element(driver, 'css selector', '#su')
+#     searchBox = get_element(driver, 'id', 'su')
+#     print(searchBox.tag_name)
+#     aList = get_elements(driver, 'tag name', 'a')
+#     print(len(aList))
+#     driver.quit()
