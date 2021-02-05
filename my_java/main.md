@@ -66,3 +66,19 @@ IO 流分类:
 4. 通过反射调用方法
     - m.invoke(obj, initargs);
         - mm.invoke(t, "张三");
+
+### 修饰符
+
+Java 修饰符主要分为两大类:
+
+1. 访问修饰符，常用: public、protected、默认修饰符、private
+2. 非访问修饰符，常用: static、final、abstract、
+
+### TestNG
+
+eclipse 集成 TestNG 步骤:
+
+1. features\org.testing.eclipse_6.9.8.201510130443 文件夹放到 eclipse 的 features 目录下
+2. plugins\org.testing.eclipse_6.9.8.201510130443 文件夹放到 eclipse 的 plugins 目录下
+3. 重启 eclipse
+4. 验证是否集成成功: new -> TestNG class
