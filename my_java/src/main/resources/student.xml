@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<students>
+    <student number="0811080101">
+        <name>李丽丽</name>
+        <age>23</age>
+        <gender>女</gender>
+    </student>
+    <student number="0811080102">
+        <name>赵瑾</name>
+        <age>25</age>
+        <gender>女</gender>
+    </student>
+    <student number="0811080103">
+        <name>高玉明</name>
+        <age>26</age>
+        <gender>男</gender>
+    </student>
+    <student number="0811080104">
+        <name>陈然</name>
+        <age>27</age>
+        <gender>男</gender>
+    </student>
+    <student number="0811080105">
+        <name>杨明明</name>
+        <age>23</age>
+        <gender>男</gender>
+    </student>
+</students>

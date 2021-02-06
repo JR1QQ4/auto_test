@@ -3,7 +3,7 @@ package base;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class MyReflect {
+public class MyReflectDemo {
     public static void main(String[] args) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         // 1.获取字节码
         Class<MyCDCatalog> cd = MyCDCatalog.class;
