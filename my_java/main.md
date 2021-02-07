@@ -134,3 +134,17 @@ eclipse 集成 TestNG 步骤:
         - 需要在 testng.xml 中指定 <groups><run><include name="组名" /></run></groups>
             - 有两种方式使用组 groups，一种是定义 <suite> 全局的组 groups，另一种是定义属于某个 <test> 的组 groups
  
+ ## 接口测试
+ 
+ 客户端接口调用框架: HttpClient
+ 
+ - HttpClient 是一个实现 http 协议的客户端接口调用技术，可以通过它来 mock 模拟测试工具发起接口请求，完成接口调用
+    - 集成 httpclient-4.5.2 依赖: <dependency><groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId><version>4.5.2</version></dependency>
+- Api 调用步骤:
+    1. 填写接口地址
+    2. 指定接口请求方式
+    3. 准备数据
+    4. 准备请求头数据（不需要就不设置）
+    5. 发起请求，获取接口响应数据（状态吗、响应报文或某些特殊的响应数据）
+    6. 处理数据

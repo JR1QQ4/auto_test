@@ -33,6 +33,9 @@ public class ReflectStudent {
                 // b.通过字节码创建实例
                 Student student = clazz.newInstance();
                 List<Element> studentChildElements = studentElement.elements();
+
+                System.out.println(studentElement.attributes());
+
                 for (Element studentChildElement:
                         studentChildElements) {
                     String elementName = studentChildElement.getName();
