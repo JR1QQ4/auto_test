@@ -1,5 +1,6 @@
 package interface_test;
 
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -10,10 +11,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Demo {
     public static void baiduWeatherWithPost() throws IOException {
@@ -78,15 +79,93 @@ public class Demo {
         System.out.println(httpResponseText);
     }
 
+    public static String handlePost(String url, Map<String, String> params) throws IOException {
+        String httpResponseText = "";
+
+        HttpPost httpPost = new HttpPost(url);
+
+        List<BasicNameValuePair> pairList = new ArrayList<BasicNameValuePair>();
+        Set<String> keys = params.keySet();
+        for (String key :
+                keys) {
+            String value = params.get(key);
+            pairList.add(new BasicNameValuePair(key, value));
+        }
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(pairList, "utf-8"));
+
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+
+            // int statusCode = httpResponse.getStatusLine().getStatusCode();
+            httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return httpResponseText;
+    }
+
+    public static String handleGet(String url, Map<String, String> params) {
+        Set<String> keys = params.keySet();
+        int flag = 1;
+        StringBuilder urlBuilder = new StringBuilder(url);
+        for (String key :
+                keys) {
+            String value = params.get(key);
+            if (flag == 1) {
+                urlBuilder.append("?").append(key).append("=").append(value);
+            } else {
+                urlBuilder.append("&").append(key).append("=").append(value);
+            }
+            flag++;
+        }
+        url = urlBuilder.toString();
+        String httpResponseText = "";
+
+        try {
+            HttpGet httpGet = new HttpGet(url);
+
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+
+            // int statusCode = httpResponse.getStatusLine().getStatusCode();
+            httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return httpResponseText;
+    }
+
     public static void main(String[] args) throws IOException {
         // Demo.baiduWeatherWithPost();
 
         // Demo.baiduWeatherWithGet();
 
-        String area = URLEncoder.encode("北京", "utf-8");
-        System.out.println(area);
+        // String area = URLEncoder.encode("北京", "utf-8");
+        // System.out.println(area);
+        // area = URLDecoder.decode(area, "utf-8");
+        // System.out.println(area);
 
-        area = URLDecoder.decode(area, "utf-8");
-        System.out.println(area);
+        // String url = "http://api.map.baidu.com/weather/v1/";
+        // String data_type = "all";
+        // String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        // String district_id = "222405";
+        // Map<String, String> postParams = new HashMap<String, String>();
+        // postParams.put("data_type", data_type);
+        // postParams.put("district_id", district_id);
+        // postParams.put("ak", ak);
+        // Map<String, Object> responseInfo = Demo.handlePost(url, postParams);
+        // System.out.println(responseInfo.toString());
+
+        String url = "http://api.map.baidu.com/weather/v1/";
+        String data_type = "all";
+        String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        String district_id = "222405";
+        Map<String, String> getParams = new HashMap<String, String>();
+        getParams.put("data_type", data_type);
+        getParams.put("district_id", district_id);
+        getParams.put("ak", ak);
+        String responseText = handleGet(url, getParams);
+        System.out.println(responseText);
     }
 }
