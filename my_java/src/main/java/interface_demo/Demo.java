@@ -1,6 +1,5 @@
-package interface_test;
+package interface_demo;
 
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -11,9 +10,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
 
 public class Demo {
@@ -27,7 +23,7 @@ public class Demo {
 
         // 3.准备数据
         String data_type = "all";  // 请求数据类型。数据类型有：now/fc/index/alert/fc_hour/all，控制返回内容
-        String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        String ak = "";
         String district_id = "222405";  // 区县的行政区划编码，查询的地点
 
         List<BasicNameValuePair> pairList = new ArrayList<BasicNameValuePair>();
@@ -57,7 +53,7 @@ public class Demo {
 
         // 2.准备数据
         String data_type = "all";  // 请求数据类型。数据类型有：now/fc/index/alert/fc_hour/all，控制返回内容
-        String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        String ak = "";
         String district_id = "222405";  // 区县的行政区划编码，查询的地点
         String urlPath = url + "?district_id=" + district_id + "&data_type=" + data_type + "&ak=" + ak;
         System.out.println(urlPath);
@@ -79,7 +75,7 @@ public class Demo {
         System.out.println(httpResponseText);
     }
 
-    public static String handlePost(String url, Map<String, String> params) throws IOException {
+    public static String handlePost(String url, Map<String, String> params) {
         String httpResponseText = "";
 
         HttpPost httpPost = new HttpPost(url);
