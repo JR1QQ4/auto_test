@@ -3,9 +3,7 @@ package interface_demo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 class Person {
     private int age;
@@ -61,14 +59,24 @@ class PersonDemo {
 
 public class HandleJson {
     public void parseStringToJson() {
-        String params = "{“data_type”:\"all\", \"district_id\":\"222405\"}";
-        Object objects = JSONObject.parse(params);
-        System.out.println(objects);
-        System.out.println(objects);
+        // String params = "{\"data_type\":\"all\", \"district_id\":\"222405\"}";
+        // Object objects = JSONObject.parse(params);
+        // System.out.println(objects);
+        // System.out.println(objects);
+
+        // String paramsString = "{\"data_type\":\"all\", \"district_id\":\"222405\"}";
+        // JSONObject objectData = JSON.parseObject(paramsString);
+        // System.out.println(objectData.getString("data_type"));
+        // Map<String, String> mapData = (Map<String, String>) JSONObject.parse(paramsString);
+        // Set<String> keys = mapData.keySet();
+        // for (String key :
+        //         keys) {
+        //     System.out.println(key + ": " + mapData.get(key));
+        // }
     }
 
     public static void main(String[] args) {
-        // new HandleJson().parseStringToJson();
+        new HandleJson().parseStringToJson();
 
         // Calendar calendar = Calendar.getInstance();
         // calendar.set(1994, 11, 27);

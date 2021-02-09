@@ -17,7 +17,6 @@ public class InterfaceDemo {
         params.put("ak", key);
         params.put("data_type", data_type);
         params.put("district_id", district_id);
-
         String result = "";
 
         if (http_type.contains("get")) {

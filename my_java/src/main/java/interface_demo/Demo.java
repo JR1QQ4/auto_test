@@ -132,6 +132,16 @@ public class Demo {
         return httpResponseText;
     }
 
+    public static String handlePostAndGet(String sendType, String url, Map<String, String> params){
+        String result = "";
+        if (sendType.toLowerCase().contains("get")){
+            result = Demo.handleGet(url, params);
+        }else if (sendType.toLowerCase().contains("post")){
+            result = Demo.handlePost(url, params);
+        }
+        return result;
+    }
+
     public static void main(String[] args) throws IOException {
         // Demo.baiduWeatherWithPost();
 
@@ -144,7 +154,7 @@ public class Demo {
 
         // String url = "http://api.map.baidu.com/weather/v1/";
         // String data_type = "all";
-        // String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        // String ak = "";
         // String district_id = "222405";
         // Map<String, String> postParams = new HashMap<String, String>();
         // postParams.put("data_type", data_type);
@@ -155,7 +165,7 @@ public class Demo {
 
         String url = "http://api.map.baidu.com/weather/v1/";
         String data_type = "all";
-        String ak = "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7";
+        String ak = "";
         String district_id = "222405";
         Map<String, String> getParams = new HashMap<String, String>();
         getParams.put("data_type", data_type);

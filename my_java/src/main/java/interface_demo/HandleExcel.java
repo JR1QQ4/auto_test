@@ -119,7 +119,7 @@ public class HandleExcel {
                     cell.setCellType(CellType.STRING);
                     value = cell.getStringCellValue();
                     excelData[i][j] = value;
-                    System.out.println(value);
+                    // System.out.println(value);
                 }
             }
         } catch (Exception e) {
