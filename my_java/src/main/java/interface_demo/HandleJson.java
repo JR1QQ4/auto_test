@@ -57,6 +57,31 @@ class PersonDemo {
     private List<String> list;
 }
 
+class RegisterParam{
+    private String mobilePhone;
+    private String pwd;
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+    @Override
+    public String toString(){
+        return "mobilePhone=" + mobilePhone + ", pwd=" + pwd;
+    }
+}
+
 public class HandleJson {
     public void parseStringToJson() {
         // String params = "{\"data_type\":\"all\", \"district_id\":\"222405\"}";
@@ -76,7 +101,7 @@ public class HandleJson {
     }
 
     public static void main(String[] args) {
-        new HandleJson().parseStringToJson();
+        // new HandleJson().parseStringToJson();
 
         // Calendar calendar = Calendar.getInstance();
         // calendar.set(1994, 11, 27);
@@ -97,5 +122,9 @@ public class HandleJson {
 //        jsonObject.put("a", 1);
 //        jsonObject.put("b", "123");
 //        System.out.println(jsonObject.toJSONString());
+
+        String parameter = "{\"mobilePhone\": \"android\", \"pwd\":\"123456\"}";
+        RegisterParam registerParam = JSONObject.parseObject(parameter, RegisterParam.class);
+        System.out.println(registerParam.toString());
     }
 }
