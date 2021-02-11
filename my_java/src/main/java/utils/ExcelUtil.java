@@ -4,6 +4,8 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExcelUtil {
     /**
@@ -13,7 +15,7 @@ public class ExcelUtil {
      * @param sheetName sheet表名
      * @return 测试数据
      */
-    public static Object[][] load(String excelPath, String sheetName) {
+    public static void load(String excelPath, String sheetName) {
         Object[][] excelData = null;
         // 使用反射把数据封装
         Class clazz = Case.class;
@@ -34,18 +36,20 @@ public class ExcelUtil {
                 titleArray[i] = title;
             }
             // 处理标题行以下的测试数据
-            int columns = sheet.getLastRowNum();
-            for (int i = 1; i <= columns; i++) {
+            int lastRowNum = sheet.getLastRowNum();
+            for (int i = 1; i <= lastRowNum; i++) {
                 Case caseInstance = (Case) clazz.newInstance();
                 Row dataRow = sheet.getRow(i);
+                if (dataRow == null || isEmptyRow(dataRow)) {
+                    continue;
+                }
                 for (int j = 0; j < lastCellNum; j++) {
                     Cell cell = dataRow.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                     cell.setCellType(CellType.STRING);
                     String value = cell.getStringCellValue();
-                    System.out.println(value);
                     // 反射
                     String methodName = "set" + titleArray[j];
-                    Method method = clazz.getMethod(methodName);
+                    Method method = clazz.getMethod(methodName, String.class);
                     method.invoke(caseInstance, value);
                 }
                 CaseUtil.cases.add(caseInstance);
@@ -53,14 +57,18 @@ public class ExcelUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return excelData;
     }
 
-    public static void main(String[] args) {
-        load("src/main/resources/baiduInterface_v2.xlsx", "Cases");
-        for (Case cs: CaseUtil.cases
-             ) {
-            System.out.println(cs);
+    private static boolean isEmptyRow(Row dataRow) {
+        int lastCellNum = dataRow.getLastCellNum();
+        for (int i = 0; i < lastCellNum; i++) {
+            Cell cell = dataRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            cell.setCellType(CellType.STRING);
+            String value = cell.getStringCellValue();
+            if (value != null && value.trim().length() > 0) {
+                return false;
+            }
         }
+        return true;
     }
 }
