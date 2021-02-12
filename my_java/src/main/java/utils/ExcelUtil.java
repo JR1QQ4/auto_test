@@ -4,8 +4,6 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExcelUtil {
     /**
@@ -13,12 +11,9 @@ public class ExcelUtil {
      *
      * @param excelPath 文件路径
      * @param sheetName sheet表名
-     * @return 测试数据
+     * @param clazz 传入类的字节码
      */
-    public static void load(String excelPath, String sheetName) {
-        Object[][] excelData = null;
-        // 使用反射把数据封装
-        Class clazz = Case.class;
+    public static <T> void load(String excelPath, String sheetName, Class<T> clazz) {
         try {
             // 创建 Workbook 对象
             Workbook workbook = WorkbookFactory.create(new File(excelPath));
@@ -38,7 +33,7 @@ public class ExcelUtil {
             // 处理标题行以下的测试数据
             int lastRowNum = sheet.getLastRowNum();
             for (int i = 1; i <= lastRowNum; i++) {
-                Case caseInstance = (Case) clazz.newInstance();
+                Object obj = clazz.newInstance();
                 Row dataRow = sheet.getRow(i);
                 if (dataRow == null || isEmptyRow(dataRow)) {
                     continue;
@@ -50,9 +45,15 @@ public class ExcelUtil {
                     // 反射
                     String methodName = "set" + titleArray[j];
                     Method method = clazz.getMethod(methodName, String.class);
-                    method.invoke(caseInstance, value);
+                    method.invoke(obj, value);
                 }
-                CaseUtil.cases.add(caseInstance);
+                if (obj instanceof Case){
+                    Case cs = (Case) obj;
+                    CaseUtil.cases.add(cs);
+                }else if (obj instanceof Rest){
+                    Rest rest = (Rest) obj;
+                    RestUtil.rests.add(rest);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

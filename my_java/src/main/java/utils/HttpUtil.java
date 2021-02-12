@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 处理 Http 请求的工具类
+ */
 public class HttpUtil {
     public static String handlePost(String url, Map<String, String> params) {
         String httpResponseText = "";
@@ -71,11 +74,11 @@ public class HttpUtil {
         return httpResponseText;
     }
 
-    public static String handlePostAndGet(String sendType, String url, Map<String, String> params) {
+    public static String handlePostAndGet(String type, String url, Map<String, String> params) {
         String result = "";
-        if (sendType.toLowerCase().contains("get")) {
+        if (type.toLowerCase().contains("get")) {
             result = Demo.handleGet(url, params);
-        } else if (sendType.toLowerCase().contains("post")) {
+        } else if (type.toLowerCase().contains("post")) {
             result = Demo.handlePost(url, params);
         }
         return result;

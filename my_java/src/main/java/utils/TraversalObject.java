@@ -3,6 +3,9 @@ package utils;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 遍历对象工具类
+ */
 public class TraversalObject {
     public static <T> void traversalMap(Map<T, T> params) {
         Set<T> keys = params.keySet();

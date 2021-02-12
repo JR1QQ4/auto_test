@@ -1,6 +1,5 @@
 package utils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ public class CaseUtil {
     public static List<Case> cases = new ArrayList<Case>();
 
     static {
-        ExcelUtil.load("src/main/resources/baiduInterface_v2.xlsx", "Cases");
+        ExcelUtil.load("src/main/resources/baiduInterface_v2.xlsx", "Cases", Case.class);
     }
 
     /**
@@ -58,7 +57,7 @@ public class CaseUtil {
 
     public static void main(String[] args) {
         String apiId = "1";
-        String[] columnNames = {"Params"};
+        String[] columnNames = {"ApiId", "Params"};
         Object[][] objects = getCasesDatesApiId(apiId, columnNames);
 
         for (Object[]  objects1:

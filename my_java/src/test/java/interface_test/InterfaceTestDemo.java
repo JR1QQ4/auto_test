@@ -46,7 +46,7 @@ public class InterfaceTestDemo {
         Map<String, String> params = new HashMap<String, String>();
         JSONObject jsonObject = JSON.parseObject(paramsFromCase);
 
-        jsonObject.put("ak", "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7");
+        jsonObject.put("ak", "");
         Set<String> keys = jsonObject.keySet();
         for (String key :
                 keys) {
