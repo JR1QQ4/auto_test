@@ -8,6 +8,24 @@ public class Case {
     private String desc;
     private String apiId;
     private String params;
+    private String expectedResponseData;
+    private String actualResponseData;
+
+    public void setExpectedResponseData(String expectedResponseData) {
+        this.expectedResponseData = expectedResponseData;
+    }
+
+    public void setActualResponseData(String actualResponseData) {
+        this.actualResponseData = actualResponseData;
+    }
+
+    public String getExpectedResponseData() {
+        return expectedResponseData;
+    }
+
+    public String getActualResponseData() {
+        return actualResponseData;
+    }
 
     public String getCaseId() {
         return caseId;
