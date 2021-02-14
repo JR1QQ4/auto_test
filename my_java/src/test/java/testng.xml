@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<!--&lt;!&ndash; 测试套件 &ndash;&gt;-->
+<!--<suite name="SuiteName" verbose="1">-->
+<!--    &lt;!&ndash; 测试集 &ndash;&gt;-->
+<!--    <test name = "allTestsInAClass" >-->
+<!--        &lt;!&ndash; 测试类集合 &ndash;&gt;-->
+<!--        <classes>-->
+<!--            &lt;!&ndash; 对应的每个测试类 &ndash;&gt;-->
+<!--            <class name="my_testng.Test01" />-->
+<!--            <class name="my_testng.Test02" />-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--</suite>-->
+
+<!-- 只能有一个测试套件 -->
+<suite name="Suite">
+    <test name="register">
+        <groups>
+            <run>
+                <include name="g1" />
+            </run>
+        </groups>
+        <classes>
+            <!-- <class name="my_testng.TestParameterDemo" />-->
+            <!-- <class name="my_testng.TestProviderDemo"/> -->
+            <class name="my_testng.TestLabel" />
+        </classes>
+    </test>
+    <parameter name="browserName" value="Chrome"/>
+    <parameter name="browserVersion" value="89.58.1180"/>
+</suite>
