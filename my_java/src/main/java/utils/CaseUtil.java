@@ -12,7 +12,7 @@ public class CaseUtil {
     public static List<Case> cases = new ArrayList<Case>();
 
     static {
-        ExcelUtil.load("src/main/resources/baiduInterface_v2.xlsx", "Cases", Case.class);
+        ExcelUtil.load("src/main/resources/baiduInterface_v3_2.xlsx", "Cases", Case.class);
     }
 
     /**

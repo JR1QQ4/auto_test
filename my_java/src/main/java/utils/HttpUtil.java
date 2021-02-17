@@ -1,6 +1,8 @@
 package utils;
 
 import interface_demo.Demo;
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -10,15 +12,15 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 处理 Http 请求的工具类
  */
 public class HttpUtil {
+    // 用于存放 cookie 信息
+    public static Map<String, String> cookieMap = new HashMap<String, String>();
+
     public static String handlePost(String url, Map<String, String> params) {
         String httpResponseText = "";
         HttpPost httpPost = new HttpPost(url);
@@ -34,7 +36,9 @@ public class HttpUtil {
             httpPost.setEntity(new UrlEncodedFormEntity(pairList, "utf-8"));
 
             HttpClient httpClient = HttpClients.createDefault();
+            addCookieInRequestHeaderBeforeRequest(httpPost);
             HttpResponse httpResponse = httpClient.execute(httpPost);
+            getAndStoreCookiesFromResponseHeader(httpResponse);
 
             httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
         } catch (Exception e) {
@@ -65,7 +69,9 @@ public class HttpUtil {
             HttpGet httpGet = new HttpGet(url);
 
             HttpClient httpClient = HttpClients.createDefault();
+            addCookieInRequestHeaderBeforeRequest(httpGet);
             HttpResponse httpResponse = httpClient.execute(httpGet);
+            getAndStoreCookiesFromResponseHeader(httpResponse);
 
             httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
         } catch (Exception e) {
@@ -84,4 +90,29 @@ public class HttpUtil {
         return result;
     }
 
+
+    private static void addCookieInRequestHeaderBeforeRequest(HttpRequest httpRequest) {
+        String jsessionIdCookie = cookieMap.get("JSESSIONID");
+        if (jsessionIdCookie != null){
+            httpRequest.addHeader("Cookie", jsessionIdCookie);
+        }
+    }
+
+    private static void getAndStoreCookiesFromResponseHeader(HttpResponse httpResponse) {
+        Header setCookieHeader = httpResponse.getFirstHeader("Set-Cookie");
+        if (setCookieHeader != null) {
+            String cookiePairsString = setCookieHeader.getValue();
+            if (cookiePairsString != null && cookiePairsString.trim().length() > 0){
+                String [] cookiePairs = cookiePairsString.split(";");
+                if (cookiePairs.length > 0) {
+                    for (String cookiePair:
+                            cookiePairs) {
+                        if (cookiePair.contains("JSESSIONID")){
+                            cookieMap.put("JSESSIONID", cookiePair);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
