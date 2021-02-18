@@ -1,5 +1,6 @@
 package utils;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.*;
@@ -16,7 +17,7 @@ public class ExcelUtil {
     public static List<WriteBackData> writeBackDataList = new ArrayList<WriteBackData>();
 
     static {
-        loadRowNumAndColumnNumMapping("src/main/resources/baiduInterface_v4.xlsx", "Cases");
+        loadRowNumAndColumnNumMapping(PropertiesUtil.getExcelOath(), "Cases");
     }
 
     /**
@@ -118,6 +119,49 @@ public class ExcelUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static <T> List<T> loadPlus(String excelPath, String sheetName, Class<T> clazz) {
+        List<T> list = new ArrayList<T>();
+        try {
+            // 创建 Workbook 对象
+            Workbook workbook = WorkbookFactory.create(new File(excelPath));
+            // 创建 Sheet 对象
+            Sheet sheet = workbook.getSheet(sheetName);
+            // 处理首行的标题
+            Row titleRow = sheet.getRow(0);
+            int lastCellNum = titleRow.getLastCellNum();
+            String[] titleArray = new String[lastCellNum];
+            for (int i = 0; i < lastCellNum; i++) {
+                Cell cell = titleRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                cell.setCellType(CellType.STRING);
+                String value = cell.getStringCellValue();
+                String title = value.substring(0, value.indexOf("("));
+                titleArray[i] = title;
+            }
+            // 处理标题行以下的测试数据
+            int lastRowNum = sheet.getLastRowNum();
+            for (int i = 1; i <= lastRowNum; i++) {
+                T obj = clazz.newInstance();
+                Row dataRow = sheet.getRow(i);
+                if (dataRow == null || isEmptyRow(dataRow)) {
+                    continue;
+                }
+                for (int j = 0; j < lastCellNum; j++) {
+                    Cell cell = dataRow.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    cell.setCellType(CellType.STRING);
+                    String value = cell.getStringCellValue();
+                    // 反射
+                    String methodName = "set" + titleArray[j];
+                    Method method = clazz.getMethod(methodName, String.class);
+                    method.invoke(obj, value);
+                }
+                list.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     /**

@@ -10,7 +10,10 @@ public class RestUtil {
     public static List<Rest> rests = new ArrayList<Rest>();
 
     static {
-        ExcelUtil.load("src/main/resources/baiduInterface_v4.xlsx", "InterfaceInfo", Rest.class);
+        // ExcelUtil.load("src/main/resources/baiduInterface_v4.xlsx", "InterfaceInfo", Rest.class);
+
+        List<Rest> restList = ExcelUtil.loadPlus(PropertiesUtil.getExcelOath(), "InterfaceInfo", Rest.class);
+        rests.addAll(restList);
     }
 
     public static String getUrlByApiId(String apiId){
