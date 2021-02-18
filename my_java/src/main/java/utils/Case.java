@@ -11,6 +11,43 @@ public class Case {
     private String expectedResponseData;
     private String actualResponseData;
 
+    private String beforeValidateSql;
+    private String beforeValidateResult;
+    private String afterValidateSql;
+    private String afterValidateResult;
+
+    public void setBeforeValidateSql(String beforeValidateSql) {
+        this.beforeValidateSql = beforeValidateSql;
+    }
+
+    public void setBeforeValidateResult(String beforeValidateResult) {
+        this.beforeValidateResult = beforeValidateResult;
+    }
+
+    public void setAfterValidateSql(String afterValidateSql) {
+        this.afterValidateSql = afterValidateSql;
+    }
+
+    public void setAfterValidateResult(String afterValidateResult) {
+        this.afterValidateResult = afterValidateResult;
+    }
+
+    public String getBeforeValidateSql() {
+        return beforeValidateSql;
+    }
+
+    public String getBeforeValidateResult() {
+        return beforeValidateResult;
+    }
+
+    public String getAfterValidateSql() {
+        return afterValidateSql;
+    }
+
+    public String getAfterValidateResult() {
+        return afterValidateResult;
+    }
+
     public void setExpectedResponseData(String expectedResponseData) {
         this.expectedResponseData = expectedResponseData;
     }

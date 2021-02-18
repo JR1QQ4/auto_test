@@ -90,7 +90,6 @@ public class HttpUtil {
         return result;
     }
 
-
     private static void addCookieInRequestHeaderBeforeRequest(HttpRequest httpRequest) {
         String jsessionIdCookie = cookieMap.get("JSESSIONID");
         if (jsessionIdCookie != null){

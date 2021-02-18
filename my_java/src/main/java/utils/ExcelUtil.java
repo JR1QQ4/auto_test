@@ -16,7 +16,7 @@ public class ExcelUtil {
     public static List<WriteBackData> writeBackDataList = new ArrayList<WriteBackData>();
 
     static {
-        loadRowNumAndColumnNumMapping("src/main/resources/baiduInterface_v3_2.xlsx", "Cases");
+        loadRowNumAndColumnNumMapping("src/main/resources/baiduInterface_v4.xlsx", "Cases");
     }
 
     /**
