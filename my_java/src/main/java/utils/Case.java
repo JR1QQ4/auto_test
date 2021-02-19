@@ -4,7 +4,7 @@ package utils;
  * 保存 Case 的信息
  */
 public class Case {
-    private String caseId;
+    private String caseId;  // 行标识符
     private String desc;
     private String apiId;
     private String params;
