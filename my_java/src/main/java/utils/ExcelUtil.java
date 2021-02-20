@@ -18,6 +18,8 @@ public class ExcelUtil {
 
     static {
         loadRowNumAndColumnNumMapping(PropertiesUtil.getExcelOath(), "Cases");
+
+        loadRowNumAndColumnNumMapping(PropertiesUtil.getExcelOath(), "Variables");
     }
 
     /**

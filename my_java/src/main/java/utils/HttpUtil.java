@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -18,6 +19,8 @@ import java.util.*;
  * 处理 Http 请求的工具类
  */
 public class HttpUtil {
+    private static Logger logger = Logger.getLogger(HttpUtil.class);
+
     // 用于存放 cookie 信息
     public static Map<String, String> cookieMap = new HashMap<String, String>();
 
@@ -40,8 +43,14 @@ public class HttpUtil {
             HttpResponse httpResponse = httpClient.execute(httpPost);
             getAndStoreCookiesFromResponseHeader(httpResponse);
 
+            // 响应状态码
+            int code = httpResponse.getStatusLine().getStatusCode();
+            // 响应报文
             httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+
+            logger.info("响应状态码 Code=【" + code + "】, 响应结果 result=【" + httpResponseText + "】");
         } catch (Exception e) {
+            logger.error("HttpUtil.handlePost Error: ");
             e.printStackTrace();
         }
         return httpResponseText;
@@ -73,8 +82,14 @@ public class HttpUtil {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             getAndStoreCookiesFromResponseHeader(httpResponse);
 
+            // 响应状态码
+            int code = httpResponse.getStatusLine().getStatusCode();
+            // 响应报文
             httpResponseText = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+
+            logger.info("响应状态码 Code=【" + code + "】, 响应结果 result=【" + httpResponseText + "】");
         } catch (Exception e) {
+            logger.error("HttpUtil.handleGet Error: ");
             e.printStackTrace();
         }
         return httpResponseText;
@@ -90,23 +105,33 @@ public class HttpUtil {
         return result;
     }
 
+    /**
+     * 把 Cookies 添加到请求头上
+     *
+     * @param httpRequest 请求
+     */
     private static void addCookieInRequestHeaderBeforeRequest(HttpRequest httpRequest) {
         String jsessionIdCookie = cookieMap.get("JSESSIONID");
-        if (jsessionIdCookie != null){
+        if (jsessionIdCookie != null) {
             httpRequest.addHeader("Cookie", jsessionIdCookie);
         }
     }
 
+    /**
+     * 保存 Cookies
+     *
+     * @param httpResponse 响应结果
+     */
     private static void getAndStoreCookiesFromResponseHeader(HttpResponse httpResponse) {
         Header setCookieHeader = httpResponse.getFirstHeader("Set-Cookie");
         if (setCookieHeader != null) {
             String cookiePairsString = setCookieHeader.getValue();
-            if (cookiePairsString != null && cookiePairsString.trim().length() > 0){
-                String [] cookiePairs = cookiePairsString.split(";");
+            if (cookiePairsString != null && cookiePairsString.trim().length() > 0) {
+                String[] cookiePairs = cookiePairsString.split(";");
                 if (cookiePairs.length > 0) {
-                    for (String cookiePair:
+                    for (String cookiePair :
                             cookiePairs) {
-                        if (cookiePair.contains("JSESSIONID")){
+                        if (cookiePair.contains("JSESSIONID")) {
                             cookieMap.put("JSESSIONID", cookiePair);
                         }
                     }

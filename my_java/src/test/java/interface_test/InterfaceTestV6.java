@@ -7,7 +7,7 @@ import utils.CaseUtil;
 import utils.ExcelUtil;
 import utils.PropertiesUtil;
 
-public class InterfaceTestV5 extends BaseProcessor {
+public class InterfaceTestV6 extends BaseProcessor {
     @DataProvider(name = "data")
     public Object[][] getData() {
         return CaseUtil.getCasesDatesApiId("1", columnNames);

@@ -3,7 +3,7 @@
 <suite name="Suite">
     <test name="register">
         <classes>
-            <class name="interface_test.InterfaceTestV5" />
+            <class name="interface_test.InterfaceTestV6" />
         </classes>
     </test>
 </suite>
