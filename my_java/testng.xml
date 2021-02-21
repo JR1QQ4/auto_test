@@ -17,15 +17,15 @@
 <!-- 只能有一个测试套件 -->
 <suite name="Suite">
     <test name="register">
-        <groups>
-            <run>
-                <include name="g1" />
-            </run>
-        </groups>
+<!--        <groups>-->
+<!--            <run>-->
+<!--                <include name="g1" />-->
+<!--            </run>-->
+<!--        </groups>-->
         <classes>
             <!-- <class name="my_testng.TestParameterDemo" />-->
             <!-- <class name="my_testng.TestProviderDemo"/> -->
-            <class name="my_testng.TestLabel" />
+            <class name="my_testng.TestParameterDemo" />
         </classes>
     </test>
     <parameter name="browserName" value="Chrome"/>

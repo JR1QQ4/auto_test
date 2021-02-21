@@ -8,6 +8,11 @@
     <artifactId>my_java</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- mvn 编译出现编码GBK的不可映射字符，需设置编码格式 -->
+<!--    <properties>-->
+<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+<!--    </properties>-->
+
     <dependencies>
         <!-- 添加log4j日志相关jar包:共3个jar-->
         <dependency>
@@ -103,29 +108,30 @@
 <!--        </repository>-->
 <!--    </repositories>-->
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.7.1</version>-->
-<!--                <configuration>-->
-<!--                    &lt;!&ndash; 设置系统变量，在后面定制化测试报表的时候用得上 &ndash;&gt;-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.1</version>
+                <configuration>
+                    <!-- 设置系统变量，在后面定制化测试报表的时候用得上 -->
 <!--                    <systemPropertyVariables>-->
 <!--                        <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>-->
 <!--                    </systemPropertyVariables>-->
-<!--                    &lt;!&ndash; 忽略测试套件执行过程中执行失败得测试方法，继续执行剩余得测试类和测试方法 &ndash;&gt;-->
-<!--                    <testFailureIgnore>true</testFailureIgnore>-->
-<!--                    &lt;!&ndash; 指定构建过程中得编码风格 &ndash;&gt;-->
-<!--                    <argLine>-->
-<!--                        -Dfile.encoding=UTF-8-->
-<!--                    </argLine>-->
-<!--                    &lt;!&ndash; 指定构建（执行测试套件）时要执行得套件文件得路径 &ndash;&gt;-->
-<!--                    <suiteXmlFiles>-->
-<!--                        <suiteXmlFile>testng.xml</suiteXmlFile>-->
-<!--                    </suiteXmlFiles>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
+                    <!-- 忽略测试套件执行过程中执行失败得测试方法，继续执行剩余得测试类和测试方法 -->
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <!-- 指定构建过程中得编码风格 -->
+                    <argLine>
+                        -Dfile.encoding=UTF-8
+                    </argLine>
+                    <!-- 指定构建（执行测试套件）时要执行得套件文件得路径 -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/java/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,0 +1,118 @@
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 17:21:27  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${data_type}, 变量值 variableValue = all
+2021-02-20 17:21:27  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${district_id}, 变量值 variableValue = 222405
+2021-02-20 17:21:27  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${country_continent}, 变量值 variableValue = Asia
+2021-02-20 17:21:27  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${city_countrycode}, 变量值 variableValue = ABW
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"${data_type}", "district_id":"${district_id}", "ak":""}
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"all", "district_id":"222405", "ak":""}
+2021-02-20 17:21:27  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":0,"result":{"location":{"country":"中国","province":"吉林省","city":"延边朝鲜族自治州","name":"龙井","id":"222405"},"now":{"text":"阴","temp":-5,"feels_like":-11,"rh":70,"wind_class":"6级","wind_dir":"西风","uptime":"20210220170000"},"forecasts":[{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"东北风","date":"2021-02-20","week":"星期六"},{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"<3级","wd_day":"东风","wc_night":"<3级","wd_night":"西风","date":"2021-02-21","week":"星期日"},{"text_day":"多云","text_night":"多云","high":1,"low":-13,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-22","week":"星期一"},{"text_day":"小雪","text_night":"多云","high":-5,"low":-14,"wc_day":"3~4级","wd_day":"西北风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-23","week":"星期二"},{"text_day":"多云","text_night":"多云","high":-2,"low":-10,"wc_day":"3~4级","wd_day":"南风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-24","week":"星期三"}]},"message":"success"}】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"data_type", "district_id":"${district_id}", "ak":""}
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"data_type", "district_id":"222405", "ak":""}
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"", "district_id":"${district_id}", "ak":""}
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"", "district_id":"222405", "ak":""}
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 17:21:28  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:19  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:19  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${data_type}, 变量值 variableValue = all
+2021-02-20 23:40:19  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${district_id}, 变量值 variableValue = 222405
+2021-02-20 23:40:19  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${country_continent}, 变量值 variableValue = Asia
+2021-02-20 23:40:19  [ method:utils.VariableUtil.loadVariableToMap(VariableUtil.java:51) ] - [ INFO ]  变量名 variableName = ${city_countrycode}, 变量值 variableValue = AND
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"${data_type}", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"all", "district_id":"222405", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":0,"result":{"location":{"country":"中国","province":"吉林省","city":"延边朝鲜族自治州","name":"龙井","id":"222405"},"now":{"text":"多云","temp":-6,"feels_like":-8,"rh":92,"wind_class":"1级","wind_dir":"西北风","uptime":"20210220232000"},"forecasts":[{"text_day":"多云","text_night":"多云","high":2,"low":-11,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"东北风","date":"2021-02-20","week":"星期六"},{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"<3级","wd_day":"东风","wc_night":"<3级","wd_night":"西风","date":"2021-02-21","week":"星期日"},{"text_day":"多云","text_night":"多云","high":1,"low":-13,"wc_day":"3~4级","wd_day":"西南风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-22","week":"星期一"},{"text_day":"多云","text_night":"晴","high":-6,"low":-14,"wc_day":"4~5级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-23","week":"星期二"},{"text_day":"晴","text_night":"多云","high":-2,"low":-10,"wc_day":"3~4级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-24","week":"星期三"}]},"message":"success"}】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"data_type", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"data_type", "district_id":"222405", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"", "district_id":"222405", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"${data_type}", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"all", "district_id":"222405", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":0,"result":{"location":{"country":"中国","province":"吉林省","city":"延边朝鲜族自治州","name":"龙井","id":"222405"},"now":{"text":"多云","temp":-6,"feels_like":-8,"rh":92,"wind_class":"1级","wind_dir":"西北风","uptime":"20210220232000"},"forecasts":[{"text_day":"多云","text_night":"多云","high":2,"low":-11,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"东北风","date":"2021-02-20","week":"星期六"},{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"<3级","wd_day":"东风","wc_night":"<3级","wd_night":"西风","date":"2021-02-21","week":"星期日"},{"text_day":"多云","text_night":"多云","high":1,"low":-13,"wc_day":"3~4级","wd_day":"西南风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-22","week":"星期一"},{"text_day":"多云","text_night":"晴","high":-6,"low":-14,"wc_day":"4~5级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-23","week":"星期二"},{"text_day":"晴","text_night":"多云","high":-2,"low":-10,"wc_day":"3~4级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-24","week":"星期三"}]},"message":"success"}】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"data_type", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"data_type", "district_id":"222405", "ak":""}
+2021-02-20 23:40:20  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"", "district_id":"222405", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"${data_type}", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"all", "district_id":"222405", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":0,"result":{"location":{"country":"中国","province":"吉林省","city":"延边朝鲜族自治州","name":"龙井","id":"222405"},"now":{"text":"多云","temp":-6,"feels_like":-8,"rh":92,"wind_class":"1级","wind_dir":"西北风","uptime":"20210220232000"},"forecasts":[{"text_day":"多云","text_night":"多云","high":2,"low":-11,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"东北风","date":"2021-02-20","week":"星期六"},{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"<3级","wd_day":"东风","wc_night":"<3级","wd_night":"西风","date":"2021-02-21","week":"星期日"},{"text_day":"多云","text_night":"多云","high":1,"low":-13,"wc_day":"3~4级","wd_day":"西南风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-22","week":"星期一"},{"text_day":"多云","text_night":"晴","high":-6,"low":-14,"wc_day":"4~5级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-23","week":"星期二"},{"text_day":"晴","text_night":"多云","high":-2,"low":-10,"wc_day":"3~4级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-24","week":"星期三"}]},"message":"success"}】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"data_type", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"data_type", "district_id":"222405", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"", "district_id":"222405", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"${data_type}", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"all", "district_id":"222405", "ak":""}
+2021-02-20 23:40:21  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":0,"result":{"location":{"country":"中国","province":"吉林省","city":"延边朝鲜族自治州","name":"龙井","id":"222405"},"now":{"text":"多云","temp":-6,"feels_like":-8,"rh":92,"wind_class":"1级","wind_dir":"西北风","uptime":"20210220232000"},"forecasts":[{"text_day":"多云","text_night":"多云","high":2,"low":-11,"wc_day":"3~4级","wd_day":"西风","wc_night":"<3级","wd_night":"东北风","date":"2021-02-20","week":"星期六"},{"text_day":"多云","text_night":"多云","high":2,"low":-10,"wc_day":"<3级","wd_day":"东风","wc_night":"<3级","wd_night":"西风","date":"2021-02-21","week":"星期日"},{"text_day":"多云","text_night":"多云","high":1,"low":-13,"wc_day":"3~4级","wd_day":"西南风","wc_night":"<3级","wd_night":"西北风","date":"2021-02-22","week":"星期一"},{"text_day":"多云","text_night":"晴","high":-6,"low":-14,"wc_day":"4~5级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-23","week":"星期二"},{"text_day":"晴","text_night":"多云","high":-2,"low":-10,"wc_day":"3~4级","wd_day":"西北风","wc_night":"<3级","wd_night":"西风","date":"2021-02-24","week":"星期三"}]},"message":"success"}】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"data_type", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"data_type", "district_id":"222405", "ak":""}
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:22) ] - [ INFO ]  调用接口前的数据验证
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:34) ] - [ INFO ]  根据接口编号【1】获取接口请求类型【get】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:36) ] - [ INFO ]  根据接口编号【1】获取接口请求地址【http://api.map.baidu.com/weather/v1/】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:39) ] - [ INFO ]  替换前变量值: {"data_type":"", "district_id":"${district_id}", "ak":""}
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:41) ] - [ INFO ]  替换后变量值: {"data_type":"", "district_id":"222405", "ak":""}
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:45) ] - [ INFO ]  开始调用接口
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:48) ] - [ INFO ]  比较期望值【{"status":42,"message":"不支持的数据类型"}】和实际值【{"status":42,"message":"不支持的数据类型"}】
+2021-02-20 23:40:22  [ method:utils.BaseProcessor.testBaiduWeather1(BaseProcessor.java:59) ] - [ INFO ]  调用接口后的数据验证

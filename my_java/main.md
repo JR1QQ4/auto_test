@@ -148,3 +148,37 @@ eclipse 集成 TestNG 步骤:
     4. 准备请求头数据（不需要就不设置）
     5. 发起请求，获取接口响应数据（状态吗、响应报文或某些特殊的响应数据）
     6. 处理数据
+	
+## Jenkins
+
+环境搭建:
+
+- Windows:
+	- 1.下载 war 包，jenkins.war
+	- 2.部署到 tomcat，把下载好的 war 包移动到 .\webapps\ 目录下
+	- 3.访问 `http://localhost:8080/jenkins/`
+	
+配置 Jenkins:
+
+- 全局工具配置:
+	- JDK 安装: 别名 jdk，选择本地路径
+	- Maven 安装: 去掉自动安装，选择本地路径
+- 插件管理
+	- 高级:
+		- 升级站点 URL: `https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
