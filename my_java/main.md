@@ -166,10 +166,22 @@ eclipse 集成 TestNG 步骤:
 - 插件管理
 	- 高级:
 		- 升级站点 URL: `https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json`
+	- 邮件配置，Email Extension插件
+		- 勾选了 Use SSL，需要更改 SMTP Port 端口为 465
+		- 在测试邮件发送功能时，需要把"系统管理员邮件地址"设为发送人的地址
 
+常见问题:
 
+1. 部署 jenkins 服务器出现 Please wait while Jenkins is getting ready to work ... 一直进不去该怎么办？
+	- 把 $user.home/.jenkins/hudson.model.UpdateCenter.xml 文件中的 url 地址修改为国内镜像`https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json`
 
+创建一个 Maven 项目:
 
+- 首先需要安装 maven integration 插件
+- 构建一个maven项目:
+	- Build:
+		- Root POM: pom.xml
+		- Goals and options: test，等价于执行命令 $mvn test
 
 
 

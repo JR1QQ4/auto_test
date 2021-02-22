@@ -41,7 +41,7 @@ public class BaseProcessor {
         logger.info("替换后变量值: " + parameter);
 
         Map<String, String> params = (Map<String, String>) JSONObject.parse(parameter);
-        params.put("ak", "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7");
+        params.put("ak", "");
         logger.info("开始调用接口");
         String actualResponseData = HttpUtil.handlePostAndGet(type, url, params);
 

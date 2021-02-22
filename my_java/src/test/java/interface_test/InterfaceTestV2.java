@@ -25,7 +25,7 @@ public class InterfaceTestV2 {
 //        Map<String, String> params1 =JSONObject.toJavaObject(jsonObject, Map.class);
 
         Map<String, String> params = (Map<String, String>) JSONObject.parse(parameters);
-        params.put("ak", "7tzUh9u1Pb53DY5yS6Wy5W0Kb2YSXMs7");
+        params.put("ak", "");
         String result = HttpUtil.handlePostAndGet(type, url, params);
         System.out.println(result);
 

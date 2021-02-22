@@ -13,28 +13,27 @@
 <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
 <!--    </properties>-->
 
+
     <dependencies>
+        <!--  接口自动化需要的插件  -->
         <!-- 添加log4j日志相关jar包:共3个jar-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
@@ -42,28 +41,24 @@
             <version>6.9.10</version>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.17</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.47</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -83,13 +78,27 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.9.10</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--  Web 自动化需要的插件  -->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<!--        <dependency>-->
+<!--            <groupId>org.testng</groupId>-->
+<!--            <artifactId>testng</artifactId>-->
+<!--            <version>6.14.3</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
     </dependencies>
 
@@ -108,30 +117,31 @@
 <!--        </repository>-->
 <!--    </repositories>-->
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.1</version>
-                <configuration>
-                    <!-- 设置系统变量，在后面定制化测试报表的时候用得上 -->
-<!--                    <systemPropertyVariables>-->
-<!--                        <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>-->
-<!--                    </systemPropertyVariables>-->
-                    <!-- 忽略测试套件执行过程中执行失败得测试方法，继续执行剩余得测试类和测试方法 -->
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <!-- 指定构建过程中得编码风格 -->
-                    <argLine>
-                        -Dfile.encoding=UTF-8
-                    </argLine>
-                    <!-- 指定构建（执行测试套件）时要执行得套件文件得路径 -->
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/java/testng.xml</suiteXmlFile>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--  maven 构建项目时需要配置的插件  -->
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>2.7.1</version>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; 设置系统变量，在后面定制化测试报表的时候用得上 &ndash;&gt;-->
+<!--&lt;!&ndash;                    <systemPropertyVariables>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </systemPropertyVariables>&ndash;&gt;-->
+<!--                    &lt;!&ndash; 忽略测试套件执行过程中执行失败得测试方法，继续执行剩余得测试类和测试方法 &ndash;&gt;-->
+<!--                    <testFailureIgnore>true</testFailureIgnore>-->
+<!--                    &lt;!&ndash; 指定构建过程中得编码风格 &ndash;&gt;-->
+<!--                    <argLine>-->
+<!--                        -Dfile.encoding=UTF-8-->
+<!--                    </argLine>-->
+<!--                    &lt;!&ndash; 指定构建（执行测试套件）时要执行得套件文件得路径 &ndash;&gt;-->
+<!--                    <suiteXmlFiles>-->
+<!--                        <suiteXmlFile>src/test/java/testng.xml</suiteXmlFile>-->
+<!--                        <suiteXmlFile>testng.xml</suiteXmlFile>-->
+<!--                    </suiteXmlFiles>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>
