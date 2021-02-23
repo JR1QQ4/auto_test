@@ -3,7 +3,12 @@
 <suite name="Suite">
     <test name="register">
         <classes>
-            <class name="web_test.FirefoxDemo" />
+            <class name="web_test.TestBrowser" />
         </classes>
     </test>
+
+    <parameter name="browser" value="chrome" />
+<!--    <parameter name="browser" value="firefox" />-->
+<!--    <parameter name="browser" value="ie" />-->
+
 </suite>

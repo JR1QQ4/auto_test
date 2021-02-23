@@ -16,7 +16,7 @@ public class ChromeDemo {
         driver.findElement(By.id("kw")).sendKeys("selenium-java web自动化测试");
 
         try {
-            Thread.sleep(8);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
