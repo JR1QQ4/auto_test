@@ -1,4 +1,4 @@
-package web_test;
+package web_test_demo;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

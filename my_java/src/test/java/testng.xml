@@ -3,7 +3,7 @@
 <suite name="Suite">
     <test name="register">
         <classes>
-            <class name="web_test.TestBrowser" />
+            <class name="web_test_demo.TestBrowser" />
         </classes>
     </test>
 

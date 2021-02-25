@@ -1,15 +1,15 @@
-package web_test;
+package web_test_demo;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class ChromeDemo {
+public class FirefoxDemo {
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\chromedriver.exe");
+        System.setProperty("webdriver.firefox.bin", "C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+        System.setProperty("webdriver.gecko.driver", "C:\\webdriver\\geckodriver.exe");
         // 1. 启动火狐浏览器
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         // 2.访问指定的网址
         driver.get("http://www.baidu.com");
         // 3.对网页进行操作
