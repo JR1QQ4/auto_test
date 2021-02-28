@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Pages>
+    <!--  定义一个注册页面  -->
+    <Page keyword="注册页面">
+        <UIElement keyword="手机号" by="id" value="js_phone" />
+        <UIElement keyword="密码" by="id" value="js_password" />
+        <UIElement keyword="密码确认" by="id" value="js_password_confirm" />
+        <UIElement keyword="验证码" by="id" value="js_pin" />
+    </Page>
+</Pages>
