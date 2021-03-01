@@ -47,6 +47,7 @@ public class TestLogin extends Base {
         String urlContains  = "index.html";
         Assertion.assertUrlContains(urlContains);
     }
+
     @DataProvider
     public Object[][] positiveData(){
         String[] columnNames = {"PhoneNumber", "Password"};

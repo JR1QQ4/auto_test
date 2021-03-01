@@ -173,6 +173,7 @@ eclipse 集成 TestNG 步骤:
 邮件模板:
 
 ```
+内容模板:
 <hr>
 (本邮件是程序自动下发的，请勿回复！)<br><hr>
 项目名称: $PROJECT_NAME <br><hr>
@@ -180,12 +181,20 @@ eclipse 集成 TestNG 步骤:
 svn版本号: ${SVN_REVISION} <br><hr>
 构建状态: $BUILD_STATUS <br><hr>
 触发原因: ${CAUSE} <br><hr>
-测试报告: <a href="http://127.0.0.1:8887/html/index.html">http://127.0.0.1:8887/html/index.html</a>
+测试报告: <a href="http://127.0.0.1:80/html/index.html">http://127.0.0.1:80/html/index.html</a>
 <br><hr>
 构建日志地址: <a href="${BUILD_URL}console">${BUILD_URL}console</a> <br><hr>
 构建地址: <a href="$BUILD_URL">$BUILD_URL</a> <br><hr>
 构建报告: <a href="${BUILD_URL}testReport">${BUILD_URL}testReport</a> <br><hr>
-变更集: 
+变更集: ${JELLY_SCRIPT.template="html"} <br><hr>
+
+邮件内容:
+Project Recipient List: 收件人，多个逗号隔开
+Project Reply-To List: 收到邮件者回复时回复的人，一般不会回复
+Content Type: 内容类型，这里采用 html
+Default Subject: 邮件主题，如：
+  自动化测试通知: $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS
+Default Content: 邮件内容
 ```
 
 常见问题:

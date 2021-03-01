@@ -51,6 +51,7 @@ public class CustomListener extends TestListenerAdapter {
      */
     private String getAccessPath(String toBeReplaced, String replacement, File file) {
         String absolutePath = file.getAbsolutePath();
+//        absolutePath = absolutePath.replace("\\", "/");
         String accessPath = absolutePath.replace(toBeReplaced, replacement);
         String img = "<img src=\"" + accessPath + "\" height='100px' width='100px'>" +
                 "<a href=\"" + accessPath + "\" target=\"_blank\">点击查看大图</a></img>";

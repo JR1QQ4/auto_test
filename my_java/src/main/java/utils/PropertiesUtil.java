@@ -24,7 +24,12 @@ public class PropertiesUtil {
         return properties.getProperty("excel.path");
     }
 
+    public static String getApiContentType(){
+        return properties.getProperty("api.content.type");
+    }
+
     public static void main(String[] args) {
         System.out.println(getExcelOath());
+        System.out.println(getApiContentType());
     }
 }

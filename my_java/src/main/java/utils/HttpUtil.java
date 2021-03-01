@@ -1,5 +1,6 @@
 package utils;
 
+import com.alibaba.fastjson.JSONObject;
 import interface_demo.Demo;
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
@@ -8,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -21,22 +23,40 @@ import java.util.*;
 public class HttpUtil {
     private static Logger logger = Logger.getLogger(HttpUtil.class);
 
+    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json;charset=utf-8";
+    private static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded;charset=utf-8";
+
     // 用于存放 cookie 信息
     public static Map<String, String> cookieMap = new HashMap<String, String>();
 
-    public static String handlePost(String url, Map<String, String> params) {
+    public static String handlePost(String url, Map<String, String> params, String contentType) {
         String httpResponseText = "";
         HttpPost httpPost = new HttpPost(url);
         List<BasicNameValuePair> pairList = new ArrayList<BasicNameValuePair>();
-        Set<String> keys = params.keySet();
 
-        for (String key :
-                keys) {
-            String value = params.get(key);
-            pairList.add(new BasicNameValuePair(key, value));
-        }
+//        Set<String> keys = params.keySet();
+//        for (String key :
+//                keys) {
+//            String value = params.get(key);
+//            pairList.add(new BasicNameValuePair(key, value));
+//        }
+
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(pairList, "utf-8"));
+            // 处理不同的数据提交类型
+            if (CONTENT_TYPE_APPLICATION_JSON.equalsIgnoreCase(contentType)){
+                httpPost.addHeader("Content-Type", CONTENT_TYPE_APPLICATION_JSON);
+                if (params != null && params.size() > 0){
+                    String jsonStr = JSONObject.toJSONString(params);
+                    httpPost.setEntity(new StringEntity(jsonStr));
+                }
+            }else if(CONTENT_TYPE_FORM.equalsIgnoreCase(contentType)){
+                httpPost.addHeader("Content-Type", CONTENT_TYPE_FORM);
+                List<BasicNameValuePair> parameters = prepareNameValuesPairs(params);
+                httpPost.setEntity(new UrlEncodedFormEntity(parameters));
+            }
+
+
+//            httpPost.setEntity(new UrlEncodedFormEntity(pairList, "utf-8"));
 
             HttpClient httpClient = HttpClients.createDefault();
             addCookieInRequestHeaderBeforeRequest(httpPost);
@@ -56,7 +76,7 @@ public class HttpUtil {
         return httpResponseText;
     }
 
-    public static String handleGet(String url, Map<String, String> params) {
+    public static String handleGet(String url, Map<String, String> params, String contentType) {
         Set<String> keys = params.keySet();
         int flag = 1;
         StringBuilder urlBuilder = new StringBuilder(url);
@@ -76,6 +96,13 @@ public class HttpUtil {
 
         try {
             HttpGet httpGet = new HttpGet(url);
+
+            // 指定接口提交的方式
+            if (CONTENT_TYPE_APPLICATION_JSON.equalsIgnoreCase(contentType)){
+                httpGet.addHeader("Content-Type", CONTENT_TYPE_APPLICATION_JSON);
+            }else if(CONTENT_TYPE_FORM.equalsIgnoreCase(contentType)){
+                httpGet.addHeader("Content-Type", CONTENT_TYPE_FORM);
+            }
 
             HttpClient httpClient = HttpClients.createDefault();
             addCookieInRequestHeaderBeforeRequest(httpGet);
@@ -97,10 +124,11 @@ public class HttpUtil {
 
     public static String handlePostAndGet(String type, String url, Map<String, String> params) {
         String result = "";
+        String contentType = PropertiesUtil.getApiContentType();
         if (type.toLowerCase().contains("get")) {
-            result = Demo.handleGet(url, params);
+            result = handleGet(url, params, contentType);
         } else if (type.toLowerCase().contains("post")) {
-            result = Demo.handlePost(url, params);
+            result = handlePost(url, params, contentType);
         }
         return result;
     }
@@ -138,5 +166,16 @@ public class HttpUtil {
                 }
             }
         }
+    }
+
+    private static List<BasicNameValuePair> prepareNameValuesPairs(Map<String, String> params){
+        List<BasicNameValuePair> parameters = new ArrayList<>();
+        Set<String> keys = params.keySet();
+        for (String key :
+                keys) {
+            String value = params.get(key);
+            parameters.add(new BasicNameValuePair(key, value));
+        }
+        return parameters;
     }
 }
