@@ -169,6 +169,24 @@ eclipse 集成 TestNG 步骤:
 	- 邮件配置，Email Extension插件
 		- 勾选了 Use SSL，需要更改 SMTP Port 端口为 465
 		- 在测试邮件发送功能时，需要把"系统管理员邮件地址"设为发送人的地址
+		
+邮件模板:
+
+```
+<hr>
+(本邮件是程序自动下发的，请勿回复！)<br><hr>
+项目名称: $PROJECT_NAME <br><hr>
+项目编号: $BUILD_NUMBER <br><hr>
+svn版本号: ${SVN_REVISION} <br><hr>
+构建状态: $BUILD_STATUS <br><hr>
+触发原因: ${CAUSE} <br><hr>
+测试报告: <a href="http://127.0.0.1:8887/html/index.html">http://127.0.0.1:8887/html/index.html</a>
+<br><hr>
+构建日志地址: <a href="${BUILD_URL}console">${BUILD_URL}console</a> <br><hr>
+构建地址: <a href="$BUILD_URL">$BUILD_URL</a> <br><hr>
+构建报告: <a href="${BUILD_URL}testReport">${BUILD_URL}testReport</a> <br><hr>
+变更集: 
+```
 
 常见问题:
 

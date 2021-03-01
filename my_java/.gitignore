@@ -12,6 +12,9 @@
 *.iws
 .idea/
 
+# 构建的项目报告
+test-output/
+
 # Maven
 target/
 

@@ -6,5 +6,17 @@
         <UIElement keyword="密码" by="id" value="js_password" />
         <UIElement keyword="密码确认" by="id" value="js_password_confirm" />
         <UIElement keyword="验证码" by="id" value="js_pin" />
+
+        <UIElement keyword="手机号错误信息" by="id" value="phone_info" />
+        <UIElement keyword="密码错误信息" by="id" value="pwd_info" />
+        <UIElement keyword="密码确认错误信息" by="id" value="pwd_confirm_info" />
+        <UIElement keyword="验证码错误信息" by="id" value="pin_info" />
+    </Page>
+
+    <!--  登录页面  -->
+    <Page keyword="登录页面">
+        <UIElement keyword="手机号" by="id" value="phoneNumber" />
+        <UIElement keyword="密码" by="id" value="password" />
+        <UIElement keyword="登录" by="id" value="js_btn" />
     </Page>
 </Pages>

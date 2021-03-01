@@ -1,6 +1,5 @@
 package base;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
@@ -9,7 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

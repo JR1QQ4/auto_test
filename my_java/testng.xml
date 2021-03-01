@@ -15,18 +15,49 @@
 <!--</suite>-->
 
 <!-- 只能有一个测试套件 -->
+<!--<suite name="Suite">-->
+<!--    <test name="register">-->
+<!--&lt;!&ndash;        <groups>&ndash;&gt;-->
+<!--&lt;!&ndash;            <run>&ndash;&gt;-->
+<!--&lt;!&ndash;                <include name="g1" />&ndash;&gt;-->
+<!--&lt;!&ndash;            </run>&ndash;&gt;-->
+<!--&lt;!&ndash;        </groups>&ndash;&gt;-->
+<!--        <classes>-->
+<!--            &lt;!&ndash; <class name="my_testng.TestParameterDemo" />&ndash;&gt;-->
+<!--            <class name="my_testng.TestParameterDemo" />-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <parameter name="browserName" value="Chrome"/>-->
+<!--    <parameter name="browserVersion" value="89.58.1180"/>-->
+<!--</suite>-->
+
 <suite name="Suite">
-    <test name="register">
-<!--        <groups>-->
-<!--            <run>-->
-<!--                <include name="g1" />-->
-<!--            </run>-->
-<!--        </groups>-->
+    <test name="注册">
         <classes>
-            <!-- <class name="my_testng.TestParameterDemo" />-->
-            <class name="my_testng.TestParameterDemo" />
+            <class name="web_test.TestRegister" />
         </classes>
     </test>
-    <parameter name="browserName" value="Chrome"/>
-    <parameter name="browserVersion" value="89.58.1180"/>
+
+    <test name="登录">
+        <classes>
+            <class name="web_test.TestLogin" />
+        </classes>
+    </test>
+
+    <parameter name="browser" value="chrome" />
+    <!--    <parameter name="browser" value="firefox" />-->
+    <!--    <parameter name="browser" value="ie" />-->
+
+    <parameter name="apacheDocumentRoot" value="C:\ZZZZZZ\auto_test\my_java\target\surefire-reports" />
+    <parameter name="host" value="http://localhost" />
+
+    <!--  配置监听器  -->
+    <listeners>
+        <listener class-name="reportng_demo.CustomListener" />
+        <!--        <listener class-name="org.uncommons.reportng.HTMLReporter" />-->
+<!--        <listener class-name="uncommons.reportng.HTT" />-->
+    </listeners>
 </suite>
+<!--
+mvn install:install-file -Dfile=C:\reportng-1.1.4.jar -DgroupId=org.uncommons -DartifactId=reportng -Dversion=1.1.4 -Dpackaging=jar -f pom-copy.xml
+-->

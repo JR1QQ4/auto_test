@@ -28,6 +28,18 @@ public class PropertiesUtil {
         return properties.getProperty("login.excel.path");
     }
 
+    public static String getUILibraryPath(){
+        return properties.getProperty("UILibrary.path");
+    }
+
+    public static String getRegisterUrl(){
+        return properties.getProperty("register.url");
+    }
+
+    public static String getLoginUrl(){
+        return properties.getProperty("login.url");
+    }
+
     public static void main(String[] args) {
         System.out.println(getRegisterExcelPath());
         System.out.println(getLoginExcelPath());

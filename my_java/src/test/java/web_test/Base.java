@@ -2,6 +2,7 @@ package web_test;
 
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -65,5 +66,21 @@ public class Base {
             e.printStackTrace();
         }
         driver.quit();
+    }
+
+    public void to(String url){
+        driver.get(url);
+    }
+
+    public void sendKeys(String keyword, String uiElementKeyword, String content){
+        UILibraryUtil.getElementByKeyword(keyword, uiElementKeyword).sendKeys(content);
+    }
+
+    public void click(String keyword, String uiElementKeyword){
+        UILibraryUtil.getElementByKeyword(keyword, uiElementKeyword).click();
+    }
+
+    public WebElement getElement(String keyword, String uiElementKeyword){
+        return UILibraryUtil.getElementByKeyword(keyword, uiElementKeyword);
     }
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Suite">
-    <test name="register">
+    <test name="注册">
         <classes>
             <class name="web_test.TestRegister" />
+        </classes>
+    </test>
+
+    <test name="登录">
+        <classes>
+            <class name="web_test.TestLogin" />
         </classes>
     </test>
 
@@ -11,4 +17,12 @@
 <!--    <parameter name="browser" value="firefox" />-->
 <!--    <parameter name="browser" value="ie" />-->
 
+    <parameter name="apacheDocumentRoot" value="C:\ZZZZZZ\auto_test\my_java\target\surefire-reports" />
+    <parameter name="host" value="http://localhost" />
+
+    <!--  配置监听器  -->
+    <listeners>
+        <listener class-name="reportng_demo.CustomListener" />
+        <listener class-name="org.uncommons.reportng.HTMLReporter" />
+    </listeners>
 </suite>
