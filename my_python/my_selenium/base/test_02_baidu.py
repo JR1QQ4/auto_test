@@ -27,16 +27,29 @@ driver.get(url)
 # driver.refresh()
 
 # Selenium WebDriver 属性
-name = driver.name
-current_url = driver.current_url
-title = driver.title
-page_source = driver.page_source
-current_window_handle = driver.current_window_handle
-windows_handles = driver.window_handles
+# name = driver.name
+# current_url = driver.current_url
+# title = driver.title
+# page_source = driver.page_source
+# current_window_handle = driver.current_window_handle
+# windows_handles = driver.window_handles
+#
+# pprint("name={}, current_url={}, title={}".format(name, current_url, title), indent=2)
+# # pprint("page_source=" + page_source)
+# pprint(current_window_handle)
+# pprint(windows_handles)
 
-pprint("name={}, current_url={}, title={}".format(name, current_url, title), indent=2)
-# pprint("page_source=" + page_source)
-pprint(current_window_handle)
-pprint(windows_handles)
+# driver.back()
+# driver.forward()
+# driver.refresh()
+# driver.close()  # 关闭当前 tab
+# driver.quit()  # 关闭浏览器
+# driver.switch_to.frame()
+# alert = driver.switch_to.alert
+# active_element = driver.switch_to.active_element
+# print(active_element)
+# ele = driver.find_element_by_id("kw")
+# print(ele)
+# print(active_element == ele)
 
 driver.quit()
