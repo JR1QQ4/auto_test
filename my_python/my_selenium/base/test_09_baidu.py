@@ -40,20 +40,59 @@ from selenium.webdriver.common.keys import Keys
 class TestCase(object):
     def __init__(self):
         self.driver = webdriver.Chrome()
+
+    def test_click(self):
+        # ActionChains(self.driver).click(on_element=None)
+        # ActionChains(self.driver).click_and_hold(on_element=None)
+        # ActionChains(self.driver).context_click(on_element=None)
+        # ActionChains(self.driver).double_click(on_element=None)
+        # ActionChains(self.driver).drag_and_drop(source=None, target=None)
+        # ActionChains(self.driver).drag_and_drop_by_offset(source=None, xoffset=0, yoffset=0)
+        # ActionChains(self.driver).key_down(value=Keys, element=None)
+        # ActionChains(self.driver).key_up(value=Keys, element=None)
+        # ActionChains(self.driver).move_by_offset(xoffset=0, yoffset=0)
+        # ActionChains(self.driver).move_to_element(to_element=None)
+        # ActionChains(self.driver).move_to_element_with_offset(to_element=None, xoffset=0, yoffset=0)
+        # ActionChains(self.driver).release(on_element=None)
+        # ActionChains(self.driver).send_keys(Keys)
+        # ActionChains(self.driver).send_keys_to_element(element=None, *Keys.ALT)
+        # ActionChains(self.driver).perform()
+
+        self.driver.get("http://sahitest.com/demo/clicks.htm")
+
+        btn = self.driver.find_element_by_xpath("/html/body/form/input[2]")
+        ActionChains(self.driver).double_click(btn).perform()
+        sleep(2)
+
+        btn = self.driver.find_element_by_xpath("/html/body/form/input[3]")
+        ActionChains(self.driver).click(btn).perform()
+        sleep(2)
+
+        btn = self.driver.find_element_by_xpath("/html/body/form/input[4]")
+        ActionChains(self.driver).context_click(btn).perform()
+        sleep(2)
+
+    def test_keys(self):
         self.driver.get("http://www.baidu.com")
 
-    def test(self):
-        ActionChains(self.driver).click(on_element=None)
-        ActionChains(self.driver).click_and_hold(on_element=None)
-        ActionChains(self.driver).context_click(on_element=None)
-        ActionChains(self.driver).double_click(on_element=None)
-        ActionChains(self.driver).drag_and_drop(source=None, target=None)
-        ActionChains(self.driver).drag_and_drop_by_offset(source=None, xoffset=0, yoffset=0)
-        ActionChains(self.driver).key_down(value=Keys, element=None)
-        ActionChains(self.driver).key_up(value=Keys, element=None)
-        ActionChains(self.driver).move_by_offset(xoffset=0, yoffset=0)
-        ActionChains(self.driver).move_to_element(to_element=None)
-        ActionChains(self.driver).move_to_element_with_offset(to_element=None, xoffset=0, yoffset=0)
+        # kw = self.driver.find_element_by_id("kw")
+        # kw.send_keys("Selenium")
+        # kw.send_keys(Keys.CONTROL, "a")
+        # sleep(2)
+        # kw.send_keys(Keys.CONTROL, "x")
+        # sleep(2)
+        # kw.send_keys(Keys.CONTROL, "v")
+        # sleep(2)
+
+        news_ele = self.driver.find_element_by_link_text("新闻")
+        ActionChains(self.driver).move_to_element(news_ele).perform()
+        sleep(2)
 
 
+if __name__ == '__main__':
+    case = TestCase()
 
+    # case.test_click()
+    case.test_keys()
+
+    case.driver.quit()
