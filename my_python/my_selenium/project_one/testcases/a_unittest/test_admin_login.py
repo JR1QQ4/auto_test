@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+import unittest
 from time import sleep
 
 from selenium import webdriver
@@ -9,13 +10,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from my_python.my_selenium.project_one.util import util
 
 
-class TestAdminLogin(object):
-    def __init__(self):
-        self.driver = webdriver.Chrome()
-        self.driver.get("http://localhost:8080/jpress/admin/login")
-        self.driver.maximize_window()
+class TestAdminLogin(unittest.TestCase):
 
-    def test_admin_login_code_error(self, flag=True):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.driver = webdriver.Chrome()
+        cls.driver.get("http://localhost:8080/jpress/admin/login")
+        cls.driver.maximize_window()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.driver.quit()
+
+    def test_admin_login_code_error(self):
         username = "chen"
         pwd = "chen"
         captcha = "666"
@@ -30,13 +37,12 @@ class TestAdminLogin(object):
         WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert = self.driver.switch_to.alert
 
-        assert alert.text == expected
+        self.assertEqual(alert.text, expected)
         alert.accept()
 
         sleep(2)
-        self.tear_down(flag)
 
-    def test_admin_login_right(self, flag=True):
+    def test_admin_login_right(self):
         username = "chen"
         pwd = "chen"
         captcha = ""
@@ -53,30 +59,27 @@ class TestAdminLogin(object):
 
         WebDriverWait(self.driver, 5).until(EC.title_is(expected))
 
-        assert self.driver.title == expected
+        self.assertEqual(self.driver.title, expected)
 
         sleep(2)
-        self.tear_down(flag)
 
-    def test_user_login_by_cookie(self, flag=True):
+    # @unittest.skip("直接跳过测试")
+    @classmethod
+    def admin_login_by_cookie(cls):
         """使用 Cookie 进行登录"""
-        self.driver.delete_all_cookies()
+        cls.driver = webdriver.Chrome()
+        cls.driver.get("http://localhost:8080/jpress/admin/login")
+        cls.driver.maximize_window()
+        cls.driver.delete_all_cookies()
         cookie_1 = {
             "name": "csrf_token",
-            "value": "21c5be73382f4792962f19150ff2b6d9",
+            "value": "9277db8f44cd4691a93e264a85d097fa",
         }
         cookie_2 = {
             "name": "_jpuid",
-            "value": "ODgyMjg3M2FhMmFhZjYzYTJjOWFmMGI4YjRlMjQ2ZGYjMTYxNTA1NzA4NDMyOSMxNzI4MDAjTVE9PQ=="
+            "value": "MDNjZTYwODI4NjAyN2UxNmVhZTFkMzFlZGMzZWRiOTAjMTYxNTEwOTg5Njg3NyMxNzI4MDAjTVE9PQ=="
         }
-        self.driver.add_cookie(cookie_1)
-        self.driver.add_cookie(cookie_2)
-        self.driver.get('http://localhost:8080/jpress/admin/index')
+        cls.driver.add_cookie(cookie_1)
+        cls.driver.add_cookie(cookie_2)
+        cls.driver.get('http://localhost:8080/jpress/admin/index')
 
-        self.tear_down(flag)
-
-    def tear_down(self, flag=True):
-        if flag:
-            self.driver.quit()
-        else:
-            pass

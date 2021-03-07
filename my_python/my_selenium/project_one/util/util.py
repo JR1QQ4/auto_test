@@ -79,17 +79,16 @@ def get_code(driver, id):
     # print(ce.size)
 
     # 如何系统的显示设置，设置了不是 100% 缩放，那么需要乘以比例系数
-    screen_ratio = 1.25
     left = ce.location['x']
     top = ce.location['y']
     right = ce.size['width'] + left
     bottom = ce.size['height'] + top
 
     # print(left, top, right, bottom)
-    # print(left * screen_ratio, top * screen_ratio, right * screen_ratio, bottom * screen_ratio)
 
     im = Image.open(picture_name1)
-    code_loc = (left * screen_ratio, top * screen_ratio, right * screen_ratio, bottom * screen_ratio)
+    dpr = driver.execute_script("return window.devicePixelRatio")
+    code_loc = (left * dpr, top * dpr, right * dpr, bottom * dpr)
     img = im.crop(code_loc)
 
     t = time.time()
