@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-import unittest
 from time import sleep
 
 from selenium import webdriver
@@ -9,20 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from my_python.my_selenium.project_one.util import util
 
+import pytest
 
-class TestAdminLogin(unittest.TestCase):
 
+class TestAdminLogin(object):
     @classmethod
-    def setUpClass(cls) -> None:
+    def setup_class(cls):
         cls.driver = webdriver.Chrome()
         cls.driver.get("http://localhost:8080/jpress/admin/login")
         cls.driver.maximize_window()
 
-    # @classmethod
-    # def tearDownClass(cls) -> None:
-    #     cls.driver.quit()
+    @classmethod
+    def teardown_class(cls):
+        cls.driver.quit()
 
-    @unittest.skip("直接跳过测试")
+    @pytest.mark.skip()
     def test_admin_login_code_error(self):
         username = "chen"
         pwd = "chen"
@@ -38,12 +38,12 @@ class TestAdminLogin(unittest.TestCase):
         WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert = self.driver.switch_to.alert
 
-        self.assertEqual(alert.text, expected)
+        assert alert.text == expected
         alert.accept()
 
         sleep(2)
 
-    @unittest.skip("直接跳过测试")
+    @pytest.mark.skip()
     def test_admin_login_right(self):
         username = "chen"
         pwd = "chen"
@@ -61,24 +61,24 @@ class TestAdminLogin(unittest.TestCase):
 
         WebDriverWait(self.driver, 5).until(EC.title_is(expected))
 
-        self.assertEqual(self.driver.title, expected)
+        assert self.driver.title == expected
 
         sleep(2)
 
-    # @unittest.skip("直接跳过测试")
+    @pytest.mark.dependency(name='admin_login')
     def test_admin_login_by_cookie(self):
         """使用 Cookie 进行登录"""
-        # cls.driver = webdriver.Chrome()
-        # cls.driver.get("http://localhost:8080/jpress/admin/login")
-        # cls.driver.maximize_window()
+        # self.driver = webdriver.Chrome()
+        # self.driver.get("http://localhost:8080/jpress/admin/login")
+        # self.driver.maximize_window()
         self.driver.delete_all_cookies()
         cookie_1 = {
             "name": "csrf_token",
-            "value": "9277db8f44cd4691a93e264a85d097fa",
+            "value": "e12fe88ee17c4af78e6bd8598ab87ac7",
         }
         cookie_2 = {
             "name": "_jpuid",
-            "value": "MDNjZTYwODI4NjAyN2UxNmVhZTFkMzFlZGMzZWRiOTAjMTYxNTEwOTg5Njg3NyMxNzI4MDAjTVE9PQ=="
+            "value": "NzQxMTI5MGVjMGQ5OGZlNDhhNWY2ODUxZTNlNDJhYmQjMTYxNTE5MzY5NDk4NiMxNzI4MDAjTVE9PQ=="
         }
         self.driver.add_cookie(cookie_1)
         self.driver.add_cookie(cookie_2)
@@ -86,4 +86,4 @@ class TestAdminLogin(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main(['test_admin_login.py'])

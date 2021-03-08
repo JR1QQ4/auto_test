@@ -540,23 +540,33 @@ unittest 编写测试用例规则:
 - Test Fixture 代表执行一个或多个测试所需的环境准备，以及关联的清理动作，例如 setUp()/tearDown()等
 
 ```python
-from calculator import Calculator
 import unittest
-class TestCalculator(unittest.TestCase):
-    def setUp(self) -> None:
-        print("test start : ")
-    def tearDown(self) -> None:
-        print("test end")
-if __name__ == '__main__':
-    # 创建测试套件
-    suit = unittest.TestSuite()
-    suit.addTest(TestCalculator("test_add"))
-    suit.addTest(TestCalculator("test_sub"))
-    suit.addTest(TestCalculator("test_mul"))
-    suit.addTest(TestCalculator("test_div"))
-    # 创建测试运行器
-    runner = unittest.TextTestRunner()
-    runner.run(suit)
+from my_python.my_selenium.project_one.testcases.base import test_user_register
+from my_python.my_selenium.project_one.testcases.base.test_user_register import TestUserRegister
+
+# 1. 创建加载器
+loader = unittest.TestLoader()
+# 2. 创建测试套件
+suite = unittest.TestSuite()
+
+# 3.1 通过方法名、类名添加测试套件 
+# suite.addTest(loader.loadTestsFromName('test_register_code_error', TestUserRegister))
+# suite.addTest(loader.loadTestsFromName('test_register_code_right', TestUserRegister))
+
+# 3.2 通过测试类名添加测试套件
+suite.addTest(loader.loadTestsFromTestCase(TestCategory))
+
+# 3.3 通过测试模块添加测试套件
+# suite.addTest(loader.loadTestsFromModule(test_user_register))
+
+# 3.4 直接添加测试套件
+# suite.addTest(TestUserRegister('test_register_code_error'))
+# suite.addTest(TestUserRegister('test_register_code_right'))
+
+# 4. 创建运行组件
+runner = unittest.TextTestRunner(verbosity=2)
+# 4.1 运行测试套件
+runner.run(suite)
 ```
 
 断言方法：
@@ -606,7 +616,7 @@ HTMLTestRunner 是 unittest 的一个扩展，它可以生成易于使用的 HTM
 import unittest
 import os
 import time
-from python.selenium.unit_report.HTMLTestRunner import HTMLTestRunner
+from my_python.my_selenium.unit_report.HTMLTestRunner import HTMLTestRunner
 path_dir = os.path.dirname(__file__)
 timer = time.strftime("%Y-%m-%d_%H_%M-%S")
 report_file = path_dir + "\\report\\" + timer + ".html"
@@ -811,156 +821,183 @@ class TestBaidu(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
-
+ 
 ### pytest 单元测试框架
 
 pytest 是一个第三方单元测试框架， 更加简单、灵活，而且提供了更加丰富的扩展，弥补了 unittest 在做 Web 自动化测试时的一些不足
 
-```python
-# $ pip install -U pytest， 在当前文件夹打开 cmd 并运行$ pytest 
-# def inc(x):
-#     return x + 1
-# def test_answer():
-#     assert inc(3) == 5
+- 安装: `$ pip install pytest`
+- 运行:
+    - 命令行运行: `$ pytest 参数 参数值`，方便集成 Jenkins
+        - pytest 运行时参数，`$ pytest --help` 或者 `$ pytest -h` 查看帮助:
+            - "-s" 参数用于关闭捕捉，从而输出打印信息，用于显示测试函数中 print() 函数输出
+            - "-v" 参数用于增加测试用例冗长，用于显示每个测试函数的执行结果
+            - "-q" 只显示整体测试结果
+            - "-x, --exitfirst" 在第一个错误或测试失败时立即退出 
+            - `pytest -k add test_assert.py`，运行名称中包含某字符串的测试用例
+            - `pytest -q test_assert.py`，减少测试的运行冗长
+            - `pytest -x test_fail.py`，如果出现一条测试用例失败，则退出测试
+            - `pytest ./test_dir`，运行测试目录
+            - `pytest test_fixtures_02.py::TestMultiply::test_numbers_5_6`，指定特定类或方法执行
+    - main 函数中运行: `pytest.main(['-sv', 'test_01.py'])` 或者 `pytest.main(['-s', '-v', 'test_01.py'])`
+- 断言: 使用的 python 自带的断言 `assert`
+    - 测试相等: `assert add(3, 4) == 7`，unittest 用 assertEqual()
+    - 测试不相等: `assert add(17, 22) != 50`
+    - 测试大于或等于: `assert add(17, 22) <= 50`
+    - 测试小于或等于: `assert add(17, 22) >= 38`
+    - 测试包含与不包含: `assert b in a`、`assert b not in a`
+    - 判断是否为 True: `assert is_prime(13)`、`assert not is_prime(4)`、`assert is_prime(6) is not True`
+- 安装: pytest 安装时默认在...\Python37\Scripts\目录下生成 pytest.exe，因此能在 cmd 中运行 pytest 命令：
+    - 规范: 测试文件和测试函数必须以 test 开头；测试类以 Test 开头，并且不能带有 init 方法
 
-# $ pytest -q 当前文件名.py
-# import pytest
-# def f():
-#     raise SystemExit(1)
-# def test_mytest():
-#     with pytest.raises(SystemExit):
-#         f()
+#### 标记
 
-# $ pytest -q 当前文件名.py
-class TestClass:
-    def test_one(self):
-        x = "this"
-        assert 'h' in x
-    def test_two(self):
-        x = "hello"
-        assert hasattr(x, "check")
+pytest 标记:
+
+- 查找测试策略:
+    - 默认情况下，pytest 会递归查找当前目录下所有以 test 开始或结尾的 python 脚本
+    - 并执行文件内的所有以 test 开头或结束的函数和方法
+- 标记测试函数: 由于某些原因(如 test_func2 的功能尚未开发完成)，我们只想执行指定的测试函数，在 pytest 中有几种方法可以解决
+    - 第一种，显示指定函数名，通过 `::` 标记，如 `test_no_mark.py::test_func1` 只执行 test_no_mark.py 中的 test_func1
+    - 第二种，使用模糊匹配，使用 `-k` 选项标记，如 `$ pytest -k func1 test_no_mark.py`
+    - 第三种，使用 `pytest.mark` 在函数上进行标记，步骤:
+        - 1.注册标签名，通过 `.ini` 配置文件，格式如下
+        - 2.给用例打上标记
+        - 3.运行 `pytest -m do -s test_mark.py`
+
+```shell script
+[pytest]
+markers =
+    do: need test
+    undo: do not need test
 ```
 
-pytest 安装时默认在...\Python37\Scripts\目录下生成 pytest.exe，因此能在 cmd 中运行 pytest 命令：
-
-- pytest 不必像 unittest 必须创建测试类; 使用 assert 断言比 unittest 提供的断言方法更加简单
-- 测试文件和测试函数必须以"test"开头
-- 除了命令行运行外，也可使用 main()方法: `import pytest; pytest.main()`
-
-断言：
-
-- 测试相等: `assert add(3, 4) == 7`，unittest 用 assertEqual()
-- 测试不相等: `assert add(17, 22) != 50`
-- 测试大于或等于: `assert add(17, 22) <= 50`
-- 测试小于或等于: `assert add(17, 22) >= 38`
-- 测试包含与不包含: `assert b in a`、`assert b not in a`
-- 判断是否为 True: `assert is_prime(13)`、`assert not is_prime(4)`、`assert is_prime(6) is not True`
+#### Fixture
 
 Fixture 通常用来对测试方法、测试函数、测试类和整个测试文件进行初始化或还原测试环境:
 
 - 模块级别和函数级别的 Fixture:
-    - setup_module/teardown_module: 在当前文件中，在所有测试用例执行之前与之后执行
-    - setup_function/teardown_function: 在每个测试函数之前与之后执行
-    - setup/teardown: 在每个测试函数之前与之后执行。这两个方法同样可以作用于类方法
+    - setup_module/teardown_module: 在当前文件中，在所有测试用例执行之前与之后执行，优先级1
+    - setup_function/teardown_function: 在每个测试函数之前与之后执行，优先级2
+    - setup/teardown: 在每个测试函数之前与之后执行。这两个方法同样可以作用于类方法，优先级3
 - 类级别和方法级别的 Fixture
-    - setup_class/teardown_class: 在当前测试类的开始与结束时执行
+    - setup_class/teardown_class: 在当前测试类的开始与结束时执行，需要指定为类方法 `@classmethod`
     - setup_method/teardown_method: 在每个测试方法开始与结束时执行
     - setup/teardown: 在每个测试方法开始与结束时执行，同样可以作用于测试函数
 
 ```python
-# 模块级别和函数级别
-# 功能函数
-def multiply(a, b):
-    return a * b
-# =====Fixture========
-def setup_module(module):
-    print("setup_module================>")
-def teardown_module(module):
-    print("teardown_module=============>")
-def setup_function(function):
-    print("setup_function------>")
-def teardown_function(function):
-    print("teardown_function--->")
-def setup():
-    print("setup----->")
-def teardown():
-    print("teardown-->")
-# =====测试用例========
-def test_multiply_3_4():
-    print('test_numbers_3_4')
-    assert multiply(3, 4) == 12
-def test_multiply_a_3():
-    print('test_strings_a_3')
-    assert multiply('a', 3) == 'aaa'
+import pytest
+@pytest.fixture()
+def init():
+    print("---init---")
+def test01(init):
+    print("---test01---")
+def test02(init):
+    print("---test01---")
 if __name__ == '__main__':
-    import pytest
-    pytest.main(['-s'])  # 等价于在 cmd 中运行$ pytest -s，用于关闭捕捉，从而输出打印信息
+    pytest.main(['-sv'])
 ```
 
-```python
-# 类级别和方法级别
-# 功能函数
-def multiply(a, b):
-    return a * b
-class TestMultiply:
-    # =====Fixture========
-    @classmethod
-    def setup_class(cls):
-        print("setup_class=========>")
-    @classmethod
-    def teardown_class(cls):
-        print("teardown_class=========>")
-    def setup_method(self, method):
-        print("setup_method----->>")
-    def teardown_method(self, method):
-        print("teardown_method-->>")
-    def setup(self):
-        print("setup----->")
-    def teardown(self):
-        print("teardown-->")
-    # =====测试用例========
-    def test_numbers_5_6(self):
-        print('test_numbers_5_6')
-        assert multiply(5, 6) == 30
-    def test_strings_b_2(self):
-        print('test_strings_b_2')
-        assert multiply('b', 2) == 'bb'
-if __name__ == '__main__':
-    import pytest
-    pytest.main(['-s'])
-```
+#### 参数化
 
 pytest 本身是支持参数化的，不需要额外安装插件:
+
+- 使用的工具就是 `@pytest.mark.parametrize(argnames, argvalues)`
+    - argnames 参数的名称，对应函数的名称，多个参数使用 `逗号` 隔开
+    - argvalues 参数的值，可以接受的参数类型有: 列表、元组、字典
+    - 还可以设置 id
 
 ```python
 import pytest
 import math
+@pytest.mark.skip
 @pytest.mark.parametrize(
     "books, exponent, expected",  # 参数的名称，对应测试函数中的参数
     [(2, 2, 4),  # 参数列表
      (2, 3, 8),
      (1, 9, 1),
      (0, 9, 0)],
-    ids=["case1", "case2", "case3", "case4"]  # 默认为None，测试用例的名称
+    ids=["case1", "case2", "case3", "case4"]  # 默认为None，测试用例的名称，个数必须和参数列表个数一致
 )
 def test_pow(base, exponent, expected):
     assert math.pow(base, exponent) == expected
+data1 = [
+    pytest.param(1, 2, 3, id="(a + b):pass"),
+    pytest.param(4, 5, 10, id="(a + b):fail"),
+]
+def add(a, b):
+    return a + b
+@pytest.mark.parametrize("a, b, expected", data1)
+def test_parameterize_1(a, b, expected):
+    assert add(a, b) == expected
 if __name__ == '__main__':
-    pytest.main(['-v'])  # 增加测试用例冗长
+    pytest.main(['-sv'])  # 增加测试用例冗长
 ```
 
-pytest 运行时参数，`$ pytest --help`查看帮助:
+#### 测试报告
 
-- "-s" 参数用于关闭捕捉，从而输出打印信息
-- "-v" 参数用于增加测试用例冗长
-- `pytest -k add test_assert.py`，运行名称中包含某字符串的测试用例
-- `pytest -q test_assert.py`，减少测试的运行冗长
-- `pytest -x test_fail.py`，如果出现一条测试用例失败，则退出测试
-- `pytest ./test_dir`，运行测试目录
-- `pytest test_fixtures_02.py::TestMultiply::test_numbers_5_6`，指定特定类或方法执行
+allure:
 
+- 安装: `$ pip install allure-pytest`
+- 下载 allure，并配置环境变量用于命令行使用: 
+    - `http://dl.bintray.com/qameta/generic/io/qameta/allure/allure/2.7.0/`
+    - `https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/`
+- 运行:
+    - 生成测试报告 必须在命令行执行；首先切换到项目的目录，然后再来执行
+    - 生成只能在线运行的测试报告: `$ pytest --alluredir ./report`
+    - 展示只能在线运行的测试报告: `$ allure serve ./report`，不是 server 是 serve
+    - 生成最终版的测试报告: `$ allure generate ./report`，会生成一个 allure-report 的文件夹
+    - 运行查看最终版的测试报告: `$ allure open -h 127.0.0.1 -p 8888 ./allure-report`
+    
+| 使用方法 | 参数值 | 参数说明 |
+| ---- | ---- | ---- |
+| @allure.epic() | epic描述 | 敏捷里面的概念，定义史诗，往下是feature |
+| @allure.feature() | 模块名称 | 功能点的描述，往下是story |
+| @allure.story() | 用户故事 | 用户故事，往下是title |
+| @allure.title(用例的标题) | 用例的标题 | 重命名html报告名称 |
+| @allure.testcase() | 测试用例的链接地址 | 对应功能测试用例系统里面的链接 |
+| @allure.issue() | 缺陷 | 对应缺陷管理系统里面的链接 |
+| @allure.description() | 用例描述 | 测试用例的描述 |
+| @allure.step() | 操作步骤 | 测试用例的步骤 |
+| @allure.severity() | 用例等级 | blocker，critical，normal，minor，trivial |
+| @allure.link() | 链接 | 定义一个链接，在测试报告展现 |
+| @allure.attachment() | 附件 | 报告添加附件 |
 
-生成测试报告: 
+```python
+import pytest
+import allure
+@pytest.fixture(scope="session")
+def login():
+    print("用户登录")
+@allure.step("步骤1: 点xxx")
+def step_1():
+    print("step 1")
+@allure.step("步骤2: 点xxx")
+def step_2():
+    print("step 2")
+@allure.feature("编辑页面")
+class TestEditPage(object):
+    """编辑页面"""
+    @allure.story("这是第一个xxx的用例")
+    @allure.testcase("测试文章管理")
+    def test_1(self, login):
+        """用例描述: 先登陆，再去执行xxx"""
+        step_1()
+        step_2()
+        print("xxx")
+    @allure.story("打开a页面")
+    @allure.testcase("测试发表文章")
+    def test_2(self, login):
+        """用例描述: 先登录，再去执行yyy"""
+        print("yyy")
+if __name__ == '__main__':
+    # 注意生成测试报告 必须在命令行执行
+    # $ pytest --alluredir ./report test_allure.py
+    # $ allure serve ./report，启动 allure 查看报告
+    pytest.main(['--alluredir', './report', 'test_allure.py'])
+```
+
+其他方式生成测试报告: 
 
 1. 生成 JUnit XML 文件: `$ pytest ./test_dir --junit-xml=./report/log.xml`
 2. 生成在线测试报告: `> pytest ./test_dir --pastebin=all`
@@ -996,6 +1033,10 @@ pytest-parallel 扩展可以实现测试用例的并行运行:
 
 - 安装: `$ pip ins tall pytest-parallel`，新版本可能存在问题，可回退版本 `pip install pytest-parallel==0.0.10`
 - 运行: `pytest -q test_parallel.py --tests-per-worker auto`，Windows 下自动分配线程数
+
+pytest-dependency 解决依赖问题:
+
+- 安装 `$ pip install pytest-dependency`
 
 #### 构建 Web 自动化测试项目
 
