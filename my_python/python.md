@@ -1037,6 +1037,101 @@ pytest-parallel 扩展可以实现测试用例的并行运行:
 pytest-dependency 解决依赖问题:
 
 - 安装 `$ pip install pytest-dependency`
+- 使用:
+    - 设置为依赖 `@pytest.mark.dependency(name='admin_login')`
+    - 添加依赖 `@pytest.mark.dependency(depends=["admin_login"], scope="module")`
+
+#### 日志
+
+logging: `import logging`
+
+- logging 模块定义的常用函数:
+    - logging.debug()、logging.info()、logging.warning()、logging.error()、logging.critical()
+    - logging.log(level, msg, *args, **kwargs)、logging.basicConfig(**kwargs)
+- logging 模块的四大组件:
+    - loggers: 提供应用程序代码直接使用的接口
+    - handlers: 用于将日志记录发送到指定的目的位置
+    - filters: 提供更细颗粒的日志过滤功能，用于决定哪些日志将会被输出（其它的日志记录将会被忽略）
+    - formatters: 用于控制日志信息的最终输出格式
+
+logging.basicConfig() 函数说明(参数名称-描述):
+
+- filename 指定日志输出目标文件的文件名，指定该设置项后日志信息就不会输出到控制台了
+- filemode 指定日志文件的打开模式，默认为 `a`，需要注意的是，该选项要在 filename 指定时才有效
+- format 指定日志格式字符串，即指定日志输出时所包含的字段信息以及它们的顺序；logging 模块定义的格式字段下面会列出
+- level 指定日志器的日志级别
+- stream 指定日志输出目标 stream，如 sys.stdout、sys.stderr 以及网络 stream；需要说明的是，stream 和 filename 不能同时提供
+- style Python3.2 中新添加的配置项；指定 format 格式字符串的风格，可取值 `%`、`(` 和 `$`，默认 `%`
+- handlers Python3.3 中新添加的配置项；该选项如果被指定，它应该是一个创建了多个 Handlers 的可迭代对象，这些 handler 将会被添加到 
+root logger；需要说明的是: filename、stream 和 handlers 这三个配置项只能有一个存在，不能同时出现 2 个或 3 个，否则会引发异常
+
+logging 模块的格式字符串(使用格式-描述):
+
+- %(asctime)s 日志事件发生的时间-人类可读时间，如 2003-07-08 16:49:45.896
+- %(created)f 日志事件发生的时间-时间戳，就是当时调用 time.time() 函数返回的值
+- %(relativeCreated)d 日志事件发生的时间相对于 logging 模块加载时间的相对毫秒数
+- %(msecs)d 日志事件发生事件的毫秒部分
+- %(levelname)s 该日志记录的文字形式的日志级别
+- %(levelno)s 该日志记录的数字形式的日志级别 (10, 20, 30, 40, 50)
+- %(name)s 所使用的日志器名称；默认是 root，因为默认使用的是 rootLogger
+- %(message)s 日志记录的文本内容，通过 `msg % args` 计算得到的
+- %(pathname)s 调用日志记录函数的源码文件的全路径
+- %(filename)s pathname 的文件名部分，包含文件后缀
+- %(module)s filename 的名称部分，不包含后缀
+- %(lineno)d 调用日志记录函数的源代码所在的行号
+- %(funcName)s  调用日志记录函数的函数名
+- %(process)d 进程 ID
+- %(processName)s 进程名称
+- %(thread)d 线程 ID
+- %(threadName)s 线程名称
+
+Logger 类相关方法:
+
+- Logger.setLevel() 设置日志器将会处理的日志消息的最低严重级别
+- Logger.addHandler() 和 Logger.removeHandler() 为该 logger 对象添加和移除一个 handler 对象
+- Logger.addFilter() 和 Logger.removeFilter() 为该 logger 对象添加和移除一个 filter 对象
+- Logger.debug(),Logger.info(),Logger.warning(),Logger.error(),Logger.critical() 创建一个与它们的方法名对应等级的日志记录
+- Logger.exception() 创建一个类似与 Logger.error() 的日志消息
+- Logger.log() 需要获取一个明确的日志 level 参数来创建一个日志记录
+
+```python
+import logging
+import logging.handlers
+import datetime
+# 方法一: 基础版本
+# format_str = "【%(levelname)s】%(asctime)s - %(filename)s - %(module)s - %(lineno)d: %(message)s"
+# logging.basicConfig(
+#     filename="log.log",
+#     level=logging.INFO,
+#     format=format_str
+# )
+# logging.debug("debug")
+# logging.info("info")
+# logging.warning("warning")
+# logging.error("error")
+# logging.critical("critical")
+
+# 方法二： 使用 Logger 对象
+logger = logging.getLogger("myLogger")
+logger.setLevel(logging.DEBUG)
+# rf_handler = logging.handlers.TimedRotatingFileHandler('all.log', when='midnight', interval=1, backupCount=7,
+#                                                       atTime=datetime.time())
+# rf_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+# logger.addHandler(rf_handler)
+fh_error = logging.FileHandler('error.log')
+fh_error.setLevel(logging.ERROR)
+fh_error.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s - %(module)s[%(lineno)d] : %(message)s"))
+fh_all = logging.FileHandler('all.log')
+fh_all.setLevel(logging.DEBUG)
+fh_all.setFormatter(logging.Formatter("[%(levelname)s] - %(asctime)s - %(filename)s - %(module)s[%(lineno)d] : %(message)s"))
+logger.addHandler(fh_error)
+logger.addHandler(fh_all)
+logger.debug("debug")
+logger.info("info")
+logger.warning("warning")
+logger.error("error")
+logger.critical("critical")
+```
 
 #### 构建 Web 自动化测试项目
 

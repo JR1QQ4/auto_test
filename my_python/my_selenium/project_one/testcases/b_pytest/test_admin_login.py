@@ -17,12 +17,15 @@ class TestAdminLogin(object):
         cls.driver = webdriver.Chrome()
         cls.driver.get("http://localhost:8080/jpress/admin/login")
         cls.driver.maximize_window()
+        cls.logger = util.get_logger()
+        cls.logger.info("开始测试管理员登录...")
 
     @classmethod
     def teardown_class(cls):
         cls.driver.quit()
+        cls.logger.info("结束管理员登录测试...")
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_admin_login_code_error(self):
         username = "chen"
         pwd = "chen"
@@ -30,15 +33,22 @@ class TestAdminLogin(object):
         expected = "验证码不正确，请重新输入"
 
         self.driver.find_element_by_name("user").send_keys(username)
+        self.logger.debug("输入用户名: %s", username)
         self.driver.find_element_by_name("pwd").send_keys(pwd)
+        self.logger.debug("输入密码: %s", pwd)
         self.driver.find_element_by_name("captcha").send_keys(captcha)
+        self.logger.debug("输入验证码: %s", captcha)
 
         self.driver.find_element_by_class_name("btn").click()
+        self.logger.debug("点击登录")
 
         WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert = self.driver.switch_to.alert
 
-        assert alert.text == expected
+        try:
+            assert alert.text == expected + '1'
+        except AssertionError as e:
+            self.logger.error("管理员登录，实际结果和期望结果 %s", "断言失败", exc_info=1)
         alert.accept()
 
         sleep(2)

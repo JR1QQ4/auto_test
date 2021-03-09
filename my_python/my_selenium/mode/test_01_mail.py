@@ -12,9 +12,9 @@ from selenium import webdriver
 # login_frame = driver.find_element_by_css_selector("iframe[id^='x-URS-iframe']")
 # driver.switch_to.frame(login_frame)
 # driver.find_element_by_name("email").clear()
-# driver.find_element_by_name("email").send_keys("chenjunrenyx")
+# driver.find_element_by_name("email").send_keys("")
 # driver.find_element_by_name("password").clear()
-# driver.find_element_by_name("password").send_keys("mail18428308932")
+# driver.find_element_by_name("password").send_keys("")
 # driver.find_element_by_id("dologin").click()
 # # 登录之后的动作
 # sleep(5)
@@ -26,7 +26,7 @@ class Mail():
     def __init__(self, driver: webdriver):
         self.driver = driver
 
-    def login(self, username="chenjunrenyx", password="mail18428308932"):
+    def login(self, username="", password=""):
         login_frame = self.driver.find_element_by_css_selector("iframe[id^='x-URS-iframe']")
         self.driver.switch_to.frame(login_frame)
         self.driver.find_element_by_name("email").clear()

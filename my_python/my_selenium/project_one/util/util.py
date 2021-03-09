@@ -133,6 +133,32 @@ def load_cookie(driver, path):
             driver.add_cookie(cookie)
 
 
+def get_logger():
+    import logging
+    import os
+
+    logger = logging.getLogger("myLogger")
+    logger.setLevel(logging.DEBUG)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    fh_error = logging.FileHandler(base_dir + '/logs/error.log')
+    fh_error.setLevel(logging.ERROR)
+    fh_error.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s - %(module)s[%(lineno)d] : "
+                                            "%(message)s"))
+
+    fh_all = logging.FileHandler(base_dir + '/logs/all.log')
+    fh_all.setLevel(logging.DEBUG)
+    fh_all.setFormatter(logging.Formatter("[%(levelname)s] - %(asctime)s - %(filename)s - %(module)s[%(lineno)d] : "
+                                          "%(message)s"))
+
+    logger.addHandler(fh_error)
+    logger.addHandler(fh_all)
+
+    logger.info("=" * 56)
+
+    return logger
+
+
 if __name__ == '__main__':
     print("--------util.util---------")
 
@@ -167,14 +193,15 @@ if __name__ == '__main__':
     #     result = pickle.load(file)
     #     print(result)
 
-    import time
-    driver = webdriver.Chrome()
-    driver.get("http://localhost:8080/jpress/user/register")
-    driver.maximize_window()
-    time.sleep(2)
-    id = "captchaimg"
-    print("code: " + get_code(driver, id))
-    driver.quit()
+    # import time
+    #
+    # driver = webdriver.Chrome()
+    # driver.get("http://localhost:8080/jpress/user/register")
+    # driver.maximize_window()
+    # time.sleep(2)
+    # id = "captchaimg"
+    # print("code: " + get_code(driver, id))
+    # driver.quit()
 
     # driver = webdriver.Chrome()
     # driver.get("http://localhost:8080/jpress/user/register")
@@ -184,3 +211,6 @@ if __name__ == '__main__':
     # driver.save_screenshot("test1.png")
     # img.screenshot("img.png")
     # driver.quit()
+
+    # get_logger().info("hello")
+

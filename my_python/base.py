@@ -112,3 +112,7 @@
 #     .send(to='', subject='subject', contents='This is the body',
 #           attachments=[''])
 
+# import os
+#
+# excel_path = os.path.dirname(os.path.abspath(__file__)) + "/data_file/user_info.xlsx"
+# print(excel_path)

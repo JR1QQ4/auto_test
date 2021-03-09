@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/my_python/my_selenium/project_one/logs/all.log" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/my_python/my_selenium/project_one/logs/error.log" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/my_python/my_selenium/project_one/logs/log.log" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/my_selenium/web_driver_three/data_frame/log_out/DataDriverFrameWork.log" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
