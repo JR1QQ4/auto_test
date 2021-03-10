@@ -45,3 +45,51 @@ PIE MODEL模型：执行fault -> 出现Error(可能不出现中间状态) -> Fai
 (1)流程图中区域的数量对应于环形复杂度
 (2)给定流图G的环形复杂度V(G)，定义为V(G)=E-N+2，E是图中边的数量，N是图中节点的数量
 (3)V(G)=P+1，P是流图G中的判定节点数
+
+## Linux
+
+### grep、sed、awk
+
+grep: 根据用户指定的模式(pattern)对目标文本进行过滤，显示被模糊匹配到的行
+
+- `grep -n root passwd.txt`，显示行号
+- `grep -v root passwd.txt`，反选
+- `grep ^root passwd.txt`，`grep root$ passwd.txt`，开始与结尾
+
+sed: 是流编辑器，一次处理一行内容，行存储在模式空间中
+
+- `sed -e '1 a drink tea' passwd.txt`，a 标识添加，1 表示行号，drink tea 表示追加的文本，源文件不会改变，可以使用重定向保存
+- `sed -e '2i newline' passwd.txt`，在第 2 行前面插入 newline，`-e` 后面接的就是需要执行的脚本
+- `sed -e 's/root/hello/g' passwd.txt`，全局替换，把 root 替换成 hello
+- `sed -e '2,5c No 2-5 number' passwd.txt`，第 2 行到第 5 行会被 No 2-5 number 取代
+- `sed -i "50,60d" passwd.txt`，`-i` 会修改源文件，删除50到60行的内容并保存修改后的文件
+- `sed -n '/root/p' passwd.txt`，会打印包含 root 的行
+
+awk: 把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行后续处理
+
+- 把行作为输入，并赋值给`$0` -> 将行切段，从 `$1` 开始 -> 对行匹配正则/执行动作 -> 打印内容
+- 常用参数:
+	- FILENAME，awk 浏览的文件名
+	- BEGIN，处理文本之前要执行的操作
+	- END，处理文本之后要执行的操作
+	- FS，设置输入域分隔符，等价于命令行 -F 选项
+	- NF，浏览器记录的域的个数（列数）
+	- NR，已读的记录数（行数）
+	- OFS，输出域分隔符; ORS，输出记录分隔符; RS，控制记录分隔符
+	- `$0` 表示一整行内容; `$1` 表示第一个匹配到的内容，即索引从 1 开始
+- `awk -F: '/root/ {print $0}' passwd.txt`，搜索文件中包含 root 的所有行，并按照 `:` 把匹配到的内容分割，打印每行
+- `awk -F: '/root/ {print $7}' passwd.txt`，搜索文件中包含 root 的所有行，并按照 `:` 把匹配到的内容分割，打印内容中的第 7 段
+- `awk -F: 'NR==2{print $0}' passwd.txt`，打印文件中第 2 行的内容
+- `awk -F: 'BEGIN {print "BEGIN awk"} {print $1, $7}' passwd.txt`，打印标题 BEGIN awk，然后打印匹配到的第 1 列和第 7 列
+- `echo "111 222|333 444|555 666" | awk 'BEGIN{RS="|"} {print $0}'`，默认会有 `-F ""` 空行分隔符，这里自定义分隔符为 |
+
+
+
+
+
+
+
+
+
+
+

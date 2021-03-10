@@ -113,6 +113,40 @@
 #           attachments=[''])
 
 # import os
-#
+# import xlrd  # pip install xlrd==1.2.0
 # excel_path = os.path.dirname(os.path.abspath(__file__)) + "/data_file/user_info.xlsx"
-# print(excel_path)
+# book = xlrd.open_workbook(excel_path)
+# print("The number of worksheets is {0}".format(book.nsheets))
+# print("Worksheet name(s): {0}".format(book.sheet_names()))
+# sh = book.sheet_by_index(0)
+# print("{0} {1} {2}".format(sh.name, sh.nrows, sh.ncols))
+# print("Cell D30 is {0}".format(sh.cell_value(rowx=1, colx=1)))
+# for rx in range(sh.nrows):
+#     print(sh.row(rx))
+# print("=" * 20)
+# for row in range(sh.nrows):
+#     for col in range(sh.ncols):
+#         print(sh.cell_value(row, col))
+
+# import pymysql.cursors
+# connection = pymysql.connect(host='localhost',
+#                              user='chen',
+#                              password='chen',
+#                              database='world',
+#                              cursorclass=pymysql.cursors.DictCursor)
+# with connection:
+#     # with connection.cursor() as cursor:
+#     #     # Create a new record
+#     #     sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+#     #     cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
+#     # # connection is not autocommit by default. So you must commit to save
+#     # # your changes.
+#     # connection.commit()
+#     with connection.cursor() as cursor:
+#         # Read a single record
+#         sql = "select * from city limit 5;"
+#         cursor.execute(sql)
+#         result = cursor.fetchone()
+#         results = cursor.fetchall()
+#         print(result)
+#         print(results)

@@ -1,0 +1,60 @@
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-bus-proxy:x:999:998:systemd Bus Proxy:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+polkitd:x:998:997:User for polkitd:/:/sbin/nologin
+abrt:x:173:173::/etc/abrt:/sbin/nologin
+unbound:x:997:995:Unbound DNS resolver:/etc/unbound:/sbin/nologin
+tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin
+libstoragemgmt:x:996:994:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+colord:x:995:993:User for colord:/var/lib/colord:/sbin/nologin
+usbmuxd:x:113:113:usbmuxd user:/:/sbin/nologin
+saslauth:x:994:76:Saslauthd user:/run/saslauthd:/sbin/nologin
+geoclue:x:993:991:User for geoclue:/var/lib/geoclue:/sbin/nologin
+rtkit:x:172:172:RealtimeKit:/proc:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+radvd:x:75:75:radvd user:/:/sbin/nologin
+qemu:x:107:107:qemu user:/:/sbin/nologin
+ntp:x:38:38::/etc/ntp:/sbin/nologin
+chrony:x:992:989::/var/lib/chrony:/sbin/nologin
+setroubleshoot:x:991:988::/var/lib/setroubleshoot:/sbin/nologin
+sssd:x:990:987:User for sssd:/:/sbin/nologin
+pulse:x:171:171:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin
+gdm:x:42:42::/var/lib/gdm:/sbin/nologin
+gnome-initial-setup:x:989:984::/run/gnome-initial-setup/:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+avahi:x:70:70:Avahi mDNS/DNS-SD Stack:/var/run/avahi-daemon:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+tcpdump:x:72:72::/:/sbin/nologin
+chen:x:1000:1000:myCentOS:/home/chen:/bin/bash
+apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+test:x:1002:1002::/home/test:/bin/bash
+test1:x:1003:1003::/home/test1:/bin/bash
+mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash
+code1:x:1004:1004::/home/code1:/bin/bash
+code2:x:1005:1005::/home/code2:/bin/bash
+code3:x:1006:1006::/home/code3:/bin/bash
+admin:x:1007:1008::/home/admin:/bin/bash
+user:x:1008:1009::/home/user:/bin/bash
+tony:x:1009:1010::/home/tony:/bin/bash
+lw:x:1010:1012::/home/lw:/bin/bash
+named:x:25:25:Named:/var/named:/sbin/nologin
+sh:x:1011:1014::/home/sh:/bin/bash
+dmtsai:x:1012:1015::/home/dmtsai:/bin/bash
+deploy:x:1013:1018::/home/deploy:/bin/bash
+saned:x:988:981:SANE scanner daemon user:/usr/share/sane:/sbin/nologin
+gluster:x:987:980:GlusterFS daemons:/run/gluster:/sbin/nologin

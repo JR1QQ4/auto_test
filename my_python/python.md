@@ -662,7 +662,8 @@ if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
 
-DDT（Data-Driven Tests）是针对 unittest 单元测试框架设计的扩展库。允许使用不同的测试数据来运行一个测试用例，并展示为多个测试用例
+DDT（Data-Driven Tests）数据驱动测试，ddt 模块是针对 unittest 单元测试框架设计的扩展库。允许使用不同的测试数据来运行一个测试用例
+，并展示为多个测试用例
 
 ```python
 import unittest
