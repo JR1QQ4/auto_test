@@ -150,3 +150,41 @@
 #         results = cursor.fetchall()
 #         print(result)
 #         print(results)
+
+# a = [1, 2, 3, [4, 5, 6]]
+# b = []
+# b.extend(a)
+# print(b)  # [1, 2, 3, [4, 5, 6]]
+
+# import urllib.request
+# response = urllib.request.urlopen("http://www.baidu.com")
+# print(response.status)
+# print(response.read())
+# print(response.headers)
+
+# import requests
+# r = requests.get("http://www.baidu.com")
+# print(r.status_code)
+# print(r.text)
+
+# import yaml
+# print(yaml.load("""
+# name: Vorlin Laruknuzum
+# sex: Male
+# class: Priest
+# title: Acolyte
+# hp: [32, 71]
+# sp: [1, 13]
+# gold: 423
+# inventory:
+# - a Holy Book of Prayers (Words of Wisdom)
+# - an Azure Potion of Cure Light Wounds
+# - a Silver Wand of Wonder
+# """, Loader=yaml.FullLoader))  # - 转换为列表
+# print(yaml.load("""
+# a: 1
+# """, Loader=yaml.FullLoader))  # a: 1中间必须有空格才能转换为字典，
+# yaml.load(open(""), Loader=yaml.FullLoader)
+# print(yaml.dump({'a': [1, 2]}))
+# with open("demo.yaml", "w") as , stream=f)f:
+# #     yaml.dump(data={'a': [1, 2]}

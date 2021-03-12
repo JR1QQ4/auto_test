@@ -840,6 +840,7 @@ pytest 是一个第三方单元测试框架， 更加简单、灵活，而且提
             - `pytest -x test_fail.py`，如果出现一条测试用例失败，则退出测试
             - `pytest ./test_dir`，运行测试目录
             - `pytest test_fixtures_02.py::TestMultiply::test_numbers_5_6`，指定特定类或方法执行
+        - `$ pytest --setup-show test.py` 会显示执行顺序
     - main 函数中运行: `pytest.main(['-sv', 'test_01.py'])` 或者 `pytest.main(['-s', '-v', 'test_01.py'])`
 - 断言: 使用的 python 自带的断言 `assert`
     - 测试相等: `assert add(3, 4) == 7`，unittest 用 assertEqual()
@@ -891,12 +892,25 @@ import pytest
 @pytest.fixture()
 def init():
     print("---init---")
-def test01(init):
+def test01(init): 
     print("---test01---")
 def test02(init):
     print("---test01---")
 if __name__ == '__main__':
     pytest.main(['-sv'])
+
+@pytest.fixture(scope="module")
+def open():
+  print("打开浏览器")
+  
+  yield  # 解决测试方法后销毁清除数据
+
+  print("执行 teardown")
+  print("最后关闭浏览器")
+
+@pytest.fixture(autouse=True)  # 应用在每个测试方法中
+def init():
+  print("打开浏览器")
 ```
 
 #### 参数化
@@ -907,6 +921,7 @@ pytest 本身是支持参数化的，不需要额外安装插件:
     - argnames 参数的名称，对应函数的名称，多个参数使用 `逗号` 隔开
     - argvalues 参数的值，可以接受的参数类型有: 列表、元组、字典
     - 还可以设置 id
+    - indirect=True，把传入的字符串当成函数
 
 ```python
 import pytest
@@ -1028,7 +1043,17 @@ pytest-html 可以生成 HTML 格式的测试报告:
 pytest-rerunfailures 可以在测试用例失败时进行重试:
 
 - 安装: `$ pip install pytest-rerunfailures`
-- 运行: `$ pytest -v test_rerunfailures.py --reruns 3`
+- 运行: `$ pytest -v test_rerunfailures.py --reruns 3 --reruns-delay 2`
+
+pytest-assume 多条断言有失败也都运行
+
+- 安装: `$ pip install pytest-assume`
+- 执行: `$ pytest.assume(1 == 4)`，替换原来的断言
+
+pytest-xdist 多线程并行与分布式执行
+
+- 安装: `$ pip install pytest-xdist`
+- 多个 CPU 并行执行用例，直接加 `-n 3`就是并行数量
 
 pytest-parallel 扩展可以实现测试用例的并行运行:
 
