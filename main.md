@@ -294,6 +294,84 @@ ALTER TABLE tbl_name ADD [UNIQUE | FULLTEXT | SPATIAL] INDEX 索引名称(字段
 DROP INDEX 索引名称 ON tbl_name; ALTER TABLE tbl_name DROP INDEX 索引名称
 ```
 
+#### 存储过程:
+
+查看存储过程: `SHOW PROCEDURE STATUS WHERE db='数据库名';`
+查看当前数据库下的存储过程的列表: `SELECT specific_name FROM mysql.proc;`
+删除存储过程: `DROP PROCEDURE 存储过程名字`
+语句结束符: `delimiter 需要定义的符号`
+
+```mysql
+CREATE PROCEDURE p_vartest1(IN p_var INT)
+BEGIN
+SELECT p_var;
+SET p_var=p_var+1;
+SELECT p_var;
+END~
+-- 创建一个名为@P的变量，没有@符号是不能创建成功的
+SET @P=3~
+-- 调用存储过程，并传递参数
+CALL p_vartest1(@P)~
+-- 查看调用存储过程后的@P值，是否有变化
+SELECT @P;
+
+CREATE PROCEDURE p_if(in age INT)
+BEGIN
+IF age>=18 && age<30 THEN 
+    SELECT '成年人';
+ELSEIF age>=30 && age<60 THEN 
+    SELECT '中年人';
+ELSE 
+    SELECT '老年人';
+END IF;
+END~
+
+CREATE PROCEDURE p_case(in salaryId INT)
+BEGIN
+DECLARE addS INT;
+CASE salaryId
+WHEN 1001 THEN SET addS = 1500;
+WHEN 1002 THEN SET addS = 2000;
+WHEN 1003 THEN SET addS = 2500;
+ELSE SET addS=1000;
+END CASE;
+UPDATE salaries SET salary=addS WHERE id=salaryId;
+END~
+
+CREATE PROCEDURE p_while()
+BEGIN
+DECLARE i INT DEFAULT 1;
+DECLARE result INT DEFAULT 0;
+WHILE i<=100 DO
+  SET result=result+i;
+  SET i=i+1;
+END WHILE;
+SELECT result;
+END~
+```
+
+#### 日志
+
+generic_log: 所有的 sql 查询日志
+slow log: 查过预设的 long_query_time 阈值的 sql 记录，慢查询日志
+输出操作步骤: `\T C:\Develop\mysql1.txt` 输出日志文件到 mysql1.txt ，结束日志`\t`
+
+```mysql
+show variables like 'log_output';
+show variables like '%query%%';
+show variables like '%_log%';
+
+SHOW CREATE TABLE mysql.general_log;
+SET GLOBAL general_log='ON';  # 开启日志记录
+
+SHOW CREATE TABLE mysql.slow_log;
+SET GLOBAL slow_query_log='ON';  # 开启慢查询日志
+SET long_query_time=0.01;  # 设置慢查询触发时间，超过这个时间就是慢查询
+show variables like '%long_query%';
+
+
+```
+
 #### 常见语句
 
 常见语句:
@@ -301,8 +379,204 @@ DROP INDEX 索引名称 ON tbl_name; ALTER TABLE tbl_name DROP INDEX 索引名�
 1. 分页: `select * from table_name order by id asc limit 10 offset 0;`
 2. 去重: `select distinct gender from employees;`
 3. 统计: `select count(*), dept_no from dept_maager group by dept_no HAVING count(*) > 3;`
+4. EXPLAIN 关键字后接 SQL 语句: `explain sql`，分析你的查询语句或是表结构的性能
+    - 包括: 表的读取顺序、数据读取操作的操作类型、哪些索引可以使用、哪些索引被实际使用、表之间的引用、每张表有多少行被优化器查询
+    - id 越大优先级越高，越先被执行
+    - possible_keys 查询中可能用到的索引； key 查询中实际用到的索引； key_len 索引的长度
+    - rows 扫描的行数； type 访问类型，ALL（全表扫描）、index（索引全扫描）、range（索引的范围扫描）
+5.事务: `begin` 开始事务，`commit` 提交事务，`rollback` 事务回滚
+6.备份:
+    - `mysqldump -u username -p --databases dbname1 dbname2 >backup.sql`
+    - `mysqldump -u username -p -all-databases > bakcupName.sql`
+    - `mysql -u root -p [dbname] < backupName.sql`
+    - `source backupName.sql`
 
 ### Redis
+
+1.Redis 简介: 完全开源免费的高性能 Key-value 数据库
+
+- 支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用
+- 不仅仅支持简单的 key-value 类型的数据，同时还提供 list、set、zset、hash 等数据结构的存储
+- 支持数据的备份，即 master-slave 模式的数据备份
+- 性能极高，Redis 能读的速度是 110000 次/s，写的速度是 81000 次/s
+- Redis 的所有操作都是原子性的，就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持事务，通过 MULTI 和 EXEC 指令包起来
+- 支持 publish/subscribe，通知，key 过期等等特性
+
+2.环境搭建:
+ 
+- 下载安装: `https://github.com/microsoftarchive/redis/releases`
+- 启动服务端: `$ redis-server.exe redis.windows.conf`
+
+3.基本数据结构:
+
+- String: 是二进制安全的，就是 redis 的 string 可以包含任何数据。比如 jpg 图片或序列化的对象，最大能存储 512MB
+- Hash: 一个 string 类型的 key 和 value 的映射表，适合用于存储对象
+- List: 按照插入顺序排序，你可以添加一个元素到列表的头部（左边）或者尾部（右边）
+- Set: 无序集合，通过哈希表实现的，所以添加、删除、查找的复杂度都是 O(1)
+- Sorted Set: 有序集合每个元素都会关联一个 double 类型的分数，redis 正是通过分数来为集合中的成员进行从小到大的排序；zset 的成员
+是唯一的，但分数（score）却可以重复
+
+4.连接 redis-server，前提是开启服务端:
+
+- 打开客户端: `$ redis-cli.exe -h 127.0.0.1 -p 6379`，`-h` 后面是服务器ip，`-p` 服务器端口号
+
+5.语法:
+
+- 通用命令：`keys`，`dbsize`，`exists key`；`del key [jey ...]`，`expire key seconds`，`type key`
+- 字符串: 缓存，计数器，分布式锁等
+    - `$get key | $set key value | $del key`，获取 | 设置 | 删除  **重要**
+    - `$incr key`，key自增1，如果key不存在，自增后get(key)=1
+    - `$decr key`，key自减1，如果key不存在，自减后get(key)=-1
+    - `$setnx key value`，key不存在，才设置 <-> `$set key value`，不管key是否存在，都设置
+    - `$mget key1 key2 key3...`，批量获取key，原子操作 <-> `$mset key1 value1 key2 value2 key3 value3...`，批量设置key-value
+    - `$getset key newvalue`，设置返回旧的value
+    - `$append key value`，将value追加到旧的value
+    - `$strlen key`，返回字符串的长度(注意中文，UTF8一个中文两个长度)
+    - `$getrange key start end`，获取字符串指定下标所有的值
+    - `$setrange key index value`，设置指定下标所有对应的值
+- 哈希: key(字符串) -> field(属性名)和value，Mapmap，key-keyvalue
+    - `$hset key field value`，设置hash key对应field的value，`$hset user:1:info age 30` **重要**
+    - `$hget key field`，获取hash key对应的field的value  **重要**
+    - `$hdel key field`，删除hash key对应field的value
+    - `$hexists key field`，判断hash key是否有field
+    - `$hlen key`，获取hash key field的数量`
+    - `$hmget key field field2... fieldN`，批量获取hash key的一批field对应的值
+    - `$hmset key field1 value1 field2 value2... fieldN valueN`，批量设置hash key的一批field value
+    - `$hgetall key`，返回hash key对应所有的field和value`  **重要**
+    - `$hvals key`，返回hash key对应所有field的value
+    - `$hkeys key`，返回hash key对应所有field`
+    - `$hsetnx key field value`，设置hash key对应field的value(如field已经存在，则失败)
+    - `$hincrby key field intCounter`，hash key对应的field的value自增intCounter
+- 列表: key -> elements，有序队列，可重复
+    - `$rpush key value1 value2... valueN`，从列表右段插入值(1-N个)  **重要**
+    - `$lpush key value1 value2... valueN`，从列表左段插入值(1-N个)  **重要**
+    - `$insert key <before|after> value newValue`，在list指定的值前|后插入newValue
+    - `$lpop key`，从列表左侧弹出一个item
+    - `$rpop key`，从列表右侧弹出一个item
+    - `$lrem key count value`，根据count值，从列表中删除所有与value相等的项
+        - count>0，从左到右，删除最多count个value相等的项；
+        - count<0，从右到左，删除最多Math.abs(count)个value相等的项
+        - count=0，删除所有value相等的项
+    - `$ltrim key start end`，按照索引范围修剪列表，删除其他的
+    - `$lrange key start end(包含end)`，获取列表指定索引范围所有item **重要**
+    - `$lindex key index`，获取列表指定索引的item
+    - `$llen key`，获取列表长度
+    - `$lset key index newValue`，设置列表指定索引值为newValue
+    - `$blpop key timeout`，lpop阻塞版本，timeout时阻塞超时时间，timeout=0永远不阻塞
+    - `$brpop key timeout`，rpop阻塞版本，timeout时阻塞超时时间，timeout=0永远不阻塞
+- 集合: key -> values，无序，不允许重复元素，支持集合间操作（交集、并集、区分）
+    - `$sadd key element`，项集合key添加element(如果element已经存在，添加失败)
+    - `$srem key element`，将集合key中的element移除掉
+    - `$scard user:1:follow = 4`，计算集合大小
+    - `$sismember user:1:follow it = 1(存在)`，判断it是否在集合中
+    - `$srandmember user:1:follow count = his`，从集合中随机挑count个元素，不会破环集合
+    - `$spop user:1:follow = sports`，从集合中随机弹出一个元素
+    - `$smembers user:1:follow = music his sports it`，获取集合所有元素  **重要**
+    - `$sdiff user:1:follow user:2:follow music his`，差集
+    - `$sinter user:1:follow user:2:follow it sports`，交集
+    - `$sunion user:1:follow user:2:follow it music his sports news ent`，并集
+    - `$<sdiff | sinter | sunion> + store destkey...`，将差集、交集、并集结果保存在destkey中
+- 有序集合: key -> score、value，score可以重复
+    - `$zadd key score element...`，添加score和element，`$zadd zset1 1 zd1 2 zd2 3 zd3`
+    - `$zrem key score element...`，删除元素
+    - `$zscore key element`，返回元素的分数
+    - `$zincrby key increScore element`，增加或减少元素的分数
+    - `$zcard key`，返回元素的总个数
+    - `$zrank key element`，返回元素的排名
+    - `$zrange key 0 -1 [withscores]`，打印所有score和元素  **重要**
+    - `$zrange key start end [WITHSCORES]`，返回指定索引范围内的升序元素[分值]
+    - `$zrangescore key minScore maxScore [WITHSCORES]`，返回指定分数范围内的升序元素[分值]
+    - `$zcount key minScore maxScore`，返回有序集合内在指定分数范围内的个数
+    - `$zremrangebyrank key start end`，删除指定范围内的升序元素
+    - `$zremrangebyscore key minScore maxScore`，删除指定分数内的升序元素
+    - `$zrangebyscore zset1 0 2`，获取指定范围内的元素，2 表示两个
+    - zrevrank | zrevrange | zrevrangebyscore | zinterstore | zunionstore
+
+使用:
+
+# java
+Java客户端：Jedis
+Maven依赖：
+<dependency>
+  <groupId>redis.clients</groupId>
+  <artifactId>jedis</artifactId>
+  <version>2.9.0</version>
+  <type>jar</type>
+  <scope>compile</scope>
+</dependency>
+Jedis直连：
+Jedis jedis = new Jedis("127.0.0.1", 6379);
+Jedis.auth("password");  // 修改 redis.windows.conf， 注释修改为requirepass password
+jedis.set("hello", "world");
+String value = jedis.get("hello");
+jedis.incr("counter");
+jedis.hset("myhash", "f1", "v1");  jedis.hset("myhash", "f2", "v2");
+jedis.hgetAll("myhash");
+jedis.rpush("mylist", "1");  jedis.rpush("mylist", "2");  jedis.rpush("mylist", "3");
+jedis.lrange("mylist", 0, -1);
+jedis.sadd("myset", "a");  jedis.sadd("myset", "b");
+jedis.smembers("myset");
+jedis.zadd("myzset", 99, "tom");  jedis.zadd("myzset", 66, "peter");  jedis.zadd("myzset", 33, "james");
+jedis.zrangeWithScores("myzset", 0, -1);
+Jedis连接池：需要GenericObjectPoolConfig的jar包
+poolConfig = new GenericObjectPoolConfig();
+JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6379)
+
+### MongoDB
+
+1.环境搭建: `https://www.mongodb.com/try/download/community` 下载zip文件，解压创建 data 目录
+2.把bin目录配到环境变量中，运行`$ mongod.exe --dbpath data路径`（指定数据存放的路径）
+3.在浏览器中输入 `http://localhost:27017/` 出现 It looks like you are trying to access MongoDB over HTTP on the native driver port. 表示安装成功   
+
+常用命令:
+
+- 运行 MongoDB 服务器: `$ mongod --dbpath xxx`
+- 连接 MongoDB: `$ mongo`
+- 查看帮助: `> help`，查看当前数据库，`> show dbs`
+- 切换数据库: `> use db_name`，如果没有就会自动创建
+- 往数据库中插入一条数据: `> db.db_name.insert({"key", "value"})`
+- 删除数据库: `> db.dropDatabase()`，需要先切换到要删除的数据库中，`> use db_name`
+- 集合: 集合相当于一张表，集合可以有多个文档
+    - 创建集合: `>  db.createCollection(name, {size: ..., capped: ..., max: ...})`
+    - 查看已经创建的集合: `> show collections`
+    - 删除集合: `> db.collection_name.drop()`
+    - 文档: 每插入一个文档，都会有一个独一无二的 id
+        - 插入文档时，MongoDB 自动创建集合: `> db.collection_name.insert({"key":"value"})`
+        - 查看插入的内容: `> db.collection_name.find().pretty()`，pretty可以使得输出美观，可以不添加
+        - 插入复杂文档: `> doc = ({"id":"123","info":["zhangsan", "25"]}) > db.col2.insert(doc)`，先声明变量后插入
+        - find 查找条件:
+            - 等于: `> db.collection_name.find({"key":"value"})`，发现键为key值为value的
+            - 小于 | 大于: `> db.collection_name.find({"key":{$lt:value}})`，大于就是把 `lt` 换成 `gt`
+            - 不等于: `> db.collection_name.find({"key":{$ne:value}})`
+            - 小于或等于: `> db.collection_name.find({"key":{$lte:value}})`
+            - 大于或等于: `> db.collection_name.find({"key":{$gte:value}})`
+        - 替换文档: `>  db.mycol1.update( query, <update object or pipeline>[, upsert_bool, multi_bool] )`
+            - upsert_bool: 如果不存在 update 的记录，是否插入，默认为 false
+            - multi_bool: 把按条件查出来多条记录全部更新，默认为 false
+            - 原来的字段被替换: `> db.col3.update({"key1":"value1"}, {"key":"value"})`
+            - 原来的字段被修改: `> db.col3.update({"key":"value"}, {$set:{"key":"value2"}})`
+            - 修改多个字段: `> db.col.update({'title':'MongoDB 教程'},{$set:{'title':'MongoDB'}},{multi:true})`
+        - 删除文档:
+            - 删除多个文档: `> db.col3.remove({"key":"value"})`，会把匹配到的文档全部字段删除
+            - 删除一个文档: `> db.col3.remove({"key":"value"}, 1)`
+        - 修改操作符:
+            - 修改: `> db.col.update({"key":"value", {$inc:{"age":"5"}}})`，把key为value的文档的age增加5
+            - 更新: `> db.col3.update({"key":"value"}, {$set:{"key":"value2"}})`
+            - 追加: `> db.col3.update({"key":"value"}, {$push:{"key3":"value3"}})`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
