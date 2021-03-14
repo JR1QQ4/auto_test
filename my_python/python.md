@@ -1363,25 +1363,27 @@ appium:
 - 最后，通过 Python 编写 appium 自动化测试脚本
 
 ```shell script
-adb devices #查看连接设备
+adb kill-server # 关闭连接
+adb devices # 查看连接设备
+adb connect 127.0.0.1:7555 # 连接模拟器
 adb -s cf27456f shell # 指定连接设备使用命令
 adb install test.apk # 安装应用，--install-location location：使用以下某个值来设置安装位置
 adb install -r demo.apk #重新安装现有应用，保留其数据
 adb uninstall cn.com.test.mobile #卸载应用，需要指定包
 adb uninstall -k cn.com.test.mobile #卸载app 但保留数据和缓存文件
 adb shell pm list packages #列出手机装的所有app 的包名
-adb shell pm list packages -s 列出系统应用的所有包名
-adb shell pm list packages -3 #列出除了系统应用的第三方应用包名
+
 adb shell pm clear cn.com.test.mobile #清除应用数据与缓存
 adb shell am start -n cn.com.test.mobile/.ui.SplashActivity #启动应用
 adb shell am force-stop cn.com.test.mobile #强制停止应用
 adb shell dumpsys package #包信息Package Information
 adb shell dumpsys meminfo #内存使用情况Memory Usage
+
 adb logcat #查看日志
+adb logcat | grep -i displayed  # 打开app执行命令可以看到 Activity
 adb logcat -c #清除log 缓存
 adb shell dmesg #查看内核日志
 adb get-serialno #获取序列号
-adb shell getprop ro.build.version.release #查看Android 系统版本
 adb shell top -m 10 #查看占用内存前10 的app
 adb push <local> <remote> #从本地复制文件到设备
 adb pull <remote> <local> #从设备复制文件到本地
@@ -1397,6 +1399,33 @@ adb reboot recovery #刷机，重启到 Recovery 模式，在设备的 Recovery 
 adb sideload <path-to-update.zip> #通过 adb 上传和更新系统
 adb reboot #重启，从 Recovery 重启到 Android
 adb reboot bootloader #重启到 Fastboot 模式
+adb shell ifconfig # 查看手机IP地址
+adb shell settings get secure android_id # 查看Android_id
+
+adb shell pm list packages -3 #列出除了系统应用的第三方应用包名
+# 获取已安装应用Activity类名
+adb logcat ActivityManager:I *:s | findstr "cmp" # 后启动目标应用
+# 第一个cmp=com.netease.dwrg/.Launcher则表示：应用包名/应用Activity类名，完整Activity名=com.netease.dwrg.Launcher
+adb shell getprop ro.product.model # 查看手机型号
+adb shell getprop ro.product.name # 查看手机设备名 deviceName
+adb shell getprop ro.build.version.release #查看 Android 系统版本 platformVersion
+
+# 获取 app 信息
+adb shell dumpsys activity top # 获取当前界面元素
+adb shell dumpsys activity activities  # 获取任务列表，使用过的 activity
+# app入口
+adb logcat | grep -i displayed # 方法一
+aapt dump badging mobike.apk | grep launchable-activity # 方法二 
+apkanalyzer # 最新版本的 sdk 中才有
+# 启动应用
+adb shell am start -W -n appName/appActivity -S
+adb shell dumpsys window | findstr mCurrentFocus # 正在运行应用包名
+adb shell dumpsys window | grep mCurrent # 当前正在运行页面 Activity 名字
+
+adb shell pm list packages -s # 列出系统应用的所有包名
+adb shell pm list packages | grep browser # 查看浏览器包名，假如是 com.android.browser
+adb shell pm dump com.android.browser | grep version # 查看浏览器版本信息
+adb shell pm dump com.android.chrome | grep version # 查看谷歌浏览器版本信息 
 ```
 
 appium 在启动时， 需要提供 Desired Capabilities，由客户端生成并发送给服务器(appium Desktop)，告诉服务器 App 运行的环境:
@@ -1452,8 +1481,14 @@ driver = webdriver.Remote(command_executor='http://localhost:4723/wd/hub', desir
         - driver.find_element_by_partial_link_text()
         - driver.find_element_by_css_selector()
 
+三种经典等待方式:
+
+- 强制等待: sleep
+- 隐式等待（全局性）: `driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)`，`driver.implicitly_wait(10)
+- 显示等待（等待某个元素）: `WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located((MobileBy.ID, "com.android.settings:id/title")))`
+
 appium 的常用 API:
-se
+
 - 应用操作:
     - 安装应用: install_app()，`driver.install_app("D:\\android\\apk\\ContactManager.apk")`
     - 卸载应用: remove_app()，`driver.remove_app('com.example.android.apis')`

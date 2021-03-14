@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -19,6 +20,7 @@ class BasePage:
             self._driver.implicitly_wait(5)
         else:
             self._driver = driver
+            ActionChains(self._driver).perform()
 
         if self._base_url != "":
             self._driver.get(self._base_url)
