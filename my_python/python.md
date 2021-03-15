@@ -1414,18 +1414,20 @@ adb shell getprop ro.build.version.release #查看 Android 系统版本 platform
 adb shell dumpsys activity top # 获取当前界面元素
 adb shell dumpsys activity activities  # 获取任务列表，使用过的 activity
 # app入口
-adb logcat | grep -i displayed # 方法一
+adb logcat | findstr -i displayed # 方法一
 aapt dump badging mobike.apk | grep launchable-activity # 方法二 
 apkanalyzer # 最新版本的 sdk 中才有
 # 启动应用
 adb shell am start -W -n appName/appActivity -S
 adb shell dumpsys window | findstr mCurrentFocus # 正在运行应用包名
-adb shell dumpsys window | grep mCurrent # 当前正在运行页面 Activity 名字
+adb shell dumpsys window | findstr mCurrent # 当前正在运行页面 Activity 名字
 
 adb shell pm list packages -s # 列出系统应用的所有包名
-adb shell pm list packages | grep browser # 查看浏览器包名，假如是 com.android.browser
+adb shell pm list packages | findstr browser # 查看浏览器包名，假如是 com.android.browser
 adb shell pm dump com.android.browser | grep version # 查看浏览器版本信息
-adb shell pm dump com.android.chrome | grep version # 查看谷歌浏览器版本信息 
+adb shell pm dump com.android.chrome | grep version # 查看谷歌浏览器版本信息
+
+appium -g 日志文件名称.log | 具体文件夹  # 保存日志 
 ```
 
 appium 在启动时， 需要提供 Desired Capabilities，由客户端生成并发送给服务器(appium Desktop)，告诉服务器 App 运行的环境:

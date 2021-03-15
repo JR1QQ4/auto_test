@@ -7,6 +7,8 @@ from appium import webdriver
 
 # 定义运行环境
 from appium.webdriver.common.mobileby import MobileBy
+from appium.webdriver.common.touch_action import TouchAction
+from appium.webdriver.extensions.android.gsm import GsmCallActions
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -35,4 +37,6 @@ el3 = driver.find_element_by_xpath(
     "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[1]")
 el3.click()
 
+
 driver.quit()
+
