@@ -1345,6 +1345,21 @@ appium 环境搭建: Windows 10 + Android 模拟器 + appium Desktop + python-cl
             - 具体原因可能是 AS 会默认推荐下载带Google APIs的x86 Images，需要重新下载不带 Google APIs的x86 Images
         - 使用 emulator 目录下的 emulator 就能启动
 
+```
+# android 常用命令
+android list  #列出机器上所有已经安装的Android版本和AVD设备
+android list avd  #列出机器上所有已经安装的AVD设备；
+android list target  #列出机器上所有已经安装的Android版本
+android create avd  #创建一个AVD设备，格式：android create avd -n <AVD名称> -t <SDK版本号> -s <AVD皮肤> -p <AVD保存路径>
+# 如：android create avd -n 1.5 -t 3 -s HVGA
+android delete avd  #删除一个AVD设备
+android update avd  #升级一个AVD设备使其符合新的SDK环境
+android create project  #创建一个新的Android项目
+android update project  #更新一个已有的Android项目
+android create test-project  #创建一个新的Android测试项目
+android update test-project  #更新一个已有的Android测试项目
+```
+		
 appium:
 
 - appium Desktop，默认显示监控的 Host 和 Port，默认为 0.0.0.0:4723
@@ -1367,6 +1382,7 @@ adb kill-server # 关闭连接
 adb devices # 查看连接设备
 adb connect 127.0.0.1:7555 # 连接模拟器
 adb -s cf27456f shell # 指定连接设备使用命令
+adb shell #启动模拟器的shell窗口，此时就可以在模拟器的shell窗口中直接执行Linux命令
 adb install test.apk # 安装应用，--install-location location：使用以下某个值来设置安装位置
 adb install -r demo.apk #重新安装现有应用，保留其数据
 adb uninstall cn.com.test.mobile #卸载应用，需要指定包
@@ -1385,7 +1401,7 @@ adb logcat -c #清除log 缓存
 adb shell dmesg #查看内核日志
 adb get-serialno #获取序列号
 adb shell top -m 10 #查看占用内存前10 的app
-adb push <local> <remote> #从本地复制文件到设备
+adb push <local> <remote> #从本地复制文件到设备，如 adb push C:\Users\Administrator\Desktop\test.jpg sdcard  
 adb pull <remote> <local> #从设备复制文件到本地
 adb shell input keyevent <keycode> #使用ADB命令模拟按键/输入
 adb bugreport #查看bug 报告
